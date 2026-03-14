@@ -100,11 +100,13 @@ function getProjectMedia(entry: WorkspaceEntry) {
 function VideoSurface({ media, title }: { media: EditorMediaBlock | null; title: string }) {
   if (!media?.url) {
     return (
-      <div className="flex h-full min-h-[420px] items-end rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),linear-gradient(145deg,#241d10_0%,#0b0b0b_44%,#17140d_100%)] p-7 text-white">
-        <div className="max-w-md">
-          <p className="text-[0.68rem] uppercase tracking-[0.34em] text-white/42">Motion slot</p>
-          <p className="mt-4 text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[0.92] tracking-[-0.06em]">{title}</p>
-          <p className="mt-4 text-sm leading-7 text-white/58">This layout is built to foreground video. Add a video block or embed to the selected project and it will take over this stage automatically.</p>
+      <div className="aspect-video overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),linear-gradient(145deg,#241d10_0%,#0b0b0b_44%,#17140d_100%)]">
+        <div className="flex h-full items-end p-7 text-white">
+          <div className="max-w-md">
+            <p className="text-[0.68rem] uppercase tracking-[0.34em] text-white/42">Motion slot</p>
+            <p className="mt-4 text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[0.92] tracking-[-0.06em]">{title}</p>
+            <p className="mt-4 text-sm leading-7 text-white/58">This layout is built to foreground video. Add a video block or embed to the selected project and it will take over this stage automatically.</p>
+          </div>
         </div>
       </div>
     );
@@ -112,19 +114,19 @@ function VideoSurface({ media, title }: { media: EditorMediaBlock | null; title:
 
   if (media.mediaType === "video" && /\.(mp4|webm|ogg)(\?.*)?$/i.test(media.url)) {
     return (
-      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
-        <video src={media.url} autoPlay muted loop playsInline controls className="h-full min-h-[420px] w-full object-cover" />
+      <div className="aspect-video overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+        <video src={media.url} autoPlay muted loop playsInline controls className="h-full w-full object-cover" />
       </div>
     );
   }
 
   if (media.mediaType === "embed" || media.mediaType === "video") {
     return (
-      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+      <div className="aspect-video overflow-hidden rounded-[2rem] border border-white/10 bg-black">
         <iframe
           src={getEmbedSource(media.url)}
           title={media.title || title}
-          className="h-[420px] w-full md:h-[560px]"
+          className="h-full w-full"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
           loading="lazy"
@@ -135,9 +137,9 @@ function VideoSurface({ media, title }: { media: EditorMediaBlock | null; title:
   }
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+    <div className="aspect-video overflow-hidden rounded-[2rem] border border-white/10 bg-black">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={media.url} alt={media.alt || media.title || title} className="h-full min-h-[420px] w-full object-cover" />
+      <img src={media.url} alt={media.alt || media.title || title} className="h-full w-full object-cover" />
     </div>
   );
 }
