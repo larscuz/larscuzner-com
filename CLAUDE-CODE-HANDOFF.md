@@ -147,6 +147,7 @@ Current limitation:
 - homepage sections are editable as structured sections, but not every nested visual sub-element is independently clickable yet in the Wix sense
 - works/info index pages are still rendered from React code, not page documents
 - global header/footer are not yet page-builder documents
+- featured homepage work now has an explicit editor-level post selector in the `featuredWork` section schema, so it no longer has to rely on whatever post sorts first
 
 ## Recommended next tasks
 
@@ -156,7 +157,10 @@ Current limitation:
 4. Add nested element selection so titles, labels, buttons, and sub-copy within homepage sections can be clicked directly instead of only selecting the parent section.
 5. Add asset upload workflow instead of URL-only media boxes.
 6. Add richer text controls in the composer toolbar.
-7. Add homepage curation controls so featured works/pages are editorial, not hardcoded by helper logic.
+7. Extend homepage curation controls beyond the featured work selector:
+   - featured pages
+   - recent works source rules
+   - optional multi-slot featured works
 8. Add SEO fields per entry:
    - meta title
    - meta description

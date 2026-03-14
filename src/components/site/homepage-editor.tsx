@@ -81,7 +81,6 @@ export function HomepageEditor({
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(initialDocument.sections[0]?.id ?? null);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
-  const hero = featuredPosts[0] ?? posts[0] ?? null;
   const selectedIndex = document.sections.findIndex((section) => section.id === selectedSectionId);
   const selectedSection = selectedIndex >= 0 ? document.sections[selectedIndex] : null;
   const visibleSections = document.sections.filter((section) => section.enabled);
@@ -233,6 +232,13 @@ export function HomepageEditor({
             }
 
             if (section.type === "featuredWork") {
+              const hero =
+                (section.featuredPostSourceId !== null
+                  ? posts.find((entry) => entry.sourceId === section.featuredPostSourceId) ?? null
+                  : null) ??
+                posts[0] ??
+                null;
+
               return (
                 <SectionFrame
                   key={section.id}
@@ -500,6 +506,25 @@ export function HomepageEditor({
 
                   {selectedSection.type === "featuredWork" ? (
                     <>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Featured post</span>
+                        <select
+                          value={selectedSection.featuredPostSourceId ?? ""}
+                          onChange={(event) =>
+                            updateSection(selectedSection.id, {
+                              featuredPostSourceId: event.target.value ? Number(event.target.value) : null,
+                            })
+                          }
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        >
+                          <option value="">Auto-select latest published</option>
+                          {posts.map((post) => (
+                            <option key={post.id} value={post.sourceId}>
+                              {post.title}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <label className="grid gap-2">
                         <span className="text-sm font-medium text-white">Empty text</span>
                         <textarea

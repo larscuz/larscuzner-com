@@ -15,6 +15,7 @@ export type HomeFeaturedWorkSection = {
   title: string;
   emptyText: string;
   ctaLabel: string;
+  featuredPostSourceId: number | null;
 };
 
 export type HomeEntryPointsSection = {
@@ -84,6 +85,7 @@ export function createDefaultHomePageDocument(): HomePageDocument {
         title: "Featured work",
         emptyText: "No published work is available yet.",
         ctaLabel: "Open work",
+        featuredPostSourceId: null,
       },
       {
         id: "entry-points-main",
@@ -151,6 +153,7 @@ export function createHomeSection(type: HomeSection["type"]): HomeSection {
       title: "Featured work",
       emptyText: "No published work is available yet.",
       ctaLabel: "Open work",
+      featuredPostSourceId: null,
     };
   }
 
@@ -236,6 +239,7 @@ export function normalizeHomePageDocument(value: unknown): HomePageDocument {
           title: typeof item.title === "string" ? item.title : "Featured work",
           emptyText: typeof item.emptyText === "string" ? item.emptyText : "No published work is available yet.",
           ctaLabel: typeof item.ctaLabel === "string" ? item.ctaLabel : "Open work",
+          featuredPostSourceId: typeof item.featuredPostSourceId === "number" ? item.featuredPostSourceId : null,
         } satisfies HomeFeaturedWorkSection,
       );
       return accumulator;
