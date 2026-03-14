@@ -4,8 +4,10 @@ import { startTransition, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { EntryCardVisual } from "@/components/site/entry-card-visual";
+import { HomepageBookHero } from "@/components/site/homepage-book-hero";
 import {
   createHomeSection,
+  type HomeBookHeroSection,
   type HomeEntryPointsSection,
   type HomePageDocument,
   type HomeSection,
@@ -197,6 +199,20 @@ export function HomepageEditor({
       <div className={`mx-auto grid gap-10 px-5 pb-10 sm:px-8 ${editMode && canEdit ? "max-w-[1900px] xl:grid-cols-[minmax(0,1fr)_400px]" : viewportClass}`}>
         <div className={editMode && canEdit ? viewportClass : ""}>
           {visibleSections.map((section) => {
+            if (section.type === "bookHero") {
+              return (
+                <SectionFrame
+                  key={section.id}
+                  section={section}
+                  editable={editMode && canEdit}
+                  selected={selectedSectionId === section.id}
+                  onSelect={setSelectedSectionId}
+                >
+                  <HomepageBookHero section={section} posts={posts} />
+                </SectionFrame>
+              );
+            }
+
             if (section.type === "hero") {
               return (
                 <SectionFrame
@@ -425,6 +441,9 @@ export function HomepageEditor({
               </div>
 
               <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => addSection("bookHero")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
+                  Add book hero
+                </button>
                 <button type="button" onClick={() => addSection("hero")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
                   Add hero
                 </button>
@@ -502,6 +521,63 @@ export function HomepageEditor({
                         className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
                       />
                     </label>
+                  ) : null}
+
+                  {selectedSection.type === "bookHero" ? (
+                    <>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Description</span>
+                        <textarea
+                          value={selectedSection.description}
+                          onChange={(event) => updateSection(selectedSection.id, { description: event.target.value })}
+                          rows={5}
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                      </label>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Featured post</span>
+                        <select
+                          value={selectedSection.featuredPostSourceId ?? ""}
+                          onChange={(event) =>
+                            updateSection(selectedSection.id, {
+                              featuredPostSourceId: event.target.value ? Number(event.target.value) : null,
+                            } satisfies Partial<HomeBookHeroSection>)
+                          }
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        >
+                          <option value="">Use preferred slug or latest published</option>
+                          {posts.map((post) => (
+                            <option key={post.id} value={post.sourceId}>
+                              {post.title}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Preferred slug fallback</span>
+                        <input
+                          value={selectedSection.fallbackFeaturedSlug}
+                          onChange={(event) => updateSection(selectedSection.id, { fallbackFeaturedSlug: event.target.value })}
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                      </label>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Primary CTA label</span>
+                        <input
+                          value={selectedSection.ctaLabel}
+                          onChange={(event) => updateSection(selectedSection.id, { ctaLabel: event.target.value })}
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                      </label>
+                      <label className="grid gap-2">
+                        <span className="text-sm font-medium text-white">Secondary CTA label</span>
+                        <input
+                          value={selectedSection.secondaryCtaLabel}
+                          onChange={(event) => updateSection(selectedSection.id, { secondaryCtaLabel: event.target.value })}
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                      </label>
+                    </>
                   ) : null}
 
                   {selectedSection.type === "featuredWork" ? (

@@ -3,6 +3,18 @@
     "version": 1,
     "sections": [
       {
+        "id": "book-hero-main",
+        "type": "bookHero",
+        "enabled": true,
+        "eyebrow": "Featured project",
+        "title": "Open the work like a book.",
+        "description": "A responsive cover-to-spread hero that can stage text, recovered images, and video from a featured work on the homepage.",
+        "ctaLabel": "Open book",
+        "secondaryCtaLabel": "View project",
+        "featuredPostSourceId": null,
+        "fallbackFeaturedSlug": "post-2735"
+      },
+      {
         "id": "hero-main",
         "type": "hero",
         "enabled": true,

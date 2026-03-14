@@ -7,6 +7,19 @@ export type HomeHeroSection = {
   description: string;
 };
 
+export type HomeBookHeroSection = {
+  id: string;
+  type: "bookHero";
+  enabled: boolean;
+  eyebrow: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+  secondaryCtaLabel: string;
+  featuredPostSourceId: number | null;
+  fallbackFeaturedSlug: string;
+};
+
 export type HomeFeaturedWorkSection = {
   id: string;
   type: "featuredWork";
@@ -49,6 +62,7 @@ export type HomeRecentWorksSection = {
 };
 
 export type HomeSection =
+  | HomeBookHeroSection
   | HomeHeroSection
   | HomeFeaturedWorkSection
   | HomeEntryPointsSection
@@ -64,10 +78,27 @@ function createId(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function createDefaultBookHeroSection(): HomeBookHeroSection {
+  return {
+    id: "book-hero-main",
+    type: "bookHero",
+    enabled: true,
+    eyebrow: "Featured project",
+    title: "Open the work like a book.",
+    description:
+      "A responsive cover-to-spread hero that can stage text, recovered images, and video from a featured work on the homepage.",
+    ctaLabel: "Open book",
+    secondaryCtaLabel: "View project",
+    featuredPostSourceId: null,
+    fallbackFeaturedSlug: "post-2735",
+  };
+}
+
 export function createDefaultHomePageDocument(): HomePageDocument {
   return {
     version: 1,
     sections: [
+      createDefaultBookHeroSection(),
       {
         id: "hero-main",
         type: "hero",
@@ -133,6 +164,13 @@ export function createDefaultHomePageDocument(): HomePageDocument {
 }
 
 export function createHomeSection(type: HomeSection["type"]): HomeSection {
+  if (type === "bookHero") {
+    return {
+      ...createDefaultBookHeroSection(),
+      id: createId("book-hero"),
+    };
+  }
+
   if (type === "hero") {
     return {
       id: createId("hero"),
@@ -212,6 +250,25 @@ export function normalizeHomePageDocument(value: unknown): HomePageDocument {
     }
 
     const type = (section as { type: HomeSection["type"] }).type;
+
+    if (type === "bookHero") {
+      const item = section as Partial<HomeBookHeroSection>;
+      accumulator.push(
+        {
+          id: typeof item.id === "string" ? item.id : createId("book-hero"),
+          type,
+          enabled: item.enabled !== false,
+          eyebrow: typeof item.eyebrow === "string" ? item.eyebrow : "Featured project",
+          title: typeof item.title === "string" ? item.title : "Open the work like a book.",
+          description: typeof item.description === "string" ? item.description : "",
+          ctaLabel: typeof item.ctaLabel === "string" ? item.ctaLabel : "Open book",
+          secondaryCtaLabel: typeof item.secondaryCtaLabel === "string" ? item.secondaryCtaLabel : "View project",
+          featuredPostSourceId: typeof item.featuredPostSourceId === "number" ? item.featuredPostSourceId : null,
+          fallbackFeaturedSlug: typeof item.fallbackFeaturedSlug === "string" ? item.fallbackFeaturedSlug : "post-2735",
+        } satisfies HomeBookHeroSection,
+      );
+      return accumulator;
+    }
 
     if (type === "hero") {
       const item = section as Partial<HomeHeroSection>;
@@ -298,8 +355,11 @@ export function normalizeHomePageDocument(value: unknown): HomePageDocument {
     return accumulator;
   }, []);
 
+  const normalizedSections = sections.length > 0 ? sections : fallback.sections;
+  const hasBookHero = normalizedSections.some((section) => section.type === "bookHero");
+
   return {
     version: 1,
-    sections: sections.length > 0 ? sections : fallback.sections,
+    sections: hasBookHero ? normalizedSections : [createDefaultBookHeroSection(), ...normalizedSections],
   };
 }
