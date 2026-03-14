@@ -2,6 +2,53 @@ import { getRecoveredMediaBlock } from "@/lib/media-inference";
 import { getRecoverySnapshot } from "@/lib/wordpress-data";
 import type { WorkspaceEntry } from "@/lib/server/workspace-store";
 
+function getYoutubeEmbed(url: string) {
+  try {
+    const parsed = new URL(url);
+
+    if (parsed.hostname.includes("youtu.be")) {
+      const id = parsed.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    }
+
+    if (parsed.hostname.includes("youtube.com")) {
+      const id = parsed.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    }
+  } catch {
+    return url;
+  }
+
+  return url;
+}
+
+function getVimeoEmbed(url: string) {
+  try {
+    const parsed = new URL(url);
+
+    if (parsed.hostname.includes("vimeo.com")) {
+      const id = parsed.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://player.vimeo.com/video/${id}` : url;
+    }
+  } catch {
+    return url;
+  }
+
+  return url;
+}
+
+function getEmbedSource(url: string) {
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    return getYoutubeEmbed(url);
+  }
+
+  if (url.includes("vimeo.com")) {
+    return getVimeoEmbed(url);
+  }
+
+  return url;
+}
+
 export function EntryCardVisual({ entry }: { entry: WorkspaceEntry }) {
   const snapshot = getRecoverySnapshot();
   const attachments = snapshot.attachments.filter((attachment) => entry.linkedAttachmentIds.includes(attachment.id));
@@ -20,6 +67,22 @@ export function EntryCardVisual({ entry }: { entry: WorkspaceEntry }) {
     return (
       <div className="aspect-[16/10] overflow-hidden bg-black">
         <video src={media.url} muted playsInline className="h-full w-full object-cover" />
+      </div>
+    );
+  }
+
+  if (media?.url && (media.mediaType === "embed" || media.mediaType === "video")) {
+    return (
+      <div className="aspect-[16/10] overflow-hidden bg-black">
+        <iframe
+          src={getEmbedSource(media.url)}
+          title={media.title || entry.title}
+          className="h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
       </div>
     );
   }
