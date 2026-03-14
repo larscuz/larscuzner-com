@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS cms_workspace_entries (
   term_labels JSON NOT NULL,
   linked_attachment_ids JSON NOT NULL,
   notes LONGTEXT NOT NULL,
+  editor_document JSON NULL,
   updated_at DATETIME NOT NULL
 );

@@ -44,3 +44,48 @@ a {
 ::selection {
   background: rgba(15, 107, 97, 0.2);
 }
+
+.cms-richtext h1,
+.cms-richtext h2,
+.cms-richtext h3,
+.cms-richtext h4 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 1rem;
+}
+
+.cms-richtext h1 {
+  font-size: clamp(2.6rem, 8vw, 5.8rem);
+}
+
+.cms-richtext h2 {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.cms-richtext h3 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.cms-richtext p,
+.cms-richtext ul,
+.cms-richtext ol,
+.cms-richtext blockquote {
+  margin: 0 0 1.1rem;
+}
+
+.cms-richtext ul,
+.cms-richtext ol {
+  padding-left: 1.2rem;
+}
+
+.cms-richtext a {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.cms-richtext blockquote {
+  border-left: 1px solid currentColor;
+  margin-left: 0;
+  padding-left: 1rem;
+}

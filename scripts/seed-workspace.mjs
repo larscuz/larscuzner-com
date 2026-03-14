@@ -7,6 +7,21 @@ const workspacePath = path.join(projectRoot, "src/data/workspace/editorial-works
 
 const recovery = JSON.parse(fs.readFileSync(recoveryPath, "utf8"));
 
+function createEditorDocumentFromBody(body) {
+  return {
+    version: 1,
+    theme: "terminal",
+    blocks: [
+      {
+        id: `text-seed-${Math.random().toString(36).slice(2, 8)}`,
+        type: "text",
+        html: body && body.trim() ? body : "<p>This entry is ready for a fresh layout.</p>",
+        width: "wide",
+      },
+    ],
+  };
+}
+
 const entries = [...recovery.allPages, ...recovery.allPosts]
   .map((record) => ({
     id: `${record.id}:${record.status}:${record.slug || "untitled"}`,
@@ -22,6 +37,7 @@ const entries = [...recovery.allPages, ...recovery.allPosts]
     termLabels: record.terms.map((term) => `${term.taxonomy}: ${term.name}`),
     linkedAttachmentIds: record.linkedAttachmentIds,
     notes: "",
+    editorDocument: createEditorDocumentFromBody(record.content),
     updatedAt: new Date().toISOString(),
   }))
   .sort((a, b) => a.title.localeCompare(b.title));

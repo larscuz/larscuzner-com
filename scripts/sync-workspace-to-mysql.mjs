@@ -41,6 +41,7 @@ async function main() {
         term_labels JSON NOT NULL,
         linked_attachment_ids JSON NOT NULL,
         notes LONGTEXT NOT NULL,
+        editor_document JSON NULL,
         updated_at DATETIME NOT NULL
       )
     `);
@@ -48,8 +49,8 @@ async function main() {
     for (const entry of workspace.entries) {
       await connection.execute(
         `REPLACE INTO cms_workspace_entries
-        (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           entry.id,
           entry.sourceId,
@@ -64,6 +65,7 @@ async function main() {
           JSON.stringify(entry.termLabels),
           JSON.stringify(entry.linkedAttachmentIds),
           entry.notes,
+          JSON.stringify(entry.editorDocument || null),
           String(entry.updatedAt).slice(0, 19).replace("T", " "),
         ],
       );

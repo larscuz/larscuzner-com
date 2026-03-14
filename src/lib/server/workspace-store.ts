@@ -4,6 +4,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import mysql from "mysql2/promise";
 import { redirect } from "next/navigation";
+import {
+  type EditorDocument,
+  createEditorDocumentFromBody,
+  deriveExcerptFromDocument,
+  normalizeEditorDocument,
+  renderDocumentToLegacyHtml,
+} from "@/lib/editor-schema";
 
 export type WorkspaceEntry = {
   id: string;
@@ -20,6 +27,7 @@ export type WorkspaceEntry = {
   linkedAttachmentIds: number[];
   notes: string;
   updatedAt: string;
+  editorDocument: EditorDocument;
 };
 
 export type WorkspaceFile = {
@@ -28,8 +36,19 @@ export type WorkspaceFile = {
   entries: WorkspaceEntry[];
 };
 
+type RawWorkspaceEntry = Omit<WorkspaceEntry, "editorDocument"> & {
+  editorDocument?: unknown;
+};
+
 const workspacePath = path.join(process.cwd(), "src/data/workspace/editorial-workspace.json");
 const provider = process.env.CMS_STORE_PROVIDER === "mysql" ? "mysql" : "file";
+
+function normalizeWorkspaceEntry(entry: RawWorkspaceEntry): WorkspaceEntry {
+  return {
+    ...entry,
+    editorDocument: normalizeEditorDocument(entry.editorDocument, entry.body),
+  };
+}
 
 function getMysqlConfig() {
   const host = process.env.CMS_MYSQL_HOST;
@@ -52,7 +71,12 @@ function getMysqlConfig() {
 
 async function readFileWorkspace(): Promise<WorkspaceFile> {
   const raw = await fs.readFile(workspacePath, "utf8");
-  return JSON.parse(raw) as WorkspaceFile;
+  const workspace = JSON.parse(raw) as { generatedAt: string | null; sourceSnapshotGeneratedAt: string | null; entries: RawWorkspaceEntry[] };
+
+  return {
+    ...workspace,
+    entries: workspace.entries.map(normalizeWorkspaceEntry),
+  };
 }
 
 async function writeFileWorkspace(workspace: WorkspaceFile) {
@@ -75,6 +99,7 @@ async function ensureMysqlSchema(connection: mysql.Connection) {
       term_labels JSON NOT NULL,
       linked_attachment_ids JSON NOT NULL,
       notes LONGTEXT NOT NULL,
+      editor_document JSON NULL,
       updated_at DATETIME NOT NULL
     )
   `);
@@ -90,7 +115,7 @@ async function readMysqlWorkspace(): Promise<WorkspaceFile> {
   try {
     await ensureMysqlSchema(connection);
     const [rows] = await connection.query<mysql.RowDataPacket[]>(
-      `SELECT id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, updated_at
+      `SELECT id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at
        FROM cms_workspace_entries
        ORDER BY title ASC`,
     );
@@ -98,22 +123,25 @@ async function readMysqlWorkspace(): Promise<WorkspaceFile> {
     return {
       generatedAt: new Date().toISOString(),
       sourceSnapshotGeneratedAt: null,
-      entries: rows.map((row) => ({
-        id: String(row.id),
-        sourceId: Number(row.source_id),
-        kind: row.kind as "page" | "post",
-        title: String(row.title),
-        slug: String(row.slug),
-        originalStatus: String(row.original_status),
-        workflowStatus: row.workflow_status as WorkspaceEntry["workflowStatus"],
-        excerpt: String(row.excerpt),
-        body: String(row.body),
-        publicUrl: String(row.public_url),
-        termLabels: JSON.parse(String(row.term_labels)),
-        linkedAttachmentIds: JSON.parse(String(row.linked_attachment_ids)),
-        notes: String(row.notes),
-        updatedAt: new Date(row.updated_at).toISOString(),
-      })),
+      entries: rows.map((row) =>
+        normalizeWorkspaceEntry({
+          id: String(row.id),
+          sourceId: Number(row.source_id),
+          kind: row.kind as "page" | "post",
+          title: String(row.title),
+          slug: String(row.slug),
+          originalStatus: String(row.original_status),
+          workflowStatus: row.workflow_status as WorkspaceEntry["workflowStatus"],
+          excerpt: String(row.excerpt),
+          body: String(row.body),
+          publicUrl: String(row.public_url),
+          termLabels: JSON.parse(String(row.term_labels)),
+          linkedAttachmentIds: JSON.parse(String(row.linked_attachment_ids)),
+          notes: String(row.notes),
+          editorDocument: row.editor_document ? JSON.parse(String(row.editor_document)) : createEditorDocumentFromBody(String(row.body)),
+          updatedAt: new Date(row.updated_at).toISOString(),
+        }),
+      ),
     };
   } finally {
     await connection.end();
@@ -127,8 +155,8 @@ async function writeMysqlEntry(entry: WorkspaceEntry) {
     await ensureMysqlSchema(connection);
     await connection.execute(
       `REPLACE INTO cms_workspace_entries
-      (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         entry.id,
         entry.sourceId,
@@ -143,6 +171,7 @@ async function writeMysqlEntry(entry: WorkspaceEntry) {
         JSON.stringify(entry.termLabels),
         JSON.stringify(entry.linkedAttachmentIds),
         entry.notes,
+        JSON.stringify(entry.editorDocument),
         entry.updatedAt.slice(0, 19).replace("T", " "),
       ],
     );
@@ -164,6 +193,15 @@ export async function getWorkspaceEntry(id: string) {
   return workspace.entries.find((entry) => entry.id === id) ?? null;
 }
 
+export async function findWorkspaceEntryBySlug(kind: "page" | "post", slug: string) {
+  const workspace = await readWorkspace();
+  return (
+    workspace.entries.find(
+      (entry) => entry.kind === kind && entry.slug === slug && entry.workflowStatus === "published",
+    ) ?? null
+  );
+}
+
 export async function updateWorkspaceEntry(formData: FormData) {
   const id = String(formData.get("id") || "");
   const workspace = await readWorkspace();
@@ -176,10 +214,16 @@ export async function updateWorkspaceEntry(formData: FormData) {
   entry.title = String(formData.get("title") || "").trim();
   entry.slug = String(formData.get("slug") || "").trim();
   entry.workflowStatus = String(formData.get("workflowStatus") || "draft") as WorkspaceEntry["workflowStatus"];
-  entry.excerpt = String(formData.get("excerpt") || "");
-  entry.body = String(formData.get("body") || "");
   entry.notes = String(formData.get("notes") || "");
   entry.updatedAt = new Date().toISOString();
+
+  const editorDocumentRaw = String(formData.get("editorDocument") || "");
+  entry.editorDocument = normalizeEditorDocument(
+    editorDocumentRaw ? JSON.parse(editorDocumentRaw) : entry.editorDocument,
+    entry.body,
+  );
+  entry.body = renderDocumentToLegacyHtml(entry.editorDocument);
+  entry.excerpt = deriveExcerptFromDocument(entry.editorDocument);
 
   if (provider === "mysql") {
     await writeMysqlEntry(entry);
