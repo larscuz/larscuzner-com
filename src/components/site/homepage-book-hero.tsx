@@ -322,7 +322,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Badge</p>
                   <div className="mt-4 rounded-[1.2rem] border border-white/8 bg-black/40 p-6">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/nominert.png" alt="Nominert" className="mx-auto h-auto w-full max-w-[180px] invert brightness-125 contrast-125" />
+                    <img src="/featured-badge.jpeg" alt="Featured badge" className="mx-auto h-auto w-full max-w-[180px] invert brightness-125 contrast-125" />
                   </div>
                 </div>
                 <div className="rounded-[1.6rem] border border-white/10 bg-[#050505] p-4">
