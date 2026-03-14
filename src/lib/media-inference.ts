@@ -34,10 +34,11 @@ function attachmentToMediaBlock(attachment: AttachmentRecord): EditorMediaBlock 
 }
 
 export function getRecoveredMediaBlock(document: EditorDocument, attachments: AttachmentRecord[]) {
-  const existingMedia = document.blocks.find((block) => block.type === "media");
+  const mediaBlocks = document.blocks.filter((block): block is EditorMediaBlock => block.type === "media");
+  const firstRealMedia = mediaBlocks.find((block) => block.url.trim());
 
-  if (existingMedia && existingMedia.type === "media") {
-    return existingMedia;
+  if (firstRealMedia) {
+    return firstRealMedia;
   }
 
   for (const attachment of attachments) {
@@ -46,6 +47,12 @@ export function getRecoveredMediaBlock(document: EditorDocument, attachments: At
     if (block) {
       return block;
     }
+  }
+
+  const firstPlaceholderMedia = mediaBlocks[0];
+
+  if (firstPlaceholderMedia) {
+    return firstPlaceholderMedia;
   }
 
   return null;
