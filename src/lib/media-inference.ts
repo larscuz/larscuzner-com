@@ -109,6 +109,21 @@ function getLegacyHtmlMediaBlock(textBlocks: EditorTextBlock[]) {
     return createLegacyMediaBlock(/\.(mp4|webm|ogg)(\?.*)?$/i.test(href) || /youtube\.com|youtu\.be|vimeo\.com/i.test(href) ? "video" : "image", href, "Recovered linked media");
   }
 
+  const plainUrlMatch = decodeHtmlEntities(html).match(/https?:\/\/[^\s<"]+/i);
+  const plainUrl = plainUrlMatch?.[0] ?? "";
+  if (
+    plainUrl &&
+    (/\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i.test(plainUrl) ||
+      /\.(mp4|webm|ogg)(\?.*)?$/i.test(plainUrl) ||
+      /youtube\.com|youtu\.be|vimeo\.com/i.test(plainUrl))
+  ) {
+    return createLegacyMediaBlock(
+      /\.(mp4|webm|ogg)(\?.*)?$/i.test(plainUrl) || /youtube\.com|youtu\.be|vimeo\.com/i.test(plainUrl) ? "video" : "image",
+      plainUrl,
+      "Recovered embedded media",
+    );
+  }
+
   return null;
 }
 
@@ -209,7 +224,7 @@ export function addRecoveredOrPlaceholderMedia(
     return document;
   }
 
-  const recovered = getRecoveredMediaBlock(document, attachments);
+  const recovered = getRecoveredMediaBlock(document, attachments, { includeLegacyHtml: true });
 
   if (recovered) {
     return {
