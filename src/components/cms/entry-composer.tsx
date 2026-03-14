@@ -9,8 +9,10 @@ import {
   createTextBlock,
 } from "@/lib/editor-schema";
 import { addRecoveredOrPlaceholderMedia } from "@/lib/media-inference";
+import type { MediaLibraryItem } from "@/lib/media-library";
 import type { AttachmentRecord } from "@/lib/wordpress-data";
 import { SiteBlockRenderer } from "@/components/cms/site-block-renderer";
+import { MediaLibraryPicker } from "@/components/admin/media-library-picker";
 
 type WorkspaceStatus = "published" | "draft" | "review";
 
@@ -35,6 +37,7 @@ type WorkspaceEntryShape = {
 type ComposerProps = {
   entry: WorkspaceEntryShape;
   attachments: AttachmentRecord[];
+  mediaLibraryItems: MediaLibraryItem[];
   saveAction: (formData: FormData) => void | Promise<void>;
 };
 
@@ -51,7 +54,7 @@ function reorderBlock<T>(items: T[], index: number, direction: -1 | 1) {
   return clone;
 }
 
-export function EntryComposer({ entry, attachments, saveAction }: ComposerProps) {
+export function EntryComposer({ entry, attachments, mediaLibraryItems, saveAction }: ComposerProps) {
   const [title, setTitle] = useState(entry.title);
   const [slug, setSlug] = useState(entry.slug);
   const [workflowStatus, setWorkflowStatus] = useState(entry.workflowStatus);
@@ -80,6 +83,19 @@ export function EntryComposer({ entry, attachments, saveAction }: ComposerProps)
       ...current,
       blocks: current.blocks.map((block) => (block.id === blockId && block.type === "media" ? { ...block, ...patch } : block)),
     }));
+  };
+
+  const selectMediaForBlock = (blockId: string, item: MediaLibraryItem) => {
+    const nextMediaType: EditorMediaBlock["mediaType"] =
+      item.mediaType === "video" ? "video" : item.mediaType === "image" ? "image" : "embed";
+
+    updateMediaBlock(blockId, {
+      mediaType: nextMediaType,
+      url: item.previewUrl,
+      title: item.label || item.filename,
+      alt: item.label || item.filename,
+      caption: `Selected from ${item.collection}.`,
+    });
   };
 
   const removeBlock = (blockId: string) => {
@@ -312,6 +328,8 @@ export function EntryComposer({ entry, attachments, saveAction }: ComposerProps)
                             sites send anti-embed headers, so they may show only the external link.
                           </p>
                         </div>
+
+                        <MediaLibraryPicker items={mediaLibraryItems} onSelect={(item) => selectMediaForBlock(block.id, item)} />
                       </div>
                     </div>
                   )}

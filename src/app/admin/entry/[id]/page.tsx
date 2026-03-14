@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getMediaLibrary } from "@/lib/media-library";
 import { EntryComposer } from "@/components/cms/entry-composer";
 import { getRecoverySnapshot } from "@/lib/wordpress-data";
 import { logoutAction, requireAdmin } from "@/lib/server/auth";
@@ -27,6 +28,7 @@ export default async function AdminEntryPage({
   }
 
   const recovery = getRecoverySnapshot();
+  const mediaLibrary = getMediaLibrary();
   const attachments = recovery.attachments.filter((attachment) => entry.linkedAttachmentIds.includes(attachment.id));
 
   return (
@@ -88,7 +90,12 @@ export default async function AdminEntryPage({
         {query.saved === "1" ? <p className="mt-5 text-sm text-[color:var(--accent)]">Composition saved.</p> : null}
       </section>
 
-      <EntryComposer entry={entry} attachments={attachments} saveAction={updateWorkspaceEntry} />
+      <EntryComposer
+        entry={entry}
+        attachments={attachments}
+        mediaLibraryItems={mediaLibrary.items}
+        saveAction={updateWorkspaceEntry}
+      />
     </main>
   );
 }
