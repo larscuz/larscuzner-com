@@ -18,6 +18,7 @@ export type HomeBookHeroSection = {
   secondaryCtaLabel: string;
   featuredPostSourceId: number | null;
   fallbackFeaturedSlug: string;
+  featuredVideoUrl: string;
 };
 
 export type HomeFeaturedWorkSection = {
@@ -91,6 +92,7 @@ function createDefaultBookHeroSection(): HomeBookHeroSection {
     secondaryCtaLabel: "View project",
     featuredPostSourceId: null,
     fallbackFeaturedSlug: "post-2735",
+    featuredVideoUrl: "https://pub-b53c56f5af3e471cb8b3610afdc49a36.r2.dev/Intelligenspartiet2027.mp4",
   };
 }
 
@@ -232,6 +234,10 @@ export function normalizeHomePageDocument(value: unknown): HomePageDocument {
           secondaryCtaLabel: typeof item.secondaryCtaLabel === "string" ? item.secondaryCtaLabel : "View project",
           featuredPostSourceId: typeof item.featuredPostSourceId === "number" ? item.featuredPostSourceId : null,
           fallbackFeaturedSlug: typeof item.fallbackFeaturedSlug === "string" ? item.fallbackFeaturedSlug : "post-2735",
+          featuredVideoUrl:
+            typeof item.featuredVideoUrl === "string"
+              ? item.featuredVideoUrl
+              : "https://pub-b53c56f5af3e471cb8b3610afdc49a36.r2.dev/Intelligenspartiet2027.mp4",
         } satisfies HomeBookHeroSection,
       );
       return accumulator;

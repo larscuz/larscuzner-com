@@ -151,12 +151,30 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
     posts[0] ??
     null;
 
+  const overrideVideoMedia: EditorMediaBlock | null = section.featuredVideoUrl.trim()
+    ? {
+        id: "featured-motion-override",
+        type: "media",
+        mediaType: "video",
+        url: section.featuredVideoUrl.trim(),
+        title: entry?.title || section.title,
+        caption: "Featured motion override.",
+        alt: entry?.title || section.title,
+        aspect: "landscape",
+        emphasis: "feature",
+      }
+    : null;
   const fallbackText = "Open the project to read the full work.";
   const projectText = entry ? getProjectText(entry) : fallbackText;
-  const projectMedia = entry ? getProjectMedia(entry) : { primaryMedia: null, imageMedia: null, videoMedia: null };
+  const recoveredMedia = entry ? getProjectMedia(entry) : { primaryMedia: null, imageMedia: null, videoMedia: null };
+  const projectMedia = {
+    ...recoveredMedia,
+    videoMedia: overrideVideoMedia ?? recoveredMedia.videoMedia,
+  };
   const initialMode: HeroMode = projectMedia.videoMedia ? "video" : projectMedia.imageMedia ? "image" : "notes";
   const [activeMode, setActiveMode] = useState<HeroMode>(initialMode);
   const projectHref = entry ? `/works/${encodeURIComponent(entry.slug)}` : "/works";
+  const displayTitle = entry?.title || "Featured motion";
   const cleanExcerpt = projectText.length > 240 ? `${projectText.slice(0, 237).trimEnd()}...` : projectText;
   const activeLabel = activeMode === "video" ? "Motion" : activeMode === "image" ? "Still" : "Notes";
   const notesText = useMemo(() => {
@@ -174,7 +192,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
     return text.length > 420 ? `${text.slice(0, 417).trimEnd()}...` : text || cleanExcerpt;
   }, [cleanExcerpt, entry]);
 
-  if (!entry) {
+  if (!entry && !projectMedia.videoMedia) {
     return (
       <section className="grid gap-8 border-b border-white/10 py-10 md:py-16">
         <div>
@@ -242,7 +260,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
           <div className="grid gap-4 text-sm leading-7 text-white/56 sm:grid-cols-2">
             <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
               <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Selected work</p>
-              <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">{entry.title}</p>
+              <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
               <p className="mt-3">{cleanExcerpt}</p>
             </div>
             <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
@@ -267,7 +285,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                     <div className="absolute inset-0 bg-[linear-gradient(transparent_0,transparent_96%,rgba(23,18,11,0.08)_96%,rgba(23,18,11,0.08)_100%)] bg-[length:100%_28px]" />
                     <div className="relative">
                       <p className="text-[0.62rem] uppercase tracking-[0.34em] text-[#17120b]/56">Editorial notes</p>
-                      <p className="mt-6 max-w-xl text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.05em]">{entry.title}</p>
+                      <p className="mt-6 max-w-xl text-[clamp(2rem,4vw,4rem)] font-semibold leading-[0.94] tracking-[-0.05em]">{displayTitle}</p>
                       <p className="mt-6 max-w-2xl text-sm leading-8 text-[#17120b]/76">{notesText}</p>
                     </div>
                   </div>
@@ -276,7 +294,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                     <div className="absolute -left-4 top-8 z-10 hidden h-[72%] w-[40%] rotate-[-5deg] rounded-[1.6rem] border border-white/10 bg-black/30 backdrop-blur-sm md:block" />
                     <div className="absolute -right-4 bottom-6 z-10 hidden h-[45%] w-[28%] rotate-[7deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] md:block" />
                     <div className="relative z-20">
-                      <VideoSurface media={projectMedia.imageMedia ?? projectMedia.primaryMedia} title={entry.title} />
+                      <VideoSurface media={projectMedia.imageMedia ?? projectMedia.primaryMedia} title={displayTitle} />
                     </div>
                   </div>
                 ) : (
@@ -285,19 +303,26 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                     <div className="absolute -right-2 bottom-8 z-10 h-[34%] w-[24%] rotate-[8deg] overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/60">
                       {projectMedia.imageMedia?.url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={projectMedia.imageMedia.url} alt={projectMedia.imageMedia.alt || entry.title} className="h-full w-full object-cover opacity-80" />
+                        <img src={projectMedia.imageMedia.url} alt={projectMedia.imageMedia.alt || displayTitle} className="h-full w-full object-cover opacity-80" />
                       ) : (
                         <div className="flex h-full items-end p-4 text-[0.62rem] uppercase tracking-[0.28em] text-white/38">Still layer</div>
                       )}
                     </div>
                     <div className="relative z-20">
-                      <VideoSurface media={projectMedia.videoMedia} title={entry.title} />
+                      <VideoSurface media={projectMedia.videoMedia} title={displayTitle} />
                     </div>
                   </div>
                 )}
               </div>
 
               <div className="grid gap-4 self-start">
+                <div className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-4">
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Badge</p>
+                  <div className="mt-4 rounded-[1.2rem] border border-white/8 bg-black/40 p-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/nominert.png" alt="Nominert" className="mx-auto h-auto w-full max-w-[180px] invert brightness-125 contrast-125" />
+                  </div>
+                </div>
                 <div className="rounded-[1.6rem] border border-white/10 bg-[#050505] p-4">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Now showing</p>
                   <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
@@ -307,14 +332,22 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Route</p>
                   <p className="mt-3 break-all text-sm leading-7 text-white/64">{projectHref}</p>
                 </div>
-                <Link
-                  href={projectHref}
-                  className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4 transition hover:bg-white/[0.06]"
-                >
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Project page</p>
-                  <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{entry.title}</p>
-                  <p className="mt-3 text-sm leading-7 text-white/54">Open the full work and continue through the media sequence.</p>
-                </Link>
+                {entry ? (
+                  <Link
+                    href={projectHref}
+                    className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4 transition hover:bg-white/[0.06]"
+                  >
+                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Project page</p>
+                    <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
+                    <p className="mt-3 text-sm leading-7 text-white/54">Open the full work and continue through the media sequence.</p>
+                  </Link>
+                ) : (
+                  <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Featured motion</p>
+                    <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
+                    <p className="mt-3 text-sm leading-7 text-white/54">This hero is currently being driven by a direct video source override.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
