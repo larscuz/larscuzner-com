@@ -12,6 +12,7 @@ import {
   renderDocumentToLegacyHtml,
 } from "@/lib/editor-schema";
 import { isAdminAuthenticated } from "@/lib/server/auth";
+import { isPostgresProvider, withPostgresClient } from "@/lib/server/postgres";
 
 export type WorkspaceEntry = {
   id: string;
@@ -42,7 +43,7 @@ type RawWorkspaceEntry = Omit<WorkspaceEntry, "editorDocument"> & {
 };
 
 const workspacePath = path.join(process.cwd(), "src/data/workspace/editorial-workspace.json");
-const provider = process.env.CMS_STORE_PROVIDER === "mysql" ? "mysql" : "file";
+const provider = process.env.CMS_STORE_PROVIDER === "mysql" ? "mysql" : isPostgresProvider() ? "postgres" : "file";
 
 function normalizeWorkspaceEntry(entry: RawWorkspaceEntry): WorkspaceEntry {
   return {
@@ -149,6 +150,102 @@ async function readMysqlWorkspace(): Promise<WorkspaceFile> {
   }
 }
 
+async function ensurePostgresSchema() {
+  await withPostgresClient(async (client) => {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS cms_workspace_entries (
+        id TEXT PRIMARY KEY,
+        source_id BIGINT NOT NULL,
+        kind TEXT NOT NULL,
+        title TEXT NOT NULL,
+        slug TEXT NOT NULL,
+        original_status TEXT NOT NULL,
+        workflow_status TEXT NOT NULL,
+        excerpt TEXT NOT NULL,
+        body TEXT NOT NULL,
+        public_url TEXT NOT NULL,
+        term_labels JSONB NOT NULL,
+        linked_attachment_ids JSONB NOT NULL,
+        notes TEXT NOT NULL,
+        editor_document JSONB NULL,
+        updated_at TIMESTAMPTZ NOT NULL
+      )
+    `);
+  });
+}
+
+async function readPostgresWorkspace(): Promise<WorkspaceFile> {
+  await ensurePostgresSchema();
+
+  return withPostgresClient(async (client) => {
+    let result = await client.query(
+      `SELECT id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at
+       FROM cms_workspace_entries
+       ORDER BY title ASC`,
+    );
+
+    if (result.rows.length === 0) {
+      const fileWorkspace = await readFileWorkspace();
+
+      for (const entry of fileWorkspace.entries) {
+        await client.query(
+          `INSERT INTO cms_workspace_entries
+          (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12::jsonb, $13, $14::jsonb, $15)
+          ON CONFLICT (id) DO NOTHING`,
+          [
+            entry.id,
+            entry.sourceId,
+            entry.kind,
+            entry.title,
+            entry.slug,
+            entry.originalStatus,
+            entry.workflowStatus,
+            entry.excerpt,
+            entry.body,
+            entry.publicUrl,
+            JSON.stringify(entry.termLabels),
+            JSON.stringify(entry.linkedAttachmentIds),
+            entry.notes,
+            JSON.stringify(entry.editorDocument),
+            entry.updatedAt,
+          ],
+        );
+      }
+
+      result = await client.query(
+        `SELECT id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at
+         FROM cms_workspace_entries
+         ORDER BY title ASC`,
+      );
+    }
+
+    return {
+      generatedAt: new Date().toISOString(),
+      sourceSnapshotGeneratedAt: null,
+      entries: result.rows.map((row) =>
+        normalizeWorkspaceEntry({
+          id: String(row.id),
+          sourceId: Number(row.source_id),
+          kind: row.kind as "page" | "post",
+          title: String(row.title),
+          slug: String(row.slug),
+          originalStatus: String(row.original_status),
+          workflowStatus: row.workflow_status as WorkspaceEntry["workflowStatus"],
+          excerpt: String(row.excerpt),
+          body: String(row.body),
+          publicUrl: String(row.public_url),
+          termLabels: Array.isArray(row.term_labels) ? row.term_labels : [],
+          linkedAttachmentIds: Array.isArray(row.linked_attachment_ids) ? row.linked_attachment_ids.map(Number) : [],
+          notes: String(row.notes),
+          editorDocument: row.editor_document ?? createEditorDocumentFromBody(String(row.body)),
+          updatedAt: new Date(row.updated_at).toISOString(),
+        }),
+      ),
+    };
+  });
+}
+
 async function writeMysqlEntry(entry: WorkspaceEntry) {
   const connection = await getMysqlConnection();
 
@@ -181,9 +278,55 @@ async function writeMysqlEntry(entry: WorkspaceEntry) {
   }
 }
 
+async function writePostgresEntry(entry: WorkspaceEntry) {
+  await ensurePostgresSchema();
+
+  await withPostgresClient(async (client) => {
+    await client.query(
+      `INSERT INTO cms_workspace_entries
+      (id, source_id, kind, title, slug, original_status, workflow_status, excerpt, body, public_url, term_labels, linked_attachment_ids, notes, editor_document, updated_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12::jsonb, $13, $14::jsonb, $15)
+      ON CONFLICT (id) DO UPDATE SET
+        source_id = EXCLUDED.source_id,
+        kind = EXCLUDED.kind,
+        title = EXCLUDED.title,
+        slug = EXCLUDED.slug,
+        original_status = EXCLUDED.original_status,
+        workflow_status = EXCLUDED.workflow_status,
+        excerpt = EXCLUDED.excerpt,
+        body = EXCLUDED.body,
+        public_url = EXCLUDED.public_url,
+        term_labels = EXCLUDED.term_labels,
+        linked_attachment_ids = EXCLUDED.linked_attachment_ids,
+        notes = EXCLUDED.notes,
+        editor_document = EXCLUDED.editor_document,
+        updated_at = EXCLUDED.updated_at`,
+      [
+        entry.id,
+        entry.sourceId,
+        entry.kind,
+        entry.title,
+        entry.slug,
+        entry.originalStatus,
+        entry.workflowStatus,
+        entry.excerpt,
+        entry.body,
+        entry.publicUrl,
+        JSON.stringify(entry.termLabels),
+        JSON.stringify(entry.linkedAttachmentIds),
+        entry.notes,
+        JSON.stringify(entry.editorDocument),
+        entry.updatedAt,
+      ],
+    );
+  });
+}
+
 async function persistWorkspaceEntry(workspace: WorkspaceFile, entry: WorkspaceEntry) {
   if (provider === "mysql") {
     await writeMysqlEntry(entry);
+  } else if (provider === "postgres") {
+    await writePostgresEntry(entry);
   } else {
     await writeFileWorkspace(workspace);
   }
@@ -202,6 +345,10 @@ function findWorkspaceEntryInFile(workspace: WorkspaceFile, id: string) {
 export async function readWorkspace(): Promise<WorkspaceFile> {
   if (provider === "mysql") {
     return readMysqlWorkspace();
+  }
+
+  if (provider === "postgres") {
+    return readPostgresWorkspace();
   }
 
   return readFileWorkspace();

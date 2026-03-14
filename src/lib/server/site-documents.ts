@@ -8,6 +8,7 @@ import {
   normalizeHomePageDocument,
   type HomePageDocument,
 } from "@/lib/site-page-schema";
+import { isPostgresProvider, withPostgresClient } from "@/lib/server/postgres";
 
 const documentsPath = path.join(process.cwd(), "src/data/workspace/site-documents.json");
 
@@ -24,7 +25,43 @@ async function writeDocumentsFile(file: SiteDocumentsFile) {
   await fs.writeFile(documentsPath, `${JSON.stringify(file, null, 2)}\n`);
 }
 
+async function ensureSiteDocumentsSchema() {
+  await withPostgresClient(async (client) => {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS cms_site_documents (
+        id TEXT PRIMARY KEY,
+        document JSONB NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+  });
+}
+
 export async function readHomepageDocument(): Promise<HomePageDocument> {
+  if (isPostgresProvider()) {
+    await ensureSiteDocumentsSchema();
+
+    return withPostgresClient(async (client) => {
+      const result = await client.query(`SELECT document FROM cms_site_documents WHERE id = $1 LIMIT 1`, ["homepage"]);
+
+      if (result.rows[0]) {
+        return normalizeHomePageDocument(result.rows[0].document);
+      }
+
+      const file = await readDocumentsFile().catch(() => ({} as SiteDocumentsFile));
+      const homepage = normalizeHomePageDocument(file.homepage);
+
+      await client.query(
+        `INSERT INTO cms_site_documents (id, document, updated_at)
+         VALUES ($1, $2::jsonb, NOW())
+         ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, updated_at = NOW()`,
+        ["homepage", JSON.stringify(homepage)],
+      );
+
+      return homepage;
+    });
+  }
+
   try {
     const file = await readDocumentsFile();
     return normalizeHomePageDocument(file.homepage);
@@ -38,12 +75,25 @@ export async function saveHomepageDocument(payload: { homepage: HomePageDocument
     throw new Error("Unauthorized");
   }
 
-  const file = await readDocumentsFile().catch(() => ({}));
   const homepage = normalizeHomePageDocument(payload.homepage);
-  await writeDocumentsFile({
-    ...file,
-    homepage,
-  });
+
+  if (isPostgresProvider()) {
+    await ensureSiteDocumentsSchema();
+    await withPostgresClient(async (client) => {
+      await client.query(
+        `INSERT INTO cms_site_documents (id, document, updated_at)
+         VALUES ($1, $2::jsonb, NOW())
+         ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, updated_at = NOW()`,
+        ["homepage", JSON.stringify(homepage)],
+      );
+    });
+  } else {
+    const file = await readDocumentsFile().catch(() => ({} as SiteDocumentsFile));
+    await writeDocumentsFile({
+      ...file,
+      homepage,
+    });
+  }
 
   return {
     ok: true,
