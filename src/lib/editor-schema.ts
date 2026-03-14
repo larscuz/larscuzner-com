@@ -44,7 +44,7 @@ export function createTextBlock(html = "<p>Start writing here.</p>"): EditorText
   };
 }
 
-export function createMediaBlock(): EditorMediaBlock {
+export function createMediaBlock(overrides?: Partial<EditorMediaBlock>): EditorMediaBlock {
   return {
     id: createBlockId("media"),
     type: "media",
@@ -55,6 +55,7 @@ export function createMediaBlock(): EditorMediaBlock {
     alt: "",
     aspect: "landscape",
     emphasis: "standard",
+    ...overrides,
   };
 }
 

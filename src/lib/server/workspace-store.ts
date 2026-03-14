@@ -6,6 +6,7 @@ import mysql from "mysql2/promise";
 import { redirect } from "next/navigation";
 import {
   type EditorDocument,
+  createMediaBlock,
   createEditorDocumentFromBody,
   deriveExcerptFromDocument,
   normalizeEditorDocument,
@@ -447,6 +448,23 @@ export async function createWorkspaceEntry(kind: "page" | "post") {
   const baseTitle = kind === "page" ? "New Page" : "New Post";
   const baseSlug = slugify(`${kind}-${nextSourceId}`);
   const createdAt = new Date().toISOString();
+  const starterText = "<p>Start writing here.</p>";
+  const editorDocument =
+    kind === "post"
+      ? {
+          version: 1 as const,
+          theme: "terminal" as const,
+          blocks: [
+            createMediaBlock({
+              title: "Featured media placeholder",
+              caption: "Assign the first image or video for this post here.",
+              alt: "Featured media placeholder",
+              emphasis: "feature",
+            }),
+            ...createEditorDocumentFromBody(starterText).blocks,
+          ],
+        }
+      : createEditorDocumentFromBody(starterText);
 
   const entry: WorkspaceEntry = {
     id: `${nextSourceId}:draft:${baseSlug}`,
@@ -457,13 +475,13 @@ export async function createWorkspaceEntry(kind: "page" | "post") {
     originalStatus: "draft",
     workflowStatus: "draft",
     excerpt: "",
-    body: "<p>Start writing here.</p>",
+    body: starterText,
     publicUrl: `/site/${kind}/${baseSlug}`,
     termLabels: [],
     linkedAttachmentIds: [],
     notes: "",
     updatedAt: createdAt,
-    editorDocument: createEditorDocumentFromBody("<p>Start writing here.</p>"),
+    editorDocument,
   };
 
   workspace.entries.push(entry);
