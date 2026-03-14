@@ -442,7 +442,7 @@ export function HomepageEditor({
 
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => addSection("bookHero")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
-                  Add book hero
+                  Add video hero
                 </button>
                 <button type="button" onClick={() => addSection("hero")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
                   Add hero
@@ -562,7 +562,7 @@ export function HomepageEditor({
                         />
                       </label>
                       <label className="grid gap-2">
-                        <span className="text-sm font-medium text-white">Primary CTA label</span>
+                        <span className="text-sm font-medium text-white">Play button label</span>
                         <input
                           value={selectedSection.ctaLabel}
                           onChange={(event) => updateSection(selectedSection.id, { ctaLabel: event.target.value })}
@@ -570,7 +570,7 @@ export function HomepageEditor({
                         />
                       </label>
                       <label className="grid gap-2">
-                        <span className="text-sm font-medium text-white">Secondary CTA label</span>
+                        <span className="text-sm font-medium text-white">Project button label</span>
                         <input
                           value={selectedSection.secondaryCtaLabel}
                           onChange={(event) => updateSection(selectedSection.id, { secondaryCtaLabel: event.target.value })}
