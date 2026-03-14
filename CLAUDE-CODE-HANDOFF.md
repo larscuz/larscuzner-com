@@ -7,6 +7,7 @@ This repository is the new `larscuzner.com` site and backend. It started as a Wo
 - a separate backend/admin at `/admin`
 - a public front end at `/`, `/works`, `/works/[slug]`, `/info`, and `/info/[slug]`
 - a composer-driven content model stored in the CMS workspace
+- a first page-builder document for the homepage
 - imported published and unpublished WordPress content
 
 The old downloaded WordPress files are source material only and live outside this repo.
@@ -30,6 +31,7 @@ Important findings already confirmed:
 ### Public site
 
 - Homepage: `/Users/larscuzner/Desktop/next-frontend/src/app/page.tsx`
+- Homepage front-end editor: `/Users/larscuzner/Desktop/next-frontend/src/components/site/homepage-editor.tsx`
 - Works index: `/Users/larscuzner/Desktop/next-frontend/src/app/works/page.tsx`
 - Works detail: `/Users/larscuzner/Desktop/next-frontend/src/app/works/[slug]/page.tsx`
 - Info index: `/Users/larscuzner/Desktop/next-frontend/src/app/info/page.tsx`
@@ -47,8 +49,10 @@ Important findings already confirmed:
 ### Editor system
 
 - Block schema: `/Users/larscuzner/Desktop/next-frontend/src/lib/editor-schema.ts`
+- Homepage/page schema: `/Users/larscuzner/Desktop/next-frontend/src/lib/site-page-schema.ts`
 - Composer UI: `/Users/larscuzner/Desktop/next-frontend/src/components/cms/entry-composer.tsx`
 - Block renderer: `/Users/larscuzner/Desktop/next-frontend/src/components/cms/site-block-renderer.tsx`
+- Front-end entry editor: `/Users/larscuzner/Desktop/next-frontend/src/components/site/frontend-entry-editor.tsx`
 
 Supported block types:
 
@@ -70,6 +74,7 @@ Notes:
 ### Persistence
 
 - Workspace store: `/Users/larscuzner/Desktop/next-frontend/src/lib/server/workspace-store.ts`
+- Site document store: `/Users/larscuzner/Desktop/next-frontend/src/lib/server/site-documents.ts`
 - Public site helpers: `/Users/larscuzner/Desktop/next-frontend/src/lib/server/public-site.ts`
 - Seed script: `/Users/larscuzner/Desktop/next-frontend/scripts/seed-workspace.mjs`
 - MySQL sync script: `/Users/larscuzner/Desktop/next-frontend/scripts/sync-workspace-to-mysql.mjs`
@@ -92,22 +97,74 @@ Important deployment warning:
 2. Backend remains under `/admin`.
 3. Published content is browseable as site content.
 4. Public entries render through the new block composer document instead of raw WordPress HTML alone.
-5. README was rewritten to describe the real project.
+5. Logged-in front-end editing now exists for entry pages.
+6. A first homepage page-builder document now exists, with front-end section selection, section editing, reorder, add/remove, and responsive preview modes.
+
+## Current front-end editing status
+
+### Entry pages
+
+Logged-in editing works on:
+
+- `/works/[slug]`
+- `/info/[slug]`
+- `/site/[kind]/[slug]`
+
+Capabilities:
+
+- click block to select
+- inline text editing
+- media editing
+- media library picker
+- add/remove/reorder blocks
+- save without leaving the page
+
+### Homepage
+
+The homepage now has its own editable document in:
+
+- `/Users/larscuzner/Desktop/next-frontend/src/data/workspace/site-documents.json`
+
+Editable homepage section types currently:
+
+- `hero`
+- `featuredWork`
+- `entryPoints`
+- `pagesSpotlight`
+- `recentWorks`
+
+Capabilities:
+
+- click section to select
+- edit section text in a side panel
+- reorder sections
+- enable/disable sections
+- add/remove sections
+- responsive viewport switcher: desktop/tablet/mobile
+
+Current limitation:
+
+- homepage sections are editable as structured sections, but not every nested visual sub-element is independently clickable yet in the Wix sense
+- works/info index pages are still rendered from React code, not page documents
+- global header/footer are not yet page-builder documents
 
 ## Recommended next tasks
 
 1. Replace file-based CMS persistence with a durable hosted database.
-2. Add asset upload workflow instead of URL-only media boxes.
-3. Add richer text controls in the composer toolbar.
-4. Add homepage curation controls so featured works/pages are editorial, not hardcoded by helper logic.
-5. Add SEO fields per entry:
+2. Convert `/works` and `/info` index pages into page-builder documents like the homepage.
+3. Convert global header/footer into editable global documents.
+4. Add nested element selection so titles, labels, buttons, and sub-copy within homepage sections can be clicked directly instead of only selecting the parent section.
+5. Add asset upload workflow instead of URL-only media boxes.
+6. Add richer text controls in the composer toolbar.
+7. Add homepage curation controls so featured works/pages are editorial, not hardcoded by helper logic.
+8. Add SEO fields per entry:
    - meta title
    - meta description
    - OG image
    - canonical URL
-6. Add redirect management for old WordPress slugs and alternate legacy routes.
-7. Decide whether to migrate legacy `/blog` into the public site or keep it archived.
-8. Add preview/draft sharing behavior.
+9. Add redirect management for old WordPress slugs and alternate legacy routes.
+10. Decide whether to migrate legacy `/blog` into the public site or keep it archived.
+11. Add preview/draft sharing behavior.
 
 ## Verification state
 
