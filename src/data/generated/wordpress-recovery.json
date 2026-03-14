@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-14T07:58:11.334Z",
+  "generatedAt": "2026-03-14T12:18:31.704Z",
   "sources": {
     "sqlPath": "/Users/larscuzner/Desktop/larscuzner-com/larscuzner_com.sql",
     "xmlPath": "/Users/larscuzner/Desktop/larscuzner-com/arscuzner.WordPress.2026-03-14.xml"
@@ -339,7 +339,9 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2461
+      ]
     },
     {
       "id": 2411,
@@ -364,7 +366,9 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2413
+      ]
     },
     {
       "id": 2371,
@@ -407,7 +411,16 @@
           "name": "Works"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1931,
+        1934,
+        1929,
+        1927,
+        1935,
+        1932,
+        1930,
+        2120
+      ]
     },
     {
       "id": 1624,
@@ -426,7 +439,9 @@
           "name": "Works"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1956
+      ]
     },
     {
       "id": 1573,
@@ -467,7 +482,8 @@
         }
       ],
       "linkedAttachmentIds": [
-        1684
+        1684,
+        1724
       ]
     },
     {
@@ -514,7 +530,18 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1173,
+        1211,
+        1212,
+        1214,
+        1220,
+        1224,
+        1359,
+        1367,
+        1698,
+        1729
+      ]
     },
     {
       "id": 1118,
@@ -533,7 +560,9 @@
           "name": "Exhibitions Group"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1975
+      ]
     },
     {
       "id": 12,
@@ -552,7 +581,9 @@
           "name": "Performance"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        924
+      ]
     },
     {
       "id": 5,
@@ -571,7 +602,9 @@
           "name": "Project"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1980
+      ]
     },
     {
       "id": 803,
@@ -742,7 +775,45 @@
       "content": "<p style=\"text-align: left;\"><b>Lars Cuzner</b></p>\n<p style=\"text-align: left;\">lars@larscuzner.com</p>\n<p style=\"text-align: left;\">Oslo, Norway</p>\n\n<dl>\n \t<dd></dd>\n \t<dd></dd>\n</dl>\n<dl>\n \t<dd></dd>\n</dl>\n<dl>\n \t<dd></dd>\n</dl>",
       "url": "http://larscuzner.com/contact/",
       "terms": [],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2018,
+        2019,
+        2020,
+        2021,
+        2024,
+        2026,
+        2027,
+        2032,
+        2033,
+        2034,
+        2035,
+        2037,
+        2042,
+        2043,
+        19,
+        2045,
+        2046,
+        2047,
+        2279,
+        2028,
+        2029,
+        2017,
+        2016,
+        2049,
+        28,
+        2040,
+        2050,
+        2023,
+        2036,
+        2038,
+        2025,
+        2044
+      ]
     },
     {
       "id": 53,
@@ -818,7 +889,9 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2461
+      ]
     },
     {
       "id": 2398,
@@ -843,7 +916,10 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2635,
+        2399
+      ]
     },
     {
       "id": 2411,
@@ -868,7 +944,9 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2413
+      ]
     },
     {
       "id": 2371,
@@ -918,7 +996,8 @@
         2339,
         2347,
         2346,
-        2348
+        2348,
+        2351
       ]
     },
     {
@@ -965,7 +1044,16 @@
           "name": "Works"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1931,
+        1934,
+        1929,
+        1927,
+        1935,
+        1932,
+        1930,
+        2120
+      ]
     },
     {
       "id": 2184,
@@ -988,7 +1076,8 @@
         2196,
         2214,
         2197,
-        2198
+        2198,
+        2195
       ]
     },
     {
@@ -1008,7 +1097,9 @@
           "name": "Works"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1956
+      ]
     },
     {
       "id": 1573,
@@ -1049,7 +1140,8 @@
         }
       ],
       "linkedAttachmentIds": [
-        1684
+        1684,
+        1724
       ]
     },
     {
@@ -1096,7 +1188,18 @@
           "name": "post-format-video"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1173,
+        1211,
+        1212,
+        1214,
+        1220,
+        1224,
+        1359,
+        1367,
+        1698,
+        1729
+      ]
     },
     {
       "id": 1118,
@@ -1115,7 +1218,9 @@
           "name": "Exhibitions Group"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1975
+      ]
     },
     {
       "id": 12,
@@ -1134,7 +1239,9 @@
           "name": "Performance"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        924
+      ]
     },
     {
       "id": 5,
@@ -1153,7 +1260,9 @@
           "name": "Project"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        1980
+      ]
     },
     {
       "id": 803,
@@ -1322,7 +1431,9 @@
           "name": "Exhibitions Solo"
         }
       ],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        132
+      ]
     },
     {
       "id": 954,
@@ -1568,7 +1679,8 @@
       "url": "http://larscuzner.com/milk-pipeline/",
       "terms": [],
       "linkedAttachmentIds": [
-        2383
+        2383,
+        2368
       ]
     },
     {
@@ -1677,7 +1789,45 @@
       "content": "<p style=\"text-align: left;\"><b>Lars Cuzner</b></p>\n<p style=\"text-align: left;\">lars@larscuzner.com</p>\n<p style=\"text-align: left;\">Oslo, Norway</p>\n\n<dl>\n \t<dd></dd>\n \t<dd></dd>\n</dl>\n<dl>\n \t<dd></dd>\n</dl>\n<dl>\n \t<dd></dd>\n</dl>",
       "url": "http://larscuzner.com/contact/",
       "terms": [],
-      "linkedAttachmentIds": []
+      "linkedAttachmentIds": [
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2018,
+        2019,
+        2020,
+        2021,
+        2024,
+        2026,
+        2027,
+        2032,
+        2033,
+        2034,
+        2035,
+        2037,
+        2042,
+        2043,
+        19,
+        2045,
+        2046,
+        2047,
+        2279,
+        2028,
+        2029,
+        2017,
+        2016,
+        2049,
+        28,
+        2040,
+        2050,
+        2023,
+        2036,
+        2038,
+        2025,
+        2044
+      ]
     },
     {
       "id": 53,
@@ -1721,7 +1871,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/0047thumb1.jpg",
       "file": "0047thumb1.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1683,
+          "kind": "posts",
+          "title": "Christian Sleep Over",
+          "slug": "christian-sleep-over"
+        }
+      ]
     },
     {
       "id": 2285,
@@ -1775,7 +1932,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/17Kongolandsbyen_2014.jpg",
       "file": "17Kongolandsbyen_2014.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 2482,
@@ -1933,7 +2097,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/2010/12/5promise1.jpg",
       "file": "2010/12/5promise1.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 266,
+          "kind": "pages",
+          "title": "The Promise",
+          "slug": "the-promise"
+        }
+      ]
     },
     {
       "id": 133,
@@ -1985,7 +2156,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/2010/12/Grimms.jpg",
       "file": "2010/12/Grimms.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 62,
@@ -2027,6 +2205,12 @@
           "kind": "pages",
           "title": "What happens in the forest stays in the forest",
           "slug": "what-happens-in-the-forest-stays-in-the-forest"
+        },
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
         }
       ]
     },
@@ -2089,7 +2273,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/43067704_1843274149102349_8299695949270220800_n.jpg",
       "file": "43067704_1843274149102349_8299695949270220800_n.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2460,
+          "kind": "posts",
+          "title": "The Intelligence Party",
+          "slug": "the-intelligence-party"
+        }
+      ]
     },
     {
       "id": 1263,
@@ -2161,7 +2352,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Adgang.jpg",
       "file": "Adgang.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 1377,
@@ -2197,7 +2395,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Art-world.jpg",
       "file": "Art-world-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2012,
@@ -2206,7 +2411,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Assistants.jpg",
       "file": "Assistants-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2287,
@@ -2237,7 +2449,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Basso.jpg",
       "file": "Basso-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2257,
@@ -2287,7 +2506,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Bibles.jpg",
       "file": "Bibles-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 923,
@@ -2305,7 +2531,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Bilde-3.png",
       "file": "Bilde-3.png",
       "mimeType": "image/png",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 12,
+          "kind": "posts",
+          "title": "Broadcast through a Brother",
+          "slug": "broadcast-through-a-brother"
+        }
+      ]
     },
     {
       "id": 1098,
@@ -2350,7 +2583,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Break-up.jpg",
       "file": "Break-up-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1971,
@@ -2368,7 +2608,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Burn1.jpg",
       "file": "Burn1.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2184,
+          "kind": "pages",
+          "title": "Relax, Hell Is a Pretty Chill Place",
+          "slug": "relax-hell-is-a-pretty-chill-place"
+        }
+      ]
     },
     {
       "id": 2016,
@@ -2377,7 +2624,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Campaign.jpg",
       "file": "Campaign-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2017,
@@ -2386,7 +2640,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Car-bomb.jpg",
       "file": "Car-bomb-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2256,
@@ -2404,7 +2665,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/CBT.jpg",
       "file": "CBT-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2718,
@@ -2422,7 +2690,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/church.jpg",
       "file": "church-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2020,
@@ -2431,7 +2706,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Clear-didact.jpg",
       "file": "Clear-didact-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2021,
@@ -2440,7 +2722,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Close.jpg",
       "file": "Close-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2307,
@@ -2544,7 +2833,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Dad.jpg",
       "file": "Dad-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2024,
@@ -2553,7 +2849,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Deportees.jpg",
       "file": "Deportees-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1959,
@@ -2607,7 +2910,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Drcheck.jpg",
       "file": "Drcheck-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2486,
@@ -2677,7 +2987,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/EALtd.jpg",
       "file": "EALtd-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2411,
+          "kind": "posts",
+          "title": "European Attraction Limited Tours",
+          "slug": "european-attraction-limited-tours"
+        }
+      ]
     },
     {
       "id": 2462,
@@ -2785,7 +3102,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Forest-stays-in-the-forest.jpg",
       "file": "Forest-stays-in-the-forest-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2640,
@@ -2830,7 +3154,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/GateOpening.jpg",
       "file": "GateOpening.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 1698,
@@ -2839,7 +3170,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/GodThumb.jpg",
       "file": "GodThumb.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 1729,
@@ -2848,7 +3186,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/GodThumb1.jpg",
       "file": "GodThumb1.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 2657,
@@ -2866,7 +3211,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/grimmuseum.jpg",
       "file": "grimmuseum-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2028,
@@ -2875,7 +3227,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Gum-Shot.jpg",
       "file": "Gum-Shot-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2029,
@@ -2884,7 +3243,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/gum-shots.jpg",
       "file": "gum-shots-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1173,
@@ -2893,7 +3259,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/header.png",
       "file": "header.png",
       "mimeType": "image/png",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 1824,
@@ -2920,7 +3293,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/IF-u.jpg",
       "file": "IF-u-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1374,
@@ -2990,7 +3370,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/In-the-gallery.jpg",
       "file": "In-the-gallery-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 5,
+          "kind": "posts",
+          "title": "Recurring Individual Conversations",
+          "slug": "recurring-individual-conversations"
+        }
+      ]
     },
     {
       "id": 2033,
@@ -2999,7 +3386,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Indoor-cottage.jpg",
       "file": "Indoor-cottage-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1973,
@@ -3035,7 +3429,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Installation-reference.jpg",
       "file": "Installation-reference-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1118,
+          "kind": "posts",
+          "title": "Sol LeWitt n' shit",
+          "slug": "herman-daled-told-me-he-had-stopped-collecting-because-nobody-did-anything-interesting-since-sol-lewitt"
+        }
+      ]
     },
     {
       "id": 1963,
@@ -3103,7 +3504,14 @@
       "url": "https://larscuzner.com/intelligenspartiet/intelligenspartiet-2/",
       "file": "intelligenspartiet.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2398,
+          "kind": "pages",
+          "title": "Intelligenspartiet",
+          "slug": "intelligenspartiet"
+        }
+      ]
     },
     {
       "id": 2034,
@@ -3112,7 +3520,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Its-art.jpg",
       "file": "Its-art-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2463,
@@ -3164,7 +3579,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/kamera2012oktober-134.jpg",
       "file": "kamera2012oktober-134-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 2120,
@@ -3173,7 +3595,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/kongolandsbyen_4.jpg",
       "file": "kongolandsbyen_4.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 834,
@@ -3191,7 +3620,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Kongolandsbyen1914.jpg",
       "file": "Kongolandsbyen1914.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 982,
@@ -3277,7 +3713,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/LoveSongsForJesus.jpg",
       "file": "LoveSongsForJesus.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 1224,
@@ -3286,7 +3729,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/LoveSongsForJesusWith.jpg",
       "file": "LoveSongsForJesusWith.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 1220,
@@ -3295,7 +3745,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/LoveSongsForThe-Lord.jpg",
       "file": "LoveSongsForThe-Lord.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 616,
@@ -3322,7 +3779,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Minister.jpg",
       "file": "Minister-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2036,
@@ -3331,7 +3795,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Mom.jpg",
       "file": "Mom-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2312,
@@ -3376,7 +3847,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/ONOlight.jpg",
       "file": "ONOlight-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1624,
+          "kind": "posts",
+          "title": "100%",
+          "slug": "the-closer-dirt-gets-to-me-the-cleaner-it-gets"
+        }
+      ]
     },
     {
       "id": 1955,
@@ -3457,7 +3935,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Opera-opening.jpg",
       "file": "Opera-opening-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1967,
@@ -3818,7 +4303,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Pipe-at-factoryLOGOS.jpg",
       "file": "Pipe-at-factoryLOGOS.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2336,
+          "kind": "pages",
+          "title": "Milk Pipeline",
+          "slug": "milk-pipeline"
+        }
+      ]
     },
     {
       "id": 2340,
@@ -3892,7 +4384,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Pipe-in-Forest-2-2.jpg",
       "file": "Pipe-in-Forest-2-2.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2311,
+          "kind": "pages",
+          "title": "Foolproof Feelings",
+          "slug": "milk-pipeline"
+        }
+      ]
     },
     {
       "id": 2291,
@@ -3999,7 +4498,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Poron.jpg",
       "file": "Poron-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2198,
@@ -4024,7 +4530,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Preopening.jpg",
       "file": "Preopening.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 1834,
@@ -4078,7 +4591,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Province.jpg",
       "file": "Province-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1931,
@@ -4087,7 +4607,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Reconstruction.jpg",
       "file": "Reconstruction.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 1367,
@@ -4096,7 +4623,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Riga.jpg",
       "file": "Riga.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 601,
@@ -4130,7 +4664,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Screenshot-2016-10-23-14.41.55.png",
       "file": "Screenshot-2016-10-23-14.41.55.png",
       "mimeType": "image/png",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2399,
@@ -4139,7 +4680,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Screenshot-2017-09-11-12.46.30.png",
       "file": "Screenshot-2017-09-11-12.46.30.png",
       "mimeType": "image/png",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 2398,
+          "kind": "pages",
+          "title": "Intelligenspartiet",
+          "slug": "intelligenspartiet"
+        }
+      ]
     },
     {
       "id": 410,
@@ -4157,7 +4705,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Sladdsnack.jpg",
       "file": "Sladdsnack-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1978,
@@ -4227,7 +4782,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Swedens-best.jpg",
       "file": "Swedens-best-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1983,
@@ -4245,7 +4807,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Talk-Doc.jpg",
       "file": "Talk-Doc-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2632,
@@ -4371,7 +4940,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Uks-before.jpg",
       "file": "Uks-before-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2046,
@@ -4380,7 +4956,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/UKS-plan.jpg",
       "file": "UKS-plan-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2047,
@@ -4389,7 +4972,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/uks-talks.jpg",
       "file": "uks-talks-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 1797,
@@ -4407,7 +4997,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/utopiafar.jpg",
       "file": "utopiafar-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2050,
@@ -4416,7 +5013,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/vag.jpg",
       "file": "vag-scaled.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 308,
+          "kind": "pages",
+          "title": "contact",
+          "slug": "contact"
+        }
+      ]
     },
     {
       "id": 2502,
@@ -4443,7 +5047,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Village.jpg",
       "file": "Village.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1662,
+          "kind": "posts",
+          "title": "European Attraction Limited",
+          "slug": "european-attraction-limited-2"
+        }
+      ]
     },
     {
       "id": 2641,
@@ -4461,7 +5072,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Waterfall_Rainbow_by_MrsLeonScottKennedy-copy.jpg",
       "file": "Waterfall_Rainbow_by_MrsLeonScottKennedy-copy.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 1212,
@@ -4470,7 +5088,14 @@
       "url": "http://larscuzner.com/wp-content/uploads/Waterfall_Rainbow_by_MrsLeonScottKennedy-copy1.jpg",
       "file": "Waterfall_Rainbow_by_MrsLeonScottKennedy-copy1.jpg",
       "mimeType": "image/jpeg",
-      "linkedFrom": []
+      "linkedFrom": [
+        {
+          "id": 1172,
+          "kind": "posts",
+          "title": "From What You Can’t Protect Yourself",
+          "slug": "from-what-you-cant-protect-yourself"
+        }
+      ]
     },
     {
       "id": 2296,

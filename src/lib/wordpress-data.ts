@@ -158,6 +158,10 @@ export function getContentRecord(kind: string, id: string) {
   return getContentCollection(kind).find((record) => record.id === numericId) ?? null;
 }
 
+export function getRecoveryContentRecordBySourceId(sourceId: number) {
+  return [...snapshot.allPosts, ...snapshot.allPages].find((record) => record.id === sourceId) ?? null;
+}
+
 export function getMenuTree(menuId: number) {
   const items = snapshot.menuItems.filter((item) => item.menuId === menuId);
   const byParent = new Map<number | null, MenuItemRecord[]>();

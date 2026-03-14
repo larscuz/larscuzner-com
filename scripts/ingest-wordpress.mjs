@@ -24,6 +24,14 @@ function parsePhpSerializedList(value) {
   return [...value.matchAll(/"([^"]+\/[^"]+\.php)"/g)].map((match) => match[1]);
 }
 
+function parseSerializedIntegerList(value) {
+  if (!value) {
+    return [];
+  }
+
+  return [...value.matchAll(/i:(\d+);/g)].map((match) => Number(match[1]));
+}
+
 function decodeSqlString(value) {
   return value
     .replace(/\\\\/g, "\\")
@@ -348,6 +356,7 @@ function main() {
 
   for (const record of [...allPosts, ...allPages]) {
     const linkedIds = new Set();
+    const meta = postMeta.get(record.id) ?? {};
 
     for (const pattern of attachmentLinkPatterns) {
       if (record.content.includes(pattern.pattern)) {
@@ -357,6 +366,15 @@ function main() {
 
     for (const match of record.content.matchAll(/wp-image-(\d+)/g)) {
       linkedIds.add(Number(match[1]));
+    }
+
+    const thumbnailId = Number(meta._thumbnail_id ?? 0);
+    if (thumbnailId) {
+      linkedIds.add(thumbnailId);
+    }
+
+    for (const attachmentId of parseSerializedIntegerList(meta._portfolio_slideshow)) {
+      linkedIds.add(attachmentId);
     }
 
     record.linkedAttachmentIds = [...linkedIds].filter((id) => attachmentById.has(id));

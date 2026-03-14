@@ -1,5 +1,5 @@
 import { getRecoveredMediaBlock } from "@/lib/media-inference";
-import { getRecoverySnapshot } from "@/lib/wordpress-data";
+import { getRecoveryContentRecordBySourceId, getRecoverySnapshot } from "@/lib/wordpress-data";
 import type { WorkspaceEntry } from "@/lib/server/workspace-store";
 
 function getYoutubeEmbed(url: string) {
@@ -51,7 +51,9 @@ function getEmbedSource(url: string) {
 
 export function EntryCardVisual({ entry }: { entry: WorkspaceEntry }) {
   const snapshot = getRecoverySnapshot();
-  const attachments = snapshot.attachments.filter((attachment) => entry.linkedAttachmentIds.includes(attachment.id));
+  const recoveryRecord = getRecoveryContentRecordBySourceId(entry.sourceId);
+  const linkedAttachmentIds = Array.from(new Set([...(recoveryRecord?.linkedAttachmentIds ?? []), ...entry.linkedAttachmentIds]));
+  const attachments = snapshot.attachments.filter((attachment) => linkedAttachmentIds.includes(attachment.id));
   const media = getRecoveredMediaBlock(entry.editorDocument, attachments, { includeLegacyHtml: true });
 
   if (media?.mediaType === "image" && media.url) {
