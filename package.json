@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "ingest": "node scripts/ingest-wordpress.mjs",
+    "inventory-media": "node scripts/inventory-media.mjs",
     "seed-workspace": "node scripts/seed-workspace.mjs",
     "sync-workspace:mysql": "node scripts/sync-workspace-to-mysql.mjs"
   },

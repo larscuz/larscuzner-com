@@ -11,7 +11,7 @@ export default async function AdminPage() {
     <main className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-6 px-4 py-8 sm:px-6">
       <div className="flex items-center justify-between gap-4">
         <Link href="/" className="text-sm text-black/60 underline-offset-4 hover:underline">
-          Back to recovery dashboard
+          Back to site homepage
         </Link>
         <form action={logoutAction}>
           <button type="submit" className="text-sm text-black/60 underline-offset-4 hover:underline">
@@ -31,6 +31,9 @@ export default async function AdminPage() {
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
           <span className="rounded-full bg-black/[0.05] px-4 py-2">{workspace.entries.length} editable entries</span>
           <span className="rounded-full bg-black/[0.05] px-4 py-2">{unpublished.length} unpublished/imported entries</span>
+          <Link href="/admin/uploads" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
+            Open uploads
+          </Link>
         </div>
       </section>
 
