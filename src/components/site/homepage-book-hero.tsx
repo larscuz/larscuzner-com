@@ -214,11 +214,11 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
       <div className="absolute inset-x-[-10%] top-[-4rem] h-[28rem] bg-[radial-gradient(circle_at_center,rgba(182,153,90,0.18),transparent_58%)] blur-3xl" />
       <div className="absolute right-[-10%] top-[18%] h-[18rem] w-[18rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_68%)] blur-3xl" />
 
-      <div className="relative grid gap-8 xl:grid-cols-[minmax(0,0.74fr)_minmax(0,1fr)] xl:gap-12">
-        <div className="space-y-6">
+      <div className="relative grid gap-8 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,1.58fr)] xl:items-start xl:gap-10">
+        <div className="space-y-5 xl:pr-4">
           <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.eyebrow}</p>
-          <h1 className="max-w-3xl text-[clamp(3.6rem,9vw,8.6rem)] font-semibold leading-[0.82] tracking-[-0.09em] text-white">{section.title}</h1>
-          <p className="max-w-xl text-base leading-8 text-white/60">{section.description}</p>
+          <h1 className="max-w-xl text-[clamp(2.8rem,5.6vw,5.8rem)] font-semibold leading-[0.86] tracking-[-0.08em] text-white">{section.title}</h1>
+          <p className="max-w-md text-sm leading-7 text-white/56">{section.description}</p>
 
           <div className="flex flex-wrap gap-3">
             <button
@@ -236,7 +236,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
             </Link>
           </div>
 
-          <div className="grid gap-px overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/10 sm:grid-cols-3">
+          <div className="grid gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/10 sm:grid-cols-3 xl:max-w-md">
             {[
               { key: "video" as const, label: "Play", enabled: Boolean(projectMedia.videoMedia) },
               { key: "image" as const, label: "Freeze", enabled: Boolean(projectMedia.imageMedia || projectMedia.primaryMedia) },
@@ -252,35 +252,35 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                 } ${item.enabled ? "" : "cursor-not-allowed text-white/25"}`}
               >
                 <p className="text-[0.62rem] uppercase tracking-[0.32em]">{item.label}</p>
-                <p className="mt-3 text-xl font-semibold tracking-[-0.04em]">
-                  {item.key === "video" ? "Video stage" : item.key === "image" ? "Image drift" : "Project notes"}
+                <p className="mt-2 text-sm font-semibold tracking-[-0.02em]">
+                  {item.key === "video" ? "Motion" : item.key === "image" ? "Still" : "Notes"}
                 </p>
               </button>
             ))}
           </div>
 
-          <div className="grid gap-4 text-sm leading-7 text-white/56 sm:grid-cols-2">
-            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+          <div className="grid gap-3 text-sm leading-7 text-white/56 xl:max-w-md">
+            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
               <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Selected work</p>
-              <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
-              <p className="mt-3">{cleanExcerpt}</p>
+              <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
+              <p className="mt-2">{cleanExcerpt}</p>
             </div>
-            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
               <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Active layer</p>
-              <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
-              <p className="mt-3">The homepage now behaves like a motion-led editorial stage instead of an object animation.</p>
+              <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
+              <p className="mt-2">Motion leads. Text supports.</p>
             </div>
           </div>
         </div>
 
-        <div className="relative min-h-[36rem]">
+        <div className="relative min-h-[36rem] xl:min-h-[46rem]">
           <div className="absolute left-[2%] top-[4%] h-[14rem] w-[14rem] rounded-full border border-white/10 bg-[radial-gradient(circle,rgba(255,255,255,0.12),transparent_65%)] blur-2xl" />
           <div className="absolute inset-x-0 top-0 h-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)]" />
 
-          <div className="relative rounded-[2.2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4 shadow-[0_30px_120px_rgba(0,0,0,0.35)] sm:p-6">
+          <div className="relative rounded-[2.2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4 shadow-[0_30px_120px_rgba(0,0,0,0.35)] sm:p-6 xl:p-7">
             <div className="absolute inset-0 rounded-[2.2rem] bg-[linear-gradient(130deg,rgba(235,213,140,0.18),transparent_28%,transparent_72%,rgba(103,133,219,0.12))]" />
 
-            <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_220px]">
+            <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[minmax(0,1fr)_220px]">
               <div className="space-y-4">
                 {activeMode === "notes" ? (
                   <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),linear-gradient(145deg,#f1e7d0_0%,#c9b383_46%,#7c6440_100%)] p-8 text-[#17120b]">
@@ -293,16 +293,16 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                   </div>
                 ) : activeMode === "image" ? (
                   <div className="relative">
-                    <div className="absolute -left-4 top-8 z-10 hidden h-[72%] w-[40%] rotate-[-5deg] rounded-[1.6rem] border border-white/10 bg-black/30 backdrop-blur-sm md:block" />
-                    <div className="absolute -right-4 bottom-6 z-10 hidden h-[45%] w-[28%] rotate-[7deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] md:block" />
+                    <div className="absolute -left-4 top-8 z-10 hidden h-[72%] w-[30%] rotate-[-5deg] rounded-[1.6rem] border border-white/10 bg-black/30 backdrop-blur-sm xl:block" />
+                    <div className="absolute -right-4 bottom-6 z-10 hidden h-[40%] w-[20%] rotate-[7deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] xl:block" />
                     <div className="relative z-20">
                       <VideoSurface media={projectMedia.imageMedia ?? projectMedia.primaryMedia} title={displayTitle} />
                     </div>
                   </div>
                 ) : (
                   <div className="relative">
-                    <div className="absolute -left-3 top-6 z-10 h-[82%] w-[28%] rotate-[-8deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.02))] backdrop-blur-sm" />
-                    <div className="absolute -right-2 bottom-8 z-10 h-[34%] w-[24%] rotate-[8deg] overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/60">
+                    <div className="absolute -left-3 top-6 z-10 hidden h-[82%] w-[18%] rotate-[-8deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.02))] backdrop-blur-sm xl:block" />
+                    <div className="absolute -right-2 bottom-8 z-10 hidden h-[28%] w-[18%] rotate-[8deg] overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/60 xl:block">
                       {projectMedia.imageMedia?.url ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={projectMedia.imageMedia.url} alt={projectMedia.imageMedia.alt || displayTitle} className="h-full w-full object-cover opacity-80" />
@@ -317,7 +317,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                 )}
               </div>
 
-              <div className="grid gap-4 self-start">
+              <div className="grid gap-4 self-start xl:pt-2">
                 <div className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-4">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Badge</p>
                   <div className="mt-4 rounded-[1.2rem] border border-white/8 bg-black/40 p-6">
@@ -328,11 +328,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                 <div className="rounded-[1.6rem] border border-white/10 bg-[#050505] p-4">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Now showing</p>
                   <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
-                  <p className="mt-3 text-sm leading-7 text-white/54">Large motion surface, offset support layers, and direct entry into the project page.</p>
-                </div>
-                <div className="rounded-[1.6rem] border border-white/10 bg-[#050505] p-4">
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Route</p>
-                  <p className="mt-3 break-all text-sm leading-7 text-white/64">{projectHref}</p>
+                  <p className="mt-3 text-sm leading-7 text-white/54">Featured motion in a larger stage.</p>
                 </div>
                 {entry ? (
                   <Link
