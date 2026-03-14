@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EntryCardVisual } from "@/components/site/entry-card-visual";
 import { getPublishedPosts } from "@/lib/server/public-site";
 
 export default async function WorksPage() {
@@ -39,6 +40,9 @@ export default async function WorksPage() {
               href={`/works/${encodeURIComponent(entry.slug)}`}
               className="group border border-white/10 px-5 py-6 transition hover:bg-white/[0.03]"
             >
+              <div className="-mx-5 -mt-6 mb-6">
+                <EntryCardVisual entry={entry} />
+              </div>
               <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{String(index + 1).padStart(2, "0")}</p>
               <h2 className="mt-6 text-3xl font-semibold tracking-[-0.05em] text-white transition group-hover:text-white/92">
                 {entry.title}

@@ -93,8 +93,13 @@ function MediaBlock({ block }: { block: EditorMediaBlock }) {
               // eslint-disable-next-line @next/next/no-img-element
               <img src={block.url} alt={block.alt || block.title} className="h-full w-full object-cover" />
             ) : (
-              <div className="flex h-full items-center justify-center text-sm uppercase tracking-[0.3em] text-white/35">
-                Image placeholder
+              <div className="relative flex h-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.12),transparent_35%),linear-gradient(135deg,#131313_0%,#080808_45%,#151515_100%)] text-sm uppercase tracking-[0.3em] text-white/35">
+                <div className="absolute inset-0 bg-[linear-gradient(transparent_0,transparent_96%,rgba(255,255,255,0.08)_96%,rgba(255,255,255,0.08)_100%)] bg-[length:100%_20px]" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0,transparent_96%,rgba(255,255,255,0.08)_96%,rgba(255,255,255,0.08)_100%)] bg-[length:20px_100%]" />
+                <div className="relative z-10 flex flex-col items-center gap-3 text-center">
+                  <span>{block.title || "Image placeholder"}</span>
+                  <span className="text-[0.68rem] tracking-[0.24em] text-white/25">Recovered media missing</span>
+                </div>
               </div>
             )
           ) : block.mediaType === "video" && /\.(mp4|webm|ogg)(\?.*)?$/i.test(block.url) ? (
@@ -110,8 +115,13 @@ function MediaBlock({ block }: { block: EditorMediaBlock }) {
               referrerPolicy="strict-origin-when-cross-origin"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-sm uppercase tracking-[0.3em] text-white/35">
-              Media placeholder
+            <div className="relative flex h-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.12),transparent_35%),linear-gradient(135deg,#131313_0%,#080808_45%,#151515_100%)] text-sm uppercase tracking-[0.3em] text-white/35">
+              <div className="absolute inset-0 bg-[linear-gradient(transparent_0,transparent_96%,rgba(255,255,255,0.08)_96%,rgba(255,255,255,0.08)_100%)] bg-[length:100%_20px]" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0,transparent_96%,rgba(255,255,255,0.08)_96%,rgba(255,255,255,0.08)_100%)] bg-[length:20px_100%]" />
+              <div className="relative z-10 flex flex-col items-center gap-3 text-center">
+                <span>{block.title || "Media placeholder"}</span>
+                <span className="text-[0.68rem] tracking-[0.24em] text-white/25">Recovered media missing</span>
+              </div>
             </div>
           )}
         </div>

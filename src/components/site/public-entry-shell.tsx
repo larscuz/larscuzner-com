@@ -1,8 +1,14 @@
 import Link from "next/link";
 import { SiteBlockRenderer } from "@/components/cms/site-block-renderer";
+import { addRecoveredOrPlaceholderMedia } from "@/lib/media-inference";
+import { getRecoverySnapshot } from "@/lib/wordpress-data";
 import type { WorkspaceEntry } from "@/lib/server/workspace-store";
 
 export function PublicEntryShell({ entry }: { entry: WorkspaceEntry }) {
+  const snapshot = getRecoverySnapshot();
+  const attachments = snapshot.attachments.filter((attachment) => entry.linkedAttachmentIds.includes(attachment.id));
+  const renderDocument = addRecoveredOrPlaceholderMedia(entry.editorDocument, attachments, entry.title);
+
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       <div className="mx-auto max-w-[1500px] px-5 py-6 sm:px-8">
@@ -47,7 +53,7 @@ export function PublicEntryShell({ entry }: { entry: WorkspaceEntry }) {
         </section>
 
         <section className="border-t border-white/10 py-10 md:py-14">
-          <SiteBlockRenderer document={entry.editorDocument} />
+          <SiteBlockRenderer document={renderDocument} />
         </section>
       </div>
     </main>

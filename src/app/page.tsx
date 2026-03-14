@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EntryCardVisual } from "@/components/site/entry-card-visual";
 import { getFeaturedEntries } from "@/lib/server/public-site";
 
 export default async function Home() {
@@ -56,6 +57,9 @@ export default async function Home() {
             <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">Featured work</p>
             {hero ? (
               <Link href={`/works/${encodeURIComponent(hero.slug)}`} className="group block pt-6">
+                <div className="mb-8 overflow-hidden border border-white/10">
+                  <EntryCardVisual entry={hero} />
+                </div>
                 <h2 className="max-w-4xl text-[clamp(2.8rem,7vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.08em] text-white transition group-hover:text-white/82">
                   {hero.title}
                 </h2>
@@ -103,8 +107,11 @@ export default async function Home() {
                 href={`/info/${encodeURIComponent(entry.slug)}`}
                 className="grid gap-3 bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03] md:grid-cols-[180px_minmax(0,1fr)]"
               >
-                <p className="text-[0.7rem] uppercase tracking-[0.3em] text-white/28">{entry.slug}</p>
+                <div className="overflow-hidden border border-white/10 md:max-w-[160px]">
+                  <EntryCardVisual entry={entry} />
+                </div>
                 <div>
+                  <p className="text-[0.7rem] uppercase tracking-[0.3em] text-white/28">{entry.slug}</p>
                   <p className="text-2xl font-semibold tracking-[-0.05em] text-white">{entry.title}</p>
                   <p className="mt-2 text-sm leading-7 text-white/52">{entry.excerpt || "Open page"}</p>
                 </div>
@@ -133,6 +140,9 @@ export default async function Home() {
                 href={`/works/${encodeURIComponent(entry.slug)}`}
                 className="group bg-[#050505] px-5 py-6 transition hover:bg-white/[0.03]"
               >
+                <div className="-mx-5 -mt-6 mb-6 overflow-hidden border-b border-white/10">
+                  <EntryCardVisual entry={entry} />
+                </div>
                 <p className="text-[0.7rem] uppercase tracking-[0.3em] text-white/28">{entry.slug}</p>
                 <h3 className="mt-6 text-3xl font-semibold tracking-[-0.05em] text-white transition group-hover:text-white/88">
                   {entry.title}

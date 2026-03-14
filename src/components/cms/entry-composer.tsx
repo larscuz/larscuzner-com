@@ -8,6 +8,7 @@ import {
   createMediaBlock,
   createTextBlock,
 } from "@/lib/editor-schema";
+import { addRecoveredOrPlaceholderMedia } from "@/lib/media-inference";
 import type { AttachmentRecord } from "@/lib/wordpress-data";
 import { SiteBlockRenderer } from "@/components/cms/site-block-renderer";
 
@@ -65,6 +66,7 @@ export function EntryComposer({ entry, attachments, saveAction }: ComposerProps)
       })),
     [attachments],
   );
+  const previewDocument = useMemo(() => addRecoveredOrPlaceholderMedia(document, attachments, title || entry.title), [attachments, document, entry.title, title]);
 
   const updateTextBlock = (blockId: string, patch: Partial<EditorTextBlock>) => {
     setDocument((current) => ({
@@ -372,7 +374,7 @@ export function EntryComposer({ entry, attachments, saveAction }: ComposerProps)
                 pacing of the reference while staying editable in your own CMS.
               </p>
             </header>
-            <SiteBlockRenderer document={document} />
+            <SiteBlockRenderer document={previewDocument} />
           </div>
         </div>
       </section>
