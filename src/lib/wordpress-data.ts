@@ -162,6 +162,10 @@ export function getRecoveryContentRecordBySourceId(sourceId: number) {
   return [...snapshot.allPosts, ...snapshot.allPages].find((record) => record.id === sourceId) ?? null;
 }
 
+export function getRecoveryPublishedDateBySourceId(sourceId: number) {
+  return getRecoveryContentRecordBySourceId(sourceId)?.date ?? null;
+}
+
 export function getMenuTree(menuId: number) {
   const items = snapshot.menuItems.filter((item) => item.menuId === menuId);
   const byParent = new Map<number | null, MenuItemRecord[]>();

@@ -1,11 +1,21 @@
 import Link from "next/link";
 import { logoutAction, requireAdmin } from "@/lib/server/auth";
 import { createWorkspaceEntry, readWorkspace } from "@/lib/server/workspace-store";
+import { formatDate, getRecoveryPublishedDateBySourceId } from "@/lib/wordpress-data";
+
+function sortEntriesNewestFirst(entries: Awaited<ReturnType<typeof readWorkspace>>["entries"]) {
+  return [...entries].sort((left, right) => {
+    const rightPublishedAt = getRecoveryPublishedDateBySourceId(right.sourceId) ?? right.updatedAt;
+    const leftPublishedAt = getRecoveryPublishedDateBySourceId(left.sourceId) ?? left.updatedAt;
+    return rightPublishedAt.localeCompare(leftPublishedAt);
+  });
+}
 
 export default async function AdminPage() {
   await requireAdmin();
   const workspace = await readWorkspace();
-  const unpublished = workspace.entries.filter((entry) => entry.originalStatus !== "publish");
+  const sortedEntries = sortEntriesNewestFirst(workspace.entries);
+  const unpublished = sortedEntries.filter((entry) => entry.originalStatus !== "publish");
   const createPostAction = createWorkspaceEntry.bind(null, "post");
   const createPageAction = createWorkspaceEntry.bind(null, "page");
 
@@ -31,7 +41,7 @@ export default async function AdminPage() {
           published material.
         </p>
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
-          <span className="rounded-full bg-black/[0.05] px-4 py-2">{workspace.entries.length} editable entries</span>
+          <span className="rounded-full bg-black/[0.05] px-4 py-2">{sortedEntries.length} editable entries</span>
           <span className="rounded-full bg-black/[0.05] px-4 py-2">{unpublished.length} unpublished/imported entries</span>
           <form action={createPostAction}>
             <button type="submit" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
@@ -59,11 +69,12 @@ export default async function AdminPage() {
                 <th className="px-4 py-3">Kind</th>
                 <th className="px-4 py-3">Original</th>
                 <th className="px-4 py-3">Workspace</th>
+                <th className="px-4 py-3">Published</th>
                 <th className="px-4 py-3">Updated</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/6 bg-white/70">
-              {workspace.entries.map((entry) => (
+              {sortedEntries.map((entry) => (
                 <tr key={entry.id}>
                   <td className="px-4 py-3 align-top">
                     <Link href={`/admin/entry/${entry.sourceId}`} className="font-medium hover:underline">
@@ -74,7 +85,8 @@ export default async function AdminPage() {
                   <td className="px-4 py-3 align-top">{entry.kind}</td>
                   <td className="px-4 py-3 align-top">{entry.originalStatus}</td>
                   <td className="px-4 py-3 align-top">{entry.workflowStatus}</td>
-                  <td className="px-4 py-3 align-top text-black/65">{entry.updatedAt}</td>
+                  <td className="px-4 py-3 align-top text-black/65">{formatDate(getRecoveryPublishedDateBySourceId(entry.sourceId))}</td>
+                  <td className="px-4 py-3 align-top text-black/65">{formatDate(entry.updatedAt)}</td>
                 </tr>
               ))}
             </tbody>

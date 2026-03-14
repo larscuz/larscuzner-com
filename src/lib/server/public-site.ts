@@ -1,9 +1,14 @@
 import { readWorkspace, type WorkspaceEntry } from "@/lib/server/workspace-store";
+import { getRecoveryPublishedDateBySourceId } from "@/lib/wordpress-data";
 
 const excludedPageSlugs = new Set(["cart", "checkout", "my-account", "shop", "wishlist"]);
 
 function sortEntriesNewestFirst(entries: WorkspaceEntry[]) {
-  return [...entries].sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+  return [...entries].sort((left, right) => {
+    const rightPublishedAt = getRecoveryPublishedDateBySourceId(right.sourceId) ?? right.updatedAt;
+    const leftPublishedAt = getRecoveryPublishedDateBySourceId(left.sourceId) ?? left.updatedAt;
+    return rightPublishedAt.localeCompare(leftPublishedAt);
+  });
 }
 
 export async function getPublishedPosts() {
