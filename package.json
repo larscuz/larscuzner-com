@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ingest": "node scripts/ingest-wordpress.mjs",
+    "seed-workspace": "node scripts/seed-workspace.mjs",
+    "sync-workspace:mysql": "node scripts/sync-workspace-to-mysql.mjs"
   },
   "dependencies": {
+    "mysql2": "^3.19.1",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
