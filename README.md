@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# larscuzner-com
 
-## Getting Started
+Custom Next.js website and editorial backend for `larscuzner.com`, rebuilt from the exported WordPress database and XML snapshot.
 
-First, run the development server:
+## What exists now
+
+- Public front end at `/`, `/works`, `/works/[slug]`, `/info`, and `/info/[slug]`
+- Backend/admin at `/admin`
+- Visual block composer with text and media boxes
+- Media boxes support:
+  - images
+  - direct video files
+  - YouTube/Vimeo URLs
+  - embeddable websites
+- WordPress recovery data imported into a writable CMS workspace
+- Unpublished content available inside admin
+
+## Main paths
+
+- Public homepage: `/src/app/page.tsx`
+- Works index: `/src/app/works/page.tsx`
+- Info index: `/src/app/info/page.tsx`
+- Public entry shell: `/src/components/site/public-entry-shell.tsx`
+- Admin entry composer: `/src/components/cms/entry-composer.tsx`
+- Editor schema: `/src/lib/editor-schema.ts`
+- Workspace persistence: `/src/lib/server/workspace-store.ts`
+- Public site helpers: `/src/lib/server/public-site.ts`
+- WordPress recovery snapshot: `/src/data/generated/wordpress-recovery.json`
+- Editable workspace seed: `/src/data/workspace/editorial-workspace.json`
+
+## Local development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `http://localhost:3000/`
+- `http://localhost:3000/works`
+- `http://localhost:3000/info`
+- `http://localhost:3000/admin`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+```bash
+npm run ingest
+npm run seed-workspace
+npm run build
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For local admin auth:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+ADMIN_PASSWORD=your-password
+ADMIN_SESSION_SECRET=your-random-secret
+CMS_STORE_PROVIDER=file
+```
 
-## Deploy on Vercel
+## Important deployment note
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`CMS_STORE_PROVIDER=file` works for local development and UI validation, but it is not durable storage on Vercel. The next production-grade step is moving editable CMS persistence to a Vercel-friendly hosted database.

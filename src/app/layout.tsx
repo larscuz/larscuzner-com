@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lars Cuzner Migration Admin",
-  description: "Backend-first WordPress recovery workspace for the Lars Cuzner site migration.",
+  title: "Lars Cuzner",
+  description: "Rebuilt Lars Cuzner website and custom editorial backend.",
 };
 
 export default function RootLayout({
