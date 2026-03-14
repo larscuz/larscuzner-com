@@ -1,4 +1,4 @@
-import type { EditorDocument, EditorMediaBlock } from "@/lib/editor-schema";
+import type { EditorDocument, EditorMediaBlock, EditorTextBlock } from "@/lib/editor-schema";
 import type { AttachmentRecord } from "@/lib/wordpress-data";
 
 function attachmentToMediaBlock(attachment: AttachmentRecord): EditorMediaBlock | null {
@@ -33,12 +33,104 @@ function attachmentToMediaBlock(attachment: AttachmentRecord): EditorMediaBlock 
   return null;
 }
 
-export function getRecoveredMediaBlock(document: EditorDocument, attachments: AttachmentRecord[]) {
+function decodeHtmlEntities(value: string) {
+  return value
+    .replace(/&#8217;/g, "’")
+    .replace(/&#8211;/g, "–")
+    .replace(/&#8220;/g, "“")
+    .replace(/&#8221;/g, "”")
+    .replace(/&#038;/g, "&")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+function getAttributeValue(tag: string, name: string) {
+  const match = tag.match(new RegExp(`${name}=["']([^"']+)["']`, "i"));
+  return match ? decodeHtmlEntities(match[1]) : "";
+}
+
+function createLegacyMediaBlock(type: EditorMediaBlock["mediaType"], url: string, title: string, alt = ""): EditorMediaBlock {
+  return {
+    id: `legacy-media-${Math.random().toString(36).slice(2, 8)}`,
+    type: "media",
+    mediaType: type,
+    url,
+    title,
+    caption: "Recovered from the original WordPress content.",
+    alt: alt || title,
+    aspect: "landscape",
+    emphasis: "feature",
+  };
+}
+
+function getLegacyHtmlMediaBlock(textBlocks: EditorTextBlock[]) {
+  const html = textBlocks.map((block) => block.html).join("\n");
+
+  const imgMatch = html.match(/<img\b[^>]*>/i);
+  if (imgMatch) {
+    const src = getAttributeValue(imgMatch[0], "src");
+    if (src) {
+      return createLegacyMediaBlock(
+        "image",
+        src,
+        getAttributeValue(imgMatch[0], "title") || getAttributeValue(imgMatch[0], "alt") || "Recovered image",
+        getAttributeValue(imgMatch[0], "alt"),
+      );
+    }
+  }
+
+  const iframeMatch = html.match(/<iframe\b[^>]*>/i);
+  if (iframeMatch) {
+    const src = getAttributeValue(iframeMatch[0], "src");
+    if (src) {
+      return createLegacyMediaBlock("embed", src, getAttributeValue(iframeMatch[0], "title") || "Recovered embed");
+    }
+  }
+
+  const videoMatch = html.match(/<video\b[^>]*>/i);
+  if (videoMatch) {
+    const src = getAttributeValue(videoMatch[0], "src");
+    if (src) {
+      return createLegacyMediaBlock("video", src, getAttributeValue(videoMatch[0], "title") || "Recovered video");
+    }
+  }
+
+  const sourceMatch = html.match(/<source\b[^>]*src=["']([^"']+)["'][^>]*>/i);
+  if (sourceMatch?.[1]) {
+    return createLegacyMediaBlock("video", decodeHtmlEntities(sourceMatch[1]), "Recovered video");
+  }
+
+  const linkedMediaMatch = html.match(/<a\b[^>]*href=["']([^"']+)["'][^>]*>/i);
+  const href = linkedMediaMatch?.[1] ? decodeHtmlEntities(linkedMediaMatch[1]) : "";
+  if (href && (/\.(jpe?g|png|gif|webp|svg)(\?.*)?$/i.test(href) || /\.(mp4|webm|ogg)(\?.*)?$/i.test(href) || /youtube\.com|youtu\.be|vimeo\.com/i.test(href))) {
+    return createLegacyMediaBlock(/\.(mp4|webm|ogg)(\?.*)?$/i.test(href) || /youtube\.com|youtu\.be|vimeo\.com/i.test(href) ? "video" : "image", href, "Recovered linked media");
+  }
+
+  return null;
+}
+
+export function getRecoveredMediaBlock(
+  document: EditorDocument,
+  attachments: AttachmentRecord[],
+  options?: { includeLegacyHtml?: boolean },
+) {
   const mediaBlocks = document.blocks.filter((block): block is EditorMediaBlock => block.type === "media");
   const firstRealMedia = mediaBlocks.find((block) => block.url.trim());
 
   if (firstRealMedia) {
     return firstRealMedia;
+  }
+
+  if (options?.includeLegacyHtml) {
+    const textBlocks = document.blocks.filter((block): block is EditorTextBlock => block.type === "text");
+    const legacyHtmlMedia = getLegacyHtmlMediaBlock(textBlocks);
+
+    if (legacyHtmlMedia) {
+      return legacyHtmlMedia;
+    }
   }
 
   for (const attachment of attachments) {

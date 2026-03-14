@@ -52,7 +52,7 @@ function getEmbedSource(url: string) {
 export function EntryCardVisual({ entry }: { entry: WorkspaceEntry }) {
   const snapshot = getRecoverySnapshot();
   const attachments = snapshot.attachments.filter((attachment) => entry.linkedAttachmentIds.includes(attachment.id));
-  const media = getRecoveredMediaBlock(entry.editorDocument, attachments);
+  const media = getRecoveredMediaBlock(entry.editorDocument, attachments, { includeLegacyHtml: true });
 
   if (media?.mediaType === "image" && media.url) {
     return (
