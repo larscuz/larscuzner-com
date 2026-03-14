@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { logoutAction, requireAdmin } from "@/lib/server/auth";
-import { readWorkspace } from "@/lib/server/workspace-store";
+import { createWorkspaceEntry, readWorkspace } from "@/lib/server/workspace-store";
 
 export default async function AdminPage() {
   await requireAdmin();
   const workspace = await readWorkspace();
   const unpublished = workspace.entries.filter((entry) => entry.originalStatus !== "publish");
+  const createPostAction = createWorkspaceEntry.bind(null, "post");
+  const createPageAction = createWorkspaceEntry.bind(null, "page");
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-6 px-4 py-8 sm:px-6">
@@ -31,6 +33,16 @@ export default async function AdminPage() {
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
           <span className="rounded-full bg-black/[0.05] px-4 py-2">{workspace.entries.length} editable entries</span>
           <span className="rounded-full bg-black/[0.05] px-4 py-2">{unpublished.length} unpublished/imported entries</span>
+          <form action={createPostAction}>
+            <button type="submit" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
+              New post
+            </button>
+          </form>
+          <form action={createPageAction}>
+            <button type="submit" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
+              New page
+            </button>
+          </form>
           <Link href="/admin/uploads" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
             Open uploads
           </Link>

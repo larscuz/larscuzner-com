@@ -342,6 +342,13 @@ function findWorkspaceEntryInFile(workspace: WorkspaceFile, id: string) {
   );
 }
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "") || "untitled";
+}
+
 export async function readWorkspace(): Promise<WorkspaceFile> {
   if (provider === "mysql") {
     return readMysqlWorkspace();
@@ -428,4 +435,39 @@ export async function saveWorkspaceEntryFromFrontend(payload: {
     slug: entry.slug,
     updatedAt: entry.updatedAt,
   };
+}
+
+export async function createWorkspaceEntry(kind: "page" | "post") {
+  if (!(await isAdminAuthenticated())) {
+    throw new Error("Unauthorized");
+  }
+
+  const workspace = await readWorkspace();
+  const nextSourceId = workspace.entries.reduce((max, entry) => Math.max(max, entry.sourceId), 0) + 1;
+  const baseTitle = kind === "page" ? "New Page" : "New Post";
+  const baseSlug = slugify(`${kind}-${nextSourceId}`);
+  const createdAt = new Date().toISOString();
+
+  const entry: WorkspaceEntry = {
+    id: `${nextSourceId}:draft:${baseSlug}`,
+    sourceId: nextSourceId,
+    kind,
+    title: baseTitle,
+    slug: baseSlug,
+    originalStatus: "draft",
+    workflowStatus: "draft",
+    excerpt: "",
+    body: "<p>Start writing here.</p>",
+    publicUrl: `/site/${kind}/${baseSlug}`,
+    termLabels: [],
+    linkedAttachmentIds: [],
+    notes: "",
+    updatedAt: createdAt,
+    editorDocument: createEditorDocumentFromBody("<p>Start writing here.</p>"),
+  };
+
+  workspace.entries.push(entry);
+  await persistWorkspaceEntry(workspace, entry);
+
+  redirect(`/admin/entry/${entry.sourceId}`);
 }
