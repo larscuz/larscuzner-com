@@ -12,6 +12,7 @@ import {
   normalizeEditorDocument,
   renderDocumentToLegacyHtml,
 } from "@/lib/editor-schema";
+import { promotePrimaryMedia } from "@/lib/media-inference";
 import { isAdminAuthenticated } from "@/lib/server/auth";
 import { isPostgresProvider, withPostgresClient } from "@/lib/server/postgres";
 
@@ -392,9 +393,8 @@ export async function updateWorkspaceEntry(formData: FormData) {
   entry.updatedAt = new Date().toISOString();
 
   const editorDocumentRaw = String(formData.get("editorDocument") || "");
-  entry.editorDocument = normalizeEditorDocument(
-    editorDocumentRaw ? JSON.parse(editorDocumentRaw) : entry.editorDocument,
-    entry.body,
+  entry.editorDocument = promotePrimaryMedia(
+    normalizeEditorDocument(editorDocumentRaw ? JSON.parse(editorDocumentRaw) : entry.editorDocument, entry.body),
   );
   entry.body = renderDocumentToLegacyHtml(entry.editorDocument);
   entry.excerpt = deriveExcerptFromDocument(entry.editorDocument);
@@ -423,7 +423,7 @@ export async function saveWorkspaceEntryFromFrontend(payload: {
 
   entry.title = payload.title.trim() || entry.title;
   entry.slug = (payload.slug || entry.slug).trim();
-  entry.editorDocument = normalizeEditorDocument(payload.editorDocument, entry.body);
+  entry.editorDocument = promotePrimaryMedia(normalizeEditorDocument(payload.editorDocument, entry.body));
   entry.body = renderDocumentToLegacyHtml(entry.editorDocument);
   entry.excerpt = deriveExcerptFromDocument(entry.editorDocument);
   entry.updatedAt = new Date().toISOString();

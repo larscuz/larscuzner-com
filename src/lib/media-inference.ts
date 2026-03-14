@@ -58,6 +58,54 @@ export function getRecoveredMediaBlock(document: EditorDocument, attachments: At
   return null;
 }
 
+export function promotePrimaryMedia(document: EditorDocument): EditorDocument {
+  const mediaIndexes = document.blocks.reduce<number[]>((indexes, block, index) => {
+    if (block.type === "media") {
+      indexes.push(index);
+    }
+
+    return indexes;
+  }, []);
+
+  if (mediaIndexes.length < 2) {
+    return document;
+  }
+
+  const firstMediaIndex = mediaIndexes[0];
+  const firstMedia = document.blocks[firstMediaIndex];
+
+  if (!firstMedia || firstMedia.type !== "media" || firstMedia.url.trim()) {
+    return document;
+  }
+
+  const firstRealMediaIndex = mediaIndexes.find((index) => {
+    const block = document.blocks[index];
+    return block?.type === "media" && block.url.trim();
+  });
+
+  if (firstRealMediaIndex === undefined || firstRealMediaIndex === firstMediaIndex) {
+    return document;
+  }
+
+  const firstRealMedia = document.blocks[firstRealMediaIndex];
+
+  if (!firstRealMedia || firstRealMedia.type !== "media") {
+    return document;
+  }
+
+  const blocks = [...document.blocks];
+  blocks[firstMediaIndex] = {
+    ...firstRealMedia,
+    id: firstMedia.id,
+  };
+  blocks.splice(firstRealMediaIndex, 1);
+
+  return {
+    ...document,
+    blocks,
+  };
+}
+
 export function addRecoveredOrPlaceholderMedia(
   document: EditorDocument,
   attachments: AttachmentRecord[],
