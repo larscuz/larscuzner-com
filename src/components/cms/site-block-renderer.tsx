@@ -1,4 +1,4 @@
-import type { EditorDocument, EditorMediaBlock, EditorTextBlock } from "@/lib/editor-schema";
+import type { EditorBlock, EditorDocument, EditorMediaBlock, EditorTextBlock } from "@/lib/editor-schema";
 
 function getAspectClass(aspect: EditorMediaBlock["aspect"]) {
   switch (aspect) {
@@ -143,11 +143,61 @@ function MediaBlock({ block }: { block: EditorMediaBlock }) {
   );
 }
 
-export function SiteBlockRenderer({ document }: { document: EditorDocument }) {
+function BlockFrame({
+  block,
+  editable,
+  selected,
+  onSelectBlock,
+}: {
+  block: EditorBlock;
+  editable?: boolean;
+  selected?: boolean;
+  onSelectBlock?: (blockId: string) => void;
+}) {
+  const content = block.type === "text" ? <TextBlock block={block} /> : <MediaBlock block={block} />;
+
+  if (!editable) {
+    return content;
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelectBlock?.(block.id)}
+      className={`block w-full rounded-[2rem] border border-dashed p-3 text-left transition ${
+        selected ? "border-white/55 bg-white/[0.04]" : "border-white/12 hover:border-white/28 hover:bg-white/[0.02]"
+      }`}
+    >
+      <div className="mb-3 flex items-center justify-between gap-3 text-[0.68rem] uppercase tracking-[0.28em] text-white/35">
+        <span>{block.type === "text" ? "Text block" : "Media block"}</span>
+        <span>{block.id}</span>
+      </div>
+      {content}
+    </button>
+  );
+}
+
+export function SiteBlockRenderer({
+  document,
+  editable,
+  selectedBlockId,
+  onSelectBlock,
+}: {
+  document: EditorDocument;
+  editable?: boolean;
+  selectedBlockId?: string | null;
+  onSelectBlock?: (blockId: string) => void;
+}) {
   return (
     <div className="space-y-12 md:space-y-20">
       {document.blocks.map((block) =>
-        block.type === "text" ? <TextBlock key={block.id} block={block} /> : <MediaBlock key={block.id} block={block} />,
+        <BlockFrame
+          key={block.id}
+          block={block}
+          editable={editable}
+          selected={selectedBlockId === block.id}
+          onSelectBlock={onSelectBlock}
+        />,
       )}
     </div>
   );

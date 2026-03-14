@@ -11,6 +11,7 @@ import {
   normalizeEditorDocument,
   renderDocumentToLegacyHtml,
 } from "@/lib/editor-schema";
+import { isAdminAuthenticated } from "@/lib/server/auth";
 
 export type WorkspaceEntry = {
   id: string;
@@ -180,6 +181,24 @@ async function writeMysqlEntry(entry: WorkspaceEntry) {
   }
 }
 
+async function persistWorkspaceEntry(workspace: WorkspaceFile, entry: WorkspaceEntry) {
+  if (provider === "mysql") {
+    await writeMysqlEntry(entry);
+  } else {
+    await writeFileWorkspace(workspace);
+  }
+}
+
+function findWorkspaceEntryInFile(workspace: WorkspaceFile, id: string) {
+  const numericId = Number(id);
+
+  return (
+    workspace.entries.find(
+      (entry) => entry.id === id || (Number.isFinite(numericId) && entry.sourceId === numericId),
+    ) ?? null
+  );
+}
+
 export async function readWorkspace(): Promise<WorkspaceFile> {
   if (provider === "mysql") {
     return readMysqlWorkspace();
@@ -190,13 +209,7 @@ export async function readWorkspace(): Promise<WorkspaceFile> {
 
 export async function getWorkspaceEntry(id: string) {
   const workspace = await readWorkspace();
-  const numericId = Number(id);
-
-  return (
-    workspace.entries.find(
-      (entry) => entry.id === id || (Number.isFinite(numericId) && entry.sourceId === numericId),
-    ) ?? null
-  );
+  return findWorkspaceEntryInFile(workspace, id);
 }
 
 export async function findWorkspaceEntryBySlug(kind: "page" | "post", slug: string) {
@@ -211,7 +224,7 @@ export async function findWorkspaceEntryBySlug(kind: "page" | "post", slug: stri
 export async function updateWorkspaceEntry(formData: FormData) {
   const id = String(formData.get("id") || "");
   const workspace = await readWorkspace();
-  const entry = workspace.entries.find((item) => item.id === id);
+  const entry = findWorkspaceEntryInFile(workspace, id);
 
   if (!entry) {
     throw new Error(`Workspace entry not found: ${id}`);
@@ -231,11 +244,41 @@ export async function updateWorkspaceEntry(formData: FormData) {
   entry.body = renderDocumentToLegacyHtml(entry.editorDocument);
   entry.excerpt = deriveExcerptFromDocument(entry.editorDocument);
 
-  if (provider === "mysql") {
-    await writeMysqlEntry(entry);
-  } else {
-    await writeFileWorkspace(workspace);
-  }
+  await persistWorkspaceEntry(workspace, entry);
 
   redirect(`/admin/entry/${entry.sourceId}?saved=1`);
+}
+
+export async function saveWorkspaceEntryFromFrontend(payload: {
+  id: string;
+  title: string;
+  slug?: string;
+  editorDocument: EditorDocument;
+}) {
+  if (!(await isAdminAuthenticated())) {
+    throw new Error("Unauthorized");
+  }
+
+  const workspace = await readWorkspace();
+  const entry = findWorkspaceEntryInFile(workspace, payload.id);
+
+  if (!entry) {
+    throw new Error(`Workspace entry not found: ${payload.id}`);
+  }
+
+  entry.title = payload.title.trim() || entry.title;
+  entry.slug = (payload.slug || entry.slug).trim();
+  entry.editorDocument = normalizeEditorDocument(payload.editorDocument, entry.body);
+  entry.body = renderDocumentToLegacyHtml(entry.editorDocument);
+  entry.excerpt = deriveExcerptFromDocument(entry.editorDocument);
+  entry.updatedAt = new Date().toISOString();
+
+  await persistWorkspaceEntry(workspace, entry);
+
+  return {
+    ok: true,
+    sourceId: entry.sourceId,
+    slug: entry.slug,
+    updatedAt: entry.updatedAt,
+  };
 }
