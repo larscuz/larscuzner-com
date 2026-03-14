@@ -17,9 +17,6 @@ export default async function WorksPage() {
               <Link href="/works" className="text-white/70">
                 Works
               </Link>
-              <Link href="/info" className="transition hover:text-white/70">
-                Info
-              </Link>
               <Link href="/admin" className="transition hover:text-white/70">
                 Admin
               </Link>
@@ -29,7 +26,7 @@ export default async function WorksPage() {
             Works
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/58">
-            Published entries recovered from the WordPress export and now routed through the new front-end layer.
+            One continuous index of projects, writing, performances, and moving-image work.
           </p>
         </header>
 
@@ -48,7 +45,6 @@ export default async function WorksPage() {
                 {entry.title}
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-white/55">{entry.excerpt || "Open work"}</p>
-              <p className="mt-8 text-xs uppercase tracking-[0.28em] text-white/35">{entry.slug}</p>
             </Link>
           ))}
         </section>

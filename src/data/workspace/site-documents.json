@@ -32,39 +32,6 @@
         "ctaLabel": "Open work"
       },
       {
-        "id": "entry-points-main",
-        "type": "entryPoints",
-        "enabled": true,
-        "eyebrow": "Entry points",
-        "items": [
-          {
-            "id": "entry-point-wfr7wz",
-            "title": "Works",
-            "description": "Published projects, writing, and recovered posts.",
-            "href": "/works"
-          },
-          {
-            "id": "entry-point-hlsj8q",
-            "title": "Info",
-            "description": "Bio, CV, text pages, and other public information.",
-            "href": "/info"
-          },
-          {
-            "id": "entry-point-qm13nm",
-            "title": "Backend",
-            "description": "Composer, unpublished content, and editorial controls.",
-            "href": "/admin"
-          }
-        ]
-      },
-      {
-        "id": "pages-spotlight-main",
-        "type": "pagesSpotlight",
-        "enabled": true,
-        "eyebrow": "Public pages",
-        "title": "Core information is now surfaced as part of the site, not hidden in WordPress."
-      },
-      {
         "id": "recent-works-main",
         "type": "recentWorks",
         "enabled": true,

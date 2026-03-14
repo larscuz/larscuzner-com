@@ -61,17 +61,13 @@ function SectionFrame({
 
 export function HomepageEditor({
   document: initialDocument,
-  featuredPages,
   featuredPosts,
-  pages,
   posts,
   canEdit,
   saveAction,
 }: {
   document: HomePageDocument;
-  featuredPages: WorkspaceEntry[];
   featuredPosts: WorkspaceEntry[];
-  pages: WorkspaceEntry[];
   posts: WorkspaceEntry[];
   canEdit: boolean;
   saveAction: (payload: { homepage: HomePageDocument }) => Promise<{ ok: boolean }>;
@@ -85,7 +81,9 @@ export function HomepageEditor({
 
   const selectedIndex = document.sections.findIndex((section) => section.id === selectedSectionId);
   const selectedSection = selectedIndex >= 0 ? document.sections[selectedIndex] : null;
-  const visibleSections = document.sections.filter((section) => section.enabled);
+  const visibleSections = document.sections.filter(
+    (section) => section.enabled && section.type !== "entryPoints" && section.type !== "pagesSpotlight",
+  );
   const viewportClass =
     viewport === "mobile"
       ? "max-w-[420px]"
@@ -174,9 +172,6 @@ export function HomepageEditor({
               <Link href="/works" className="transition hover:text-white/70">
                 Works
               </Link>
-              <Link href="/info" className="transition hover:text-white/70">
-                Info
-              </Link>
               {canEdit ? (
                 <>
                   <button type="button" onClick={() => setEditMode((current) => !current)} className="transition hover:text-white/70">
@@ -237,8 +232,8 @@ export function HomepageEditor({
                           <p className="mt-3 text-3xl font-semibold tracking-[-0.05em]">{posts.length}</p>
                         </div>
                         <div className="bg-[#050505] px-4 py-5">
-                          <p className="text-[0.7rem] uppercase tracking-[0.28em] text-white/30">Published pages</p>
-                          <p className="mt-3 text-3xl font-semibold tracking-[-0.05em]">{pages.length}</p>
+                          <p className="text-[0.7rem] uppercase tracking-[0.28em] text-white/30">Featured cuts</p>
+                          <p className="mt-3 text-3xl font-semibold tracking-[-0.05em]">{featuredPosts.length}</p>
                         </div>
                       </div>
                     </div>
@@ -287,17 +282,13 @@ export function HomepageEditor({
                         <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.title}</p>
                         <div className="grid gap-px border border-white/10 bg-white/10">
                           <Link href="/works" className="bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03]">
-                            <p className="text-2xl font-semibold tracking-[-0.05em]">Works</p>
-                            <p className="mt-2 text-sm leading-7 text-white/52">Published projects, writing, and recovered posts.</p>
+                            <p className="text-2xl font-semibold tracking-[-0.05em]">Archive</p>
+                            <p className="mt-2 text-sm leading-7 text-white/52">Every public project lives in one continuous works index.</p>
                           </Link>
-                          <Link href="/info" className="bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03]">
-                            <p className="text-2xl font-semibold tracking-[-0.05em]">Info</p>
-                            <p className="mt-2 text-sm leading-7 text-white/52">Bio, CV, text pages, and other public information.</p>
-                          </Link>
-                          <Link href="/admin" className="bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03]">
-                            <p className="text-2xl font-semibold tracking-[-0.05em]">Backend</p>
-                            <p className="mt-2 text-sm leading-7 text-white/52">Composer, unpublished content, and editorial controls.</p>
-                          </Link>
+                          <div className="bg-[#050505] px-5 py-5">
+                            <p className="text-2xl font-semibold tracking-[-0.05em]">No categories</p>
+                            <p className="mt-2 text-sm leading-7 text-white/52">The site reads as one body of work rather than split into info pages or taxonomies.</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -306,68 +297,8 @@ export function HomepageEditor({
               );
             }
 
-            if (section.type === "entryPoints") {
-              return (
-                <SectionFrame
-                  key={section.id}
-                  section={section}
-                  editable={editMode && canEdit}
-                  selected={selectedSectionId === section.id}
-                  onSelect={setSelectedSectionId}
-                >
-                  <section className="border-t border-white/10 py-10 md:py-16">
-                    <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.eyebrow}</p>
-                    <div className="mt-6 grid gap-px border border-white/10 bg-white/10 md:grid-cols-3">
-                      {section.items.map((item) => (
-                        <Link key={item.id} href={item.href} className="bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03]">
-                          <p className="text-2xl font-semibold tracking-[-0.05em]">{item.title}</p>
-                          <p className="mt-2 text-sm leading-7 text-white/52">{item.description}</p>
-                        </Link>
-                      ))}
-                    </div>
-                  </section>
-                </SectionFrame>
-              );
-            }
-
-            if (section.type === "pagesSpotlight") {
-              return (
-                <SectionFrame
-                  key={section.id}
-                  section={section}
-                  editable={editMode && canEdit}
-                  selected={selectedSectionId === section.id}
-                  onSelect={setSelectedSectionId}
-                >
-                  <section className="grid gap-10 py-10 md:grid-cols-[0.9fr_1.1fr] md:py-16">
-                    <div className="space-y-5">
-                      <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.eyebrow}</p>
-                      <h2 className="max-w-xl text-[clamp(2.4rem,5vw,4.4rem)] font-semibold leading-[0.92] tracking-[-0.07em]">
-                        {section.title}
-                      </h2>
-                    </div>
-
-                    <div className="grid gap-px border border-white/10 bg-white/10">
-                      {featuredPages.map((entry) => (
-                        <Link
-                          key={entry.id}
-                          href={`/info/${encodeURIComponent(entry.slug)}`}
-                          className="grid gap-3 bg-[#050505] px-5 py-5 transition hover:bg-white/[0.03] md:grid-cols-[180px_minmax(0,1fr)]"
-                        >
-                          <div className="overflow-hidden border border-white/10 md:max-w-[160px]">
-                            <EntryCardVisual entry={entry} />
-                          </div>
-                          <div>
-                            <p className="text-[0.7rem] uppercase tracking-[0.3em] text-white/28">{entry.slug}</p>
-                            <p className="text-2xl font-semibold tracking-[-0.05em] text-white">{entry.title}</p>
-                            <p className="mt-2 text-sm leading-7 text-white/52">{entry.excerpt || "Open page"}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </section>
-                </SectionFrame>
-              );
+            if (section.type !== "recentWorks") {
+              return null;
             }
 
             return (
@@ -449,12 +380,6 @@ export function HomepageEditor({
                 </button>
                 <button type="button" onClick={() => addSection("featuredWork")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
                   Add featured
-                </button>
-                <button type="button" onClick={() => addSection("entryPoints")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
-                  Add links
-                </button>
-                <button type="button" onClick={() => addSection("pagesSpotlight")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
-                  Add pages
                 </button>
                 <button type="button" onClick={() => addSection("recentWorks")} className="rounded-full border border-white/16 px-4 py-2 text-sm hover:bg-white/[0.04]">
                   Add works

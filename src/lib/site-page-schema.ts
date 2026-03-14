@@ -119,39 +119,6 @@ export function createDefaultHomePageDocument(): HomePageDocument {
         featuredPostSourceId: null,
       },
       {
-        id: "entry-points-main",
-        type: "entryPoints",
-        enabled: true,
-        eyebrow: "Entry points",
-        items: [
-          {
-            id: createId("entry-point"),
-            title: "Works",
-            description: "Published projects, writing, and recovered posts.",
-            href: "/works",
-          },
-          {
-            id: createId("entry-point"),
-            title: "Info",
-            description: "Bio, CV, text pages, and other public information.",
-            href: "/info",
-          },
-          {
-            id: createId("entry-point"),
-            title: "Backend",
-            description: "Composer, unpublished content, and editorial controls.",
-            href: "/admin",
-          },
-        ],
-      },
-      {
-        id: "pages-spotlight-main",
-        type: "pagesSpotlight",
-        enabled: true,
-        eyebrow: "Public pages",
-        title: "Core information is now surfaced as part of the site, not hidden in WordPress.",
-      },
-      {
         id: "recent-works-main",
         type: "recentWorks",
         enabled: true,

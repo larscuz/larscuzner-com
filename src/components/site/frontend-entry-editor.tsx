@@ -157,9 +157,6 @@ export function FrontendEntryEditor({
             <Link href="/works" className="transition hover:text-white/70">
               Works
             </Link>
-            <Link href="/info" className="transition hover:text-white/70">
-              Info
-            </Link>
             {canEdit ? (
               <>
                 <button type="button" onClick={() => setEditMode((current) => !current)} className="transition hover:text-white/70">
@@ -177,7 +174,7 @@ export function FrontendEntryEditor({
           <div>
             <section className="grid gap-12 px-0 py-10 md:grid-cols-[minmax(0,1fr)_280px] md:gap-16 md:py-14">
               <div className="space-y-6">
-                <p className="text-[0.72rem] uppercase tracking-[0.42em] text-white/30">{entry.kind}</p>
+                <p className="text-[0.72rem] uppercase tracking-[0.42em] text-white/30">Work</p>
                 {editMode && canEdit ? (
                   <input
                     value={title}
@@ -197,13 +194,6 @@ export function FrontendEntryEditor({
                     ? "When you are logged in, this public page can become the editing surface. Select a block, change it here, and save without leaving the front end."
                     : "Public view of the composer-backed front end."}
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {entry.termLabels.map((label) => (
-                    <span key={label} className="rounded-full border border-white/14 px-3 py-1 text-[0.68rem] uppercase tracking-[0.22em] text-white/45">
-                      {label}
-                    </span>
-                  ))}
-                </div>
               </aside>
             </section>
 
