@@ -190,7 +190,13 @@ export async function readWorkspace(): Promise<WorkspaceFile> {
 
 export async function getWorkspaceEntry(id: string) {
   const workspace = await readWorkspace();
-  return workspace.entries.find((entry) => entry.id === id) ?? null;
+  const numericId = Number(id);
+
+  return (
+    workspace.entries.find(
+      (entry) => entry.id === id || (Number.isFinite(numericId) && entry.sourceId === numericId),
+    ) ?? null
+  );
 }
 
 export async function findWorkspaceEntryBySlug(kind: "page" | "post", slug: string) {
@@ -231,5 +237,5 @@ export async function updateWorkspaceEntry(formData: FormData) {
     await writeFileWorkspace(workspace);
   }
 
-  redirect(`/admin/entry/${encodeURIComponent(id)}?saved=1`);
+  redirect(`/admin/entry/${entry.sourceId}?saved=1`);
 }

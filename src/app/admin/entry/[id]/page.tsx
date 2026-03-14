@@ -7,7 +7,7 @@ import { getWorkspaceEntry, readWorkspace, updateWorkspaceEntry } from "@/lib/se
 
 export async function generateStaticParams() {
   const workspace = await readWorkspace();
-  return workspace.entries.map((entry) => ({ id: entry.id }));
+  return workspace.entries.map((entry) => ({ id: String(entry.sourceId) }));
 }
 
 export default async function AdminEntryPage({

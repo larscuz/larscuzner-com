@@ -51,7 +51,7 @@ export default async function AdminPage() {
               {workspace.entries.map((entry) => (
                 <tr key={entry.id}>
                   <td className="px-4 py-3 align-top">
-                    <Link href={`/admin/entry/${encodeURIComponent(entry.id)}`} className="font-medium hover:underline">
+                    <Link href={`/admin/entry/${entry.sourceId}`} className="font-medium hover:underline">
                       {entry.title}
                     </Link>
                     <p className="mt-1 font-mono text-xs text-black/55">{entry.slug || "untitled"}</p>
