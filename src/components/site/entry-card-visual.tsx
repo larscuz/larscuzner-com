@@ -31,8 +31,10 @@ export function EntryCardVisual({ entry }: { entry: WorkspaceEntry }) {
       <div className="relative z-10 flex h-full flex-col justify-between p-5">
         <p className="text-[0.68rem] uppercase tracking-[0.34em] text-white/25">Placeholder</p>
         <div>
-          <p className="text-xl font-semibold tracking-[-0.05em] text-white/88">{entry.title}</p>
-          <p className="mt-2 text-[0.72rem] uppercase tracking-[0.26em] text-white/30">No linked media yet</p>
+          <p className="text-xl font-semibold tracking-[-0.05em] text-white/88">{media?.title || entry.title}</p>
+          <p className="mt-2 text-[0.72rem] uppercase tracking-[0.26em] text-white/30">
+            {media?.caption || "No linked media yet"}
+          </p>
         </div>
       </div>
     </div>

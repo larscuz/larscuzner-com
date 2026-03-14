@@ -34,7 +34,7 @@ function attachmentToMediaBlock(attachment: AttachmentRecord): EditorMediaBlock 
 }
 
 export function getRecoveredMediaBlock(document: EditorDocument, attachments: AttachmentRecord[]) {
-  const existingMedia = document.blocks.find((block) => block.type === "media" && block.url.trim());
+  const existingMedia = document.blocks.find((block) => block.type === "media");
 
   if (existingMedia && existingMedia.type === "media") {
     return existingMedia;
