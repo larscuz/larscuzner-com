@@ -175,6 +175,10 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
   };
   const initialMode: HeroMode = projectMedia.videoMedia ? "video" : projectMedia.imageMedia ? "image" : "notes";
   const [activeMode, setActiveMode] = useState<HeroMode>(initialMode);
+  const availableHeroModes = [
+    projectMedia.videoMedia ? "video" : null,
+    projectMedia.imageMedia || projectMedia.primaryMedia ? "image" : null,
+  ].filter((mode): mode is Exclude<HeroMode, "notes"> => mode !== null);
   const projectHref = entry ? `/works/${encodeURIComponent(entry.slug)}` : "/works";
   const displayTitle = entry?.title || "Featured motion";
   const cleanExcerpt = projectText.length > 240 ? `${projectText.slice(0, 237).trimEnd()}...` : projectText;
@@ -193,6 +197,13 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
 
     return text.length > 420 ? `${text.slice(0, 417).trimEnd()}...` : text || cleanExcerpt;
   }, [cleanExcerpt, entry]);
+
+  const cycleHeroMode = (direction: -1 | 1) => {
+    if (availableHeroModes.length < 2) return;
+    const currentIndex = Math.max(availableHeroModes.indexOf(activeMode as Exclude<HeroMode, "notes">), 0);
+    const nextIndex = (currentIndex + direction + availableHeroModes.length) % availableHeroModes.length;
+    setActiveMode(availableHeroModes[nextIndex]);
+  };
 
   if (!entry && !projectMedia.videoMedia) {
     return (
@@ -236,29 +247,6 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
             </Link>
           </div>
 
-          <div className="grid gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/10 sm:grid-cols-3 xl:max-w-md">
-            {[
-              { key: "video" as const, label: "Play", enabled: Boolean(projectMedia.videoMedia) },
-              { key: "image" as const, label: "Freeze", enabled: Boolean(projectMedia.imageMedia || projectMedia.primaryMedia) },
-              { key: "notes" as const, label: "Read", enabled: true },
-            ].map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setActiveMode(item.key)}
-                disabled={!item.enabled}
-                className={`px-4 py-4 text-left transition ${
-                  activeMode === item.key ? "bg-[#f2ead7] text-[#17120b]" : "bg-[#050505] text-white/68 hover:bg-white/[0.04]"
-                } ${item.enabled ? "" : "cursor-not-allowed text-white/25"}`}
-              >
-                <p className="text-[0.62rem] uppercase tracking-[0.32em]">{item.label}</p>
-                <p className="mt-2 text-sm font-semibold tracking-[-0.02em]">
-                  {item.key === "video" ? "Motion" : item.key === "image" ? "Still" : "Notes"}
-                </p>
-              </button>
-            ))}
-          </div>
-
           <div className="grid gap-3 text-sm leading-7 text-white/56 xl:max-w-md">
             <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
               <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Selected work</p>
@@ -275,11 +263,8 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
 
         <div className="relative min-h-[36rem] xl:min-h-[46rem]">
           <div className="absolute left-[2%] top-[4%] h-[14rem] w-[14rem] rounded-full border border-white/10 bg-[radial-gradient(circle,rgba(255,255,255,0.12),transparent_65%)] blur-2xl" />
-          <div className="absolute inset-x-0 top-0 h-12 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)]" />
 
-          <div className="relative rounded-[2.2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4 shadow-[0_30px_120px_rgba(0,0,0,0.35)] sm:p-6 xl:p-7">
-            <div className="absolute inset-0 rounded-[2.2rem] bg-[linear-gradient(130deg,rgba(235,213,140,0.18),transparent_28%,transparent_72%,rgba(103,133,219,0.12))]" />
-
+          <div className="relative rounded-[2.2rem] sm:p-2 xl:p-0">
             <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[minmax(0,1fr)_220px]">
               <div className="space-y-4">
                 {activeMode === "notes" ? (
@@ -293,26 +278,55 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                   </div>
                 ) : activeMode === "image" ? (
                   <div className="relative">
-                    <div className="absolute -left-4 top-8 z-10 hidden h-[72%] w-[30%] rotate-[-5deg] rounded-[1.6rem] border border-white/10 bg-black/30 backdrop-blur-sm xl:block" />
-                    <div className="absolute -right-4 bottom-6 z-10 hidden h-[40%] w-[20%] rotate-[7deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] xl:block" />
                     <div className="relative z-20">
                       <VideoSurface media={projectMedia.imageMedia ?? projectMedia.primaryMedia} title={displayTitle} />
                     </div>
+                    {availableHeroModes.length > 1 ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => cycleHeroMode(-1)}
+                          className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          aria-label="Show previous media"
+                        >
+                          ←
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => cycleHeroMode(1)}
+                          className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          aria-label="Show next media"
+                        >
+                          →
+                        </button>
+                      </>
+                    ) : null}
                   </div>
                 ) : (
                   <div className="relative">
-                    <div className="absolute -left-3 top-6 z-10 hidden h-[82%] w-[18%] rotate-[-8deg] rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.02))] backdrop-blur-sm xl:block" />
-                    <div className="absolute -right-2 bottom-8 z-10 hidden h-[28%] w-[18%] rotate-[8deg] overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/60 xl:block">
-                      {projectMedia.imageMedia?.url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={projectMedia.imageMedia.url} alt={projectMedia.imageMedia.alt || displayTitle} className="h-full w-full object-cover opacity-80" />
-                      ) : (
-                        <div className="flex h-full items-end p-4 text-[0.62rem] uppercase tracking-[0.28em] text-white/38">Still layer</div>
-                      )}
-                    </div>
                     <div className="relative z-20">
                       <VideoSurface media={projectMedia.videoMedia} title={displayTitle} />
                     </div>
+                    {availableHeroModes.length > 1 ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => cycleHeroMode(-1)}
+                          className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          aria-label="Show previous media"
+                        >
+                          ←
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => cycleHeroMode(1)}
+                          className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          aria-label="Show next media"
+                        >
+                          →
+                        </button>
+                      </>
+                    ) : null}
                   </div>
                 )}
               </div>
