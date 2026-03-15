@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { IntelligencePartyRoom } from "@/components/site/intelligence-party-room";
 import { PublicEntryShell } from "@/components/site/public-entry-shell";
 import { getPublicEntry, getPublishedPosts } from "@/lib/server/public-site";
 
@@ -17,6 +18,10 @@ export default async function WorkEntryPage({
 
   if (!entry) {
     notFound();
+  }
+
+  if (["post-2735", "the-intelligence-party", "intelligenspartiet"].includes(slug) || /intelligence party|intelligenspartiet/i.test(entry.title)) {
+    return <IntelligencePartyRoom entry={entry} />;
   }
 
   return <PublicEntryShell entry={entry} />;
