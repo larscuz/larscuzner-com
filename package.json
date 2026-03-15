@@ -13,6 +13,7 @@
     "sync-workspace:mysql": "node scripts/sync-workspace-to-mysql.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "mysql2": "^3.19.1",
     "next": "16.1.6",
     "pg": "^8.20.0",
