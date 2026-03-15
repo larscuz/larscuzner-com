@@ -182,7 +182,6 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
   const projectHref = entry ? `/works/${encodeURIComponent(entry.slug)}` : "/works";
   const displayTitle = entry?.title || "Featured motion";
   const cleanExcerpt = projectText.length > 240 ? `${projectText.slice(0, 237).trimEnd()}...` : projectText;
-  const activeLabel = activeMode === "video" ? "Motion" : activeMode === "image" ? "Still" : "Notes";
   const notesText = useMemo(() => {
     if (!entry) {
       return cleanExcerpt;
@@ -252,11 +251,6 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
               <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Selected work</p>
               <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{displayTitle}</p>
               <p className="mt-2">{cleanExcerpt}</p>
-            </div>
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-[0.64rem] uppercase tracking-[0.32em] text-white/34">Active layer</p>
-              <p className="mt-3 text-xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
-              <p className="mt-2">Motion leads. Text supports.</p>
             </div>
           </div>
         </div>
@@ -338,11 +332,6 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/featured-badge.jpeg" alt="Featured badge" className="mx-auto h-auto w-full max-w-[180px] invert brightness-125 contrast-125" />
                   </div>
-                </div>
-                <div className="rounded-[1.6rem] border border-white/10 bg-[#050505] p-4">
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Now showing</p>
-                  <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{activeLabel}</p>
-                  <p className="mt-3 text-sm leading-7 text-white/54">Featured motion in a larger stage.</p>
                 </div>
                 {entry ? (
                   <Link
