@@ -102,15 +102,6 @@ export function createDefaultHomePageDocument(): HomePageDocument {
     sections: [
       createDefaultBookHeroSection(),
       {
-        id: "hero-main",
-        type: "hero",
-        enabled: true,
-        eyebrow: "Artist website rebuild",
-        title: "A rebuilt Lars Cuzner site with a custom editor behind it.",
-        description:
-          "The public site now lives separately from the backend. Works and information pages render from the new composer system, while `/admin` stays the editorial workspace.",
-      },
-      {
         id: "featured-work-main",
         type: "featuredWork",
         enabled: true,
