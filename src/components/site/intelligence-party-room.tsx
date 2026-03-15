@@ -12,6 +12,8 @@ type MediaItem = {
   url: string;
   caption: string;
   note: string;
+  thumbnail: string;
+  size: "hero" | "wide" | "tall" | "standard";
 };
 
 type EntryPoint = {
@@ -31,6 +33,8 @@ const mediaItems: MediaItem[] = [
     url: "https://www.youtube.com/embed/LMVOKQ6hIbY",
     caption: "The central project video: campaign rhetoric delivered with enough conviction to unsettle easy dismissal.",
     note: "Entry point: start here for the official pitch voice.",
+    thumbnail: "https://img.youtube.com/vi/LMVOKQ6hIbY/maxresdefault.jpg",
+    size: "hero",
   },
   {
     id: "oslo-clip",
@@ -39,6 +43,8 @@ const mediaItems: MediaItem[] = [
     url: "https://pub-b53c56f5af3e471cb8b3610afdc49a36.r2.dev/Intelligenspartiet2027.mp4",
     caption: "A broader public-facing cut that lets the project operate in the register of outreach, agitation, and performance.",
     note: "Entry point: use this if you want the work to read as a live campaign machine.",
+    thumbnail: "https://pub-b53c56f5af3e471cb8b3610afdc49a36.r2.dev/intelligenspartiet-still-1.jpg",
+    size: "tall",
   },
   {
     id: "street-interview",
@@ -47,6 +53,8 @@ const mediaItems: MediaItem[] = [
     url: "https://www.youtube.com/embed/jRMVo8HWcwo",
     caption: "The project in contact with passersby, where the satire has to survive public misunderstanding in real time.",
     note: "Entry point: watch how the script changes when it meets actual people.",
+    thumbnail: "https://img.youtube.com/vi/jRMVo8HWcwo/maxresdefault.jpg",
+    size: "standard",
   },
   {
     id: "broadcast-cut",
@@ -55,6 +63,8 @@ const mediaItems: MediaItem[] = [
     url: "https://www.youtube.com/embed/ZBEsYI_y4AI",
     caption: "A media-facing version of the work where the campaign aesthetic starts to impersonate institutional seriousness.",
     note: "Entry point: useful for reading the work as a feedback loop with journalism.",
+    thumbnail: "https://img.youtube.com/vi/ZBEsYI_y4AI/maxresdefault.jpg",
+    size: "wide",
   },
   {
     id: "field-footage",
@@ -63,6 +73,8 @@ const mediaItems: MediaItem[] = [
     url: "https://www.youtube.com/embed/o2QgghxfQLw",
     caption: "A looser field fragment that reveals the mechanics, repetition, and friction behind the public persona.",
     note: "Entry point: the work becomes more legible once you see the seams.",
+    thumbnail: "https://img.youtube.com/vi/o2QgghxfQLw/maxresdefault.jpg",
+    size: "standard",
   },
 ];
 
@@ -162,6 +174,38 @@ function getOverviewText(entry: WorkspaceEntry) {
   return text.length > 540 ? `${text.slice(0, 537).trimEnd()}...` : text;
 }
 
+function getMediaCardClasses(item: MediaItem) {
+  if (item.size === "hero") {
+    return "md:col-span-2 md:row-span-2";
+  }
+
+  if (item.size === "wide") {
+    return "md:col-span-2";
+  }
+
+  if (item.size === "tall") {
+    return "md:row-span-2";
+  }
+
+  return "";
+}
+
+function getMediaAspectClass(item: MediaItem) {
+  if (item.size === "hero") {
+    return "aspect-[16/10]";
+  }
+
+  if (item.size === "wide") {
+    return "aspect-[16/8]";
+  }
+
+  if (item.size === "tall") {
+    return "aspect-[4/5] md:aspect-auto md:h-full md:min-h-[23rem]";
+  }
+
+  return "aspect-[4/3]";
+}
+
 export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
   const [activeMediaId, setActiveMediaId] = useState(mediaItems[0].id);
   const [activeEntryPointId, setActiveEntryPointId] = useState(entryPoints[0].id);
@@ -193,10 +237,15 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
             <div className="space-y-6">
               <div>
                 <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/28">Project room</p>
-                <h1 className="mt-4 max-w-xl text-[clamp(2.9rem,8vw,6.8rem)] font-semibold leading-[0.84] tracking-[-0.09em]">
+                <div className="mt-4 flex flex-wrap gap-2 text-[0.62rem] uppercase tracking-[0.28em] text-white/38">
+                  <span className="rounded-full border border-[#ebd58c]/25 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">Campaign fiction</span>
+                  <span className="rounded-full border border-white/10 px-3 py-1">2018-2019</span>
+                  <span className="rounded-full border border-white/10 px-3 py-1">Oslo / Graz / Brussels</span>
+                </div>
+                <h1 className="mt-5 max-w-[9ch] text-[clamp(3.2rem,7vw,5.8rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-white/96">
                   {entry.title}
                 </h1>
-                <p className="mt-5 max-w-lg text-sm leading-7 text-white/58">
+                <p className="mt-4 max-w-lg text-[1.02rem] leading-8 text-white/60">
                   A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.
                 </p>
               </div>
@@ -235,13 +284,13 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
               <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4 sm:p-5">
                 <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-4">
                   <div>
-                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Responsive player</p>
+                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Screening room</p>
                     <p className="mt-2 text-2xl font-semibold tracking-[-0.04em]">{activeMedia.label}</p>
                   </div>
                   <p className="max-w-sm text-sm leading-6 text-white/54">{activeMedia.note}</p>
                 </div>
 
-                <div className="mt-5 overflow-hidden rounded-[1.6rem] border border-white/10 bg-black">
+                <div className="mt-5 overflow-hidden rounded-[1.6rem] border border-white/10 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
                   <div className="aspect-video w-full">
                     {activeMedia.type === "youtube" ? (
                       <iframe
@@ -259,23 +308,57 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
                 </div>
 
                 <p className="mt-4 max-w-3xl text-sm leading-7 text-white/55">{activeMedia.caption}</p>
+              </div>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {mediaItems.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setActiveMediaId(item.id)}
-                      className={`rounded-[1.1rem] border px-4 py-4 text-left transition ${
-                        activeMediaId === item.id
-                          ? "border-[#ebd58c]/60 bg-[#ebd58c]/12 text-white"
-                          : "border-white/10 bg-white/[0.02] text-white/72 hover:bg-white/[0.05]"
-                      }`}
-                    >
-                      <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/34">Media</p>
-                      <p className="mt-2 text-sm font-medium tracking-[-0.02em]">{item.label}</p>
-                    </button>
-                  ))}
+              <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                <div className="flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Media spread</p>
+                    <p className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Different scales, same campaign machine.</p>
+                  </div>
+                  <p className="max-w-md text-sm leading-6 text-white/54">
+                    Use the blocks as alternate entrances. Each one changes the project’s tone before you even press play.
+                  </p>
+                </div>
+
+                <div className="mt-5 grid auto-rows-[minmax(180px,1fr)] gap-3 md:grid-cols-3">
+                  {mediaItems.map((item) => {
+                    const isActive = activeMediaId === item.id;
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setActiveMediaId(item.id)}
+                        className={`group relative overflow-hidden rounded-[1.5rem] border text-left transition ${getMediaCardClasses(item)} ${
+                          isActive
+                            ? "border-[#ebd58c]/60 bg-[#ebd58c]/10 shadow-[0_0_0_1px_rgba(235,213,140,0.1)]"
+                            : "border-white/10 bg-black/20 hover:border-white/20 hover:bg-white/[0.04]"
+                        }`}
+                      >
+                        <div className={`relative w-full overflow-hidden ${getMediaAspectClass(item)}`}>
+                          <div
+                            aria-hidden="true"
+                            className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-[1.04]"
+                            style={{ backgroundImage: `url("${item.thumbnail}")` }}
+                          />
+                          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.12),rgba(5,5,5,0.78))]" />
+                          <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                            <div className="flex items-center justify-between gap-3">
+                              <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/44">Media</p>
+                              {isActive ? (
+                                <span className="rounded-full border border-[#ebd58c]/45 bg-[#ebd58c]/15 px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.28em] text-[#f2dfa5]">
+                                  Active
+                                </span>
+                              ) : null}
+                            </div>
+                            <p className="mt-2 text-lg font-medium tracking-[-0.04em] text-white">{item.label}</p>
+                            <p className="mt-2 max-w-[32ch] text-sm leading-6 text-white/68">{item.note}</p>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
