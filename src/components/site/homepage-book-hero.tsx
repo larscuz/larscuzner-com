@@ -220,11 +220,11 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
   }
 
   return (
-    <section className="relative overflow-hidden border-b border-white/10 py-7 md:py-14 xl:py-16">
+    <section className="relative overflow-hidden border-b border-white/10 py-6 md:py-12 xl:py-16">
       <div className="absolute inset-x-[-10%] top-[-4rem] h-[28rem] bg-[radial-gradient(circle_at_center,rgba(182,153,90,0.18),transparent_58%)] blur-3xl" />
       <div className="absolute right-[-10%] top-[18%] h-[18rem] w-[18rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_68%)] blur-3xl" />
 
-      <div className="relative grid gap-6 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,1.58fr)] xl:items-start xl:gap-10">
+      <div className="relative grid gap-4 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,1.58fr)] xl:items-start xl:gap-10">
         <div className="space-y-4 xl:pr-4">
           <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.eyebrow}</p>
           <h1 className="max-w-xl text-[clamp(2.35rem,9vw,5.8rem)] font-semibold leading-[0.88] tracking-[-0.08em] text-white sm:text-[clamp(2.8rem,5.6vw,5.8rem)]">
@@ -262,6 +262,19 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
 
           <div className="relative rounded-[2.2rem] sm:p-2 xl:p-0">
             <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[minmax(0,1fr)_220px]">
+              <div className="rounded-[1.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-3 lg:hidden">
+                <div className="flex items-center gap-3">
+                  <div className="flex min-h-14 w-20 items-center justify-center rounded-[0.9rem] border border-white/8 bg-black/40 p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/featured-badge.jpeg" alt="Featured badge" className="mx-auto h-auto w-full max-w-[56px] invert brightness-125 contrast-125" />
+                  </div>
+                  <div>
+                    <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/34">Badge</p>
+                    <p className="mt-1 text-sm font-medium tracking-[-0.02em] text-white">Featured selection</p>
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-4">
                 {activeMode === "notes" ? (
                   <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),linear-gradient(145deg,#f1e7d0_0%,#c9b383_46%,#7c6440_100%)] p-8 text-[#17120b]">
@@ -328,7 +341,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
               </div>
 
               <div className="grid gap-4 self-start xl:pt-2">
-                <div className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-4">
+                <div className="hidden overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-4 lg:block">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Badge</p>
                   <div className="mt-4 rounded-[1.2rem] border border-white/8 bg-black/40 p-6">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

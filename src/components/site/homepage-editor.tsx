@@ -191,7 +191,7 @@ export function HomepageEditor({
         </header>
       </div>
 
-      <div className={`mx-auto grid gap-6 px-5 pb-8 sm:gap-8 sm:px-8 sm:pb-10 ${editMode && canEdit ? "max-w-[1900px] xl:grid-cols-[minmax(0,1fr)_400px]" : viewportClass}`}>
+      <div className={`mx-auto grid gap-4 px-5 pb-6 sm:gap-6 sm:px-8 sm:pb-8 ${editMode && canEdit ? "max-w-[1900px] xl:grid-cols-[minmax(0,1fr)_400px]" : viewportClass}`}>
         <div className={editMode && canEdit ? viewportClass : ""}>
           {visibleSections.map((section) => {
             if (section.type === "bookHero") {

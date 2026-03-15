@@ -209,6 +209,10 @@ export function normalizeHomePageDocument(value: unknown): HomePageDocument {
       return accumulator;
     }
 
+    if ((section as { id?: unknown }).id === "hero-main") {
+      return accumulator;
+    }
+
     const type = (section as { type: HomeSection["type"] }).type;
 
     if (type === "bookHero") {
