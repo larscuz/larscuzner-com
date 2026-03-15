@@ -234,22 +234,27 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
         <section className="relative overflow-hidden border-b border-white/10 py-8 sm:py-10 xl:py-14">
           <div className="absolute inset-x-[-10%] top-[-5rem] h-[22rem] bg-[radial-gradient(circle_at_center,rgba(180,143,69,0.18),transparent_58%)] blur-3xl" />
           <div className="relative space-y-10">
-            <div className="grid gap-8 xl:grid-cols-[minmax(300px,0.48fr)_minmax(0,1.52fr)] xl:gap-10">
-              <div className="space-y-8">
+            <div className="space-y-6 border-b border-white/10 pb-8">
+              <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/26">Project room</p>
+              <div className="flex flex-wrap gap-2 text-[0.6rem] uppercase tracking-[0.28em] text-white/40">
+                <span className="rounded-full border border-[#ebd58c]/30 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">Campaign fiction</span>
+                <span className="rounded-full border border-white/10 px-3 py-1">2018-2019</span>
+                <span className="rounded-full border border-white/10 px-3 py-1">Oslo / Graz / Brussels</span>
+              </div>
+              <div className="grid gap-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)] xl:items-end">
                 <div>
-                  <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/26">Project room</p>
-                  <div className="mt-5 flex flex-wrap gap-2 text-[0.6rem] uppercase tracking-[0.28em] text-white/40">
-                    <span className="rounded-full border border-[#ebd58c]/30 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">Campaign fiction</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1">2018-2019</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1">Oslo / Graz / Brussels</span>
-                  </div>
-                  <h1 className="mt-6 max-w-[8ch] text-[clamp(3rem,7vw,5.1rem)] font-semibold leading-[0.9] tracking-[-0.08em] text-white">
+                  <h1 className="max-w-[10ch] text-[clamp(3.2rem,8vw,6.6rem)] font-semibold leading-[0.9] tracking-[-0.085em] text-white">
                     {entry.title}
                   </h1>
-                  <p className="mt-5 max-w-md text-[1rem] leading-8 text-white/60">
-                    A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.
-                  </p>
                 </div>
+                <p className="max-w-xl text-[1rem] leading-8 text-white/60 xl:justify-self-end">
+                  A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-8 xl:grid-cols-[minmax(300px,0.48fr)_minmax(0,1.52fr)] xl:gap-10">
+              <div className="space-y-8">
 
                 <div className="border-l border-[#ebd58c]/30 pl-5">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Current reading</p>
