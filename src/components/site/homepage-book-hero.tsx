@@ -220,27 +220,29 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
   }
 
   return (
-    <section className="relative overflow-hidden border-b border-white/10 py-10 md:py-16">
+    <section className="relative overflow-hidden border-b border-white/10 py-7 md:py-14 xl:py-16">
       <div className="absolute inset-x-[-10%] top-[-4rem] h-[28rem] bg-[radial-gradient(circle_at_center,rgba(182,153,90,0.18),transparent_58%)] blur-3xl" />
       <div className="absolute right-[-10%] top-[18%] h-[18rem] w-[18rem] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_68%)] blur-3xl" />
 
-      <div className="relative grid gap-8 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,1.58fr)] xl:items-start xl:gap-10">
-        <div className="space-y-5 xl:pr-4">
+      <div className="relative grid gap-6 xl:grid-cols-[minmax(320px,0.42fr)_minmax(0,1.58fr)] xl:items-start xl:gap-10">
+        <div className="space-y-4 xl:pr-4">
           <p className="text-[0.72rem] uppercase tracking-[0.34em] text-white/28">{section.eyebrow}</p>
-          <h1 className="max-w-xl text-[clamp(2.8rem,5.6vw,5.8rem)] font-semibold leading-[0.86] tracking-[-0.08em] text-white">{section.title}</h1>
-          <p className="max-w-md text-sm leading-7 text-white/56">{section.description}</p>
+          <h1 className="max-w-xl text-[clamp(2.35rem,9vw,5.8rem)] font-semibold leading-[0.88] tracking-[-0.08em] text-white sm:text-[clamp(2.8rem,5.6vw,5.8rem)]">
+            {section.title}
+          </h1>
+          <p className="max-w-md text-sm leading-6 text-white/56 sm:leading-7">{section.description}</p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={() => setActiveMode(projectMedia.videoMedia ? "video" : projectMedia.imageMedia ? "image" : "notes")}
-              className="rounded-full bg-[#ebd58c] px-5 py-3 text-sm font-medium text-[#120f09] transition hover:opacity-90"
+              className="rounded-full bg-[#ebd58c] px-4 py-2.5 text-sm font-medium text-[#120f09] transition hover:opacity-90 sm:px-5 sm:py-3"
             >
               {section.ctaLabel}
             </button>
             <Link
               href={projectHref}
-              className="rounded-full border border-white/14 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/[0.05]"
+              className="rounded-full border border-white/14 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/[0.05] sm:px-5 sm:py-3"
             >
               {section.secondaryCtaLabel}
             </Link>
@@ -255,7 +257,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
           </div>
         </div>
 
-        <div className="relative min-h-[36rem] xl:min-h-[46rem]">
+        <div className="relative min-h-[22rem] sm:min-h-[28rem] xl:min-h-[46rem]">
           <div className="absolute left-[2%] top-[4%] h-[14rem] w-[14rem] rounded-full border border-white/10 bg-[radial-gradient(circle,rgba(255,255,255,0.12),transparent_65%)] blur-2xl" />
 
           <div className="relative rounded-[2.2rem] sm:p-2 xl:p-0">
@@ -280,7 +282,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                         <button
                           type="button"
                           onClick={() => cycleHeroMode(-1)}
-                          className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          className="absolute left-2 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-base text-white transition hover:bg-black/70 sm:left-3 sm:h-11 sm:w-11 sm:text-lg"
                           aria-label="Show previous media"
                         >
                           ←
@@ -288,7 +290,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                         <button
                           type="button"
                           onClick={() => cycleHeroMode(1)}
-                          className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          className="absolute right-2 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-base text-white transition hover:bg-black/70 sm:right-3 sm:h-11 sm:w-11 sm:text-lg"
                           aria-label="Show next media"
                         >
                           →
@@ -306,7 +308,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                         <button
                           type="button"
                           onClick={() => cycleHeroMode(-1)}
-                          className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          className="absolute left-2 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-base text-white transition hover:bg-black/70 sm:left-3 sm:h-11 sm:w-11 sm:text-lg"
                           aria-label="Show previous media"
                         >
                           ←
@@ -314,7 +316,7 @@ export function HomepageBookHero({ section, posts }: BookHeroProps) {
                         <button
                           type="button"
                           onClick={() => cycleHeroMode(1)}
-                          className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-lg text-white transition hover:bg-black/70"
+                          className="absolute right-2 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/14 bg-black/45 text-base text-white transition hover:bg-black/70 sm:right-3 sm:h-11 sm:w-11 sm:text-lg"
                           aria-label="Show next media"
                         >
                           →
