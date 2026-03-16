@@ -24,11 +24,10 @@ export default async function WorkEntryPage({
   const canEdit = await isAdminAuthenticated();
 
   if (
-    !canEdit &&
     (["post-2735", "the-intelligence-party", "intelligenspartiet"].includes(slug) ||
       /intelligence party|intelligenspartiet/i.test(entry.title))
   ) {
-    return <IntelligencePartyRoom entry={entry} />;
+    return <IntelligencePartyRoom entry={entry} canEdit={canEdit} />;
   }
 
   return <PublicEntryShell entry={entry} />;

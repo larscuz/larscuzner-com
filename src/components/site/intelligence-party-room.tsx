@@ -206,7 +206,7 @@ function getMediaAspectClass(item: MediaItem) {
   return "aspect-[4/3]";
 }
 
-export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
+export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: WorkspaceEntry; canEdit?: boolean }) {
   const [activeMediaId, setActiveMediaId] = useState(mediaItems[0].id);
   const [activeEntryPointId, setActiveEntryPointId] = useState(entryPoints[0].id);
 
@@ -225,6 +225,19 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
             <Link href="/works" className="transition hover:text-white/70">
               Works
             </Link>
+            <Link href="/info" className="transition hover:text-white/70">
+              Info
+            </Link>
+            {canEdit ? (
+              <>
+                <Link href={`/admin/entry/${entry.sourceId}`} className="transition hover:text-white/70">
+                  Edit project
+                </Link>
+                <Link href="/admin" className="transition hover:text-white/70">
+                  Backend
+                </Link>
+              </>
+            ) : null}
             <a href={entry.publicUrl} className="transition hover:text-white/70" target="_blank" rel="noreferrer">
               Legacy page
             </a>
@@ -251,6 +264,19 @@ export function IntelligencePartyRoom({ entry }: { entry: WorkspaceEntry }) {
                   A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.
                 </p>
               </div>
+              {canEdit ? (
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href={`/admin/entry/${entry.sourceId}`}
+                    className="rounded-full border border-[#ebd58c]/35 bg-[#ebd58c]/10 px-4 py-2 text-[0.65rem] uppercase tracking-[0.32em] text-[#f2dfa5] transition hover:border-[#ebd58c]/55 hover:bg-[#ebd58c]/16"
+                  >
+                    Edit project content
+                  </Link>
+                  <p className="self-center text-sm leading-6 text-white/45">
+                    This slug stays the project room. Edit the underlying post in the CMS workspace and keep this room as the canonical public page.
+                  </p>
+                </div>
+              ) : null}
             </div>
 
             <div className="grid gap-8 xl:grid-cols-[minmax(300px,0.48fr)_minmax(0,1.52fr)] xl:gap-10">
