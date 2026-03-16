@@ -3,165 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { stripHtml, type EditorTextBlock } from "@/lib/editor-schema";
+import type { IntelligencePartyDocument, ProjectRoomMediaItem } from "@/lib/project-room-schema";
 import type { WorkspaceEntry } from "@/lib/server/workspace-store";
-
-type MediaItem = {
-  id: string;
-  label: string;
-  type: "youtube" | "video";
-  url: string;
-  caption: string;
-  note: string;
-  thumbnail: string;
-  size: "hero" | "wide" | "tall" | "standard";
-};
-
-type EntryPoint = {
-  id: string;
-  label: string;
-  eyebrow: string;
-  title: string;
-  description: string;
-  bullets: string[];
-};
-
-const mediaItems: MediaItem[] = [
-  {
-    id: "main-film",
-    label: "Campaign film",
-    type: "youtube",
-    url: "https://www.youtube.com/embed/LMVOKQ6hIbY",
-    caption: "The central project video: campaign rhetoric delivered with enough conviction to unsettle easy dismissal.",
-    note: "Entry point: start here for the official pitch voice.",
-    thumbnail: "https://larscuzner.com/wp-content/uploads/intelligenspartiet.jpg",
-    size: "hero",
-  },
-  {
-    id: "oslo-clip",
-    label: "Oslo activation",
-    type: "video",
-    url: "https://pub-b53c56f5af3e471cb8b3610afdc49a36.r2.dev/Intelligenspartiet2027.mp4",
-    caption: "A broader public-facing cut that lets the project operate in the register of outreach, agitation, and performance.",
-    note: "Entry point: use this if you want the work to read as a live campaign machine.",
-    thumbnail: "https://larscuzner.com/wp-content/uploads/the-intelligence-party-brussels.jpg",
-    size: "tall",
-  },
-  {
-    id: "street-interview",
-    label: "Street interview",
-    type: "youtube",
-    url: "https://www.youtube.com/embed/jRMVo8HWcwo",
-    caption: "The project in contact with passersby, where the satire has to survive public misunderstanding in real time.",
-    note: "Entry point: watch how the script changes when it meets actual people.",
-    thumbnail: "https://img.youtube.com/vi/jRMVo8HWcwo/maxresdefault.jpg",
-    size: "standard",
-  },
-  {
-    id: "broadcast-cut",
-    label: "Broadcast cut",
-    type: "youtube",
-    url: "https://www.youtube.com/embed/ZBEsYI_y4AI",
-    caption: "A media-facing version of the work where the campaign aesthetic starts to impersonate institutional seriousness.",
-    note: "Entry point: useful for reading the work as a feedback loop with journalism.",
-    thumbnail: "https://larscuzner.com/wp-content/uploads/the-intelligence-party-1.jpg",
-    size: "wide",
-  },
-  {
-    id: "field-footage",
-    label: "Field footage",
-    type: "youtube",
-    url: "https://www.youtube.com/embed/o2QgghxfQLw",
-    caption: "A looser field fragment that reveals the mechanics, repetition, and friction behind the public persona.",
-    note: "Entry point: the work becomes more legible once you see the seams.",
-    thumbnail: "https://larscuzner.com/wp-content/uploads/the-intelligence-party-2.jpg",
-    size: "standard",
-  },
-];
-
-const entryPoints: EntryPoint[] = [
-  {
-    id: "proposal",
-    label: "Policy proposal",
-    eyebrow: "Entry point 01",
-    title: "Read it as a proposal that weaponizes contradiction.",
-    description:
-      "The project argues for expanded voting rights, but stages that argument through conservative language, cultural protectionism, and strategic discomfort.",
-    bullets: [
-      "Universal suffrage is framed as a supposedly traditional value.",
-      "The rhetoric sounds right-wing while the demand points elsewhere.",
-      "The viewer is forced to decide whether the contradiction is cynical, tactical, or generative.",
-    ],
-  },
-  {
-    id: "persona",
-    label: "Campaign persona",
-    eyebrow: "Entry point 02",
-    title: "Read it as a performed candidate entering public space.",
-    description:
-      "The project works because it does not remain an essay. It becomes a body, a costume, a tone of voice, a flyer, a slogan, and a repeated public encounter.",
-    bullets: [
-      "The candidate persona is polished enough to be mistaken for real politics.",
-      "The absurd slogans keep threatening to collapse the whole operation.",
-      "That instability is part of the work, not a bug in it.",
-    ],
-  },
-  {
-    id: "genealogy",
-    label: "Historical genealogy",
-    eyebrow: "Entry point 03",
-    title: "Read it through Norway’s original Intelligenspartiet.",
-    description:
-      "The project borrows the historical party name to connect nineteenth-century culture wars to present-day anxieties around nation, belonging, and electoral legitimacy.",
-    bullets: [
-      "J.S. Welhaven and H. Wergeland become prototypes for a recurring split.",
-      "Protectionism and openness are staged as cultural scripts, not settled positions.",
-      "The project keeps history active instead of treating it as background decoration.",
-    ],
-  },
-  {
-    id: "reception",
-    label: "Reception machine",
-    eyebrow: "Entry point 04",
-    title: "Read it through what critics and media do to it.",
-    description:
-      "The work becomes clearer when you track its reception: some frames call it necessary, some call it absurd, and many cannot decide whether it is intervention or parody.",
-    bullets: [
-      "Art writing validates the paradox as a legitimate artistic method.",
-      "Public reaction often tries to force the work into propaganda or mockery.",
-      "The project room makes that instability visible instead of smoothing it away.",
-    ],
-  },
-];
-
-const timeline = [
-  {
-    year: "1830s",
-    title: "Original Intelligenspartiet",
-    body: "The historical party name anchors the work in an earlier cultural-political split around nationalism, influence, and the future of the nation.",
-  },
-  {
-    year: "2018",
-    title: "Graz campaign fiction",
-    body: "The Intelligence Party appears as a fictional-yet-operational campaign platform, staged with enough realism to circulate beyond art-space irony.",
-  },
-  {
-    year: "2018",
-    title: "Critical response",
-    body: "Reviews and art writing frame the project as timely because it inserts a left demand into a right rhetorical shell without resolving the contradiction.",
-  },
-  {
-    year: "2019",
-    title: "Oslo and Brussels afterlife",
-    body: "The work continues as a distributed campaign form, migrating between contexts and gathering new meanings as it travels.",
-  },
-];
-
-const ambiguityScale = [
-  { label: "Satire", value: "Uses mimicry, excess, and wrong-sounding slogans to destabilize political speech." },
-  { label: "Tool", value: "Behaves like an actual campaign apparatus with legible outreach and repeated messaging." },
-  { label: "Warning", value: "Shows how easily public language can host contradictory commitments without collapsing." },
-  { label: "Proposal", value: "Keeps open the possibility that tactical contradiction can still produce political thought." },
-];
 
 function getOverviewText(entry: WorkspaceEntry) {
   const text = entry.editorDocument.blocks
@@ -174,7 +17,7 @@ function getOverviewText(entry: WorkspaceEntry) {
   return text.length > 540 ? `${text.slice(0, 537).trimEnd()}...` : text;
 }
 
-function getMediaCardClasses(item: MediaItem) {
+function getMediaCardClasses(item: ProjectRoomMediaItem) {
   if (item.size === "hero") {
     return "md:col-span-2 md:row-span-2";
   }
@@ -190,7 +33,7 @@ function getMediaCardClasses(item: MediaItem) {
   return "";
 }
 
-function getMediaAspectClass(item: MediaItem) {
+function getMediaAspectClass(item: ProjectRoomMediaItem) {
   if (item.size === "hero") {
     return "aspect-[16/10]";
   }
@@ -206,13 +49,25 @@ function getMediaAspectClass(item: MediaItem) {
   return "aspect-[4/3]";
 }
 
-export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: WorkspaceEntry; canEdit?: boolean }) {
-  const [activeMediaId, setActiveMediaId] = useState(mediaItems[0].id);
-  const [activeEntryPointId, setActiveEntryPointId] = useState(entryPoints[0].id);
+export function IntelligencePartyRoom({
+  entry,
+  document,
+  canEdit = false,
+}: {
+  entry: WorkspaceEntry;
+  document: IntelligencePartyDocument;
+  canEdit?: boolean;
+}) {
+  const [activeMediaId, setActiveMediaId] = useState(document.mediaItems[0]?.id ?? "");
+  const [activeEntryPointId, setActiveEntryPointId] = useState(document.entryPoints[0]?.id ?? "");
 
-  const activeMedia = mediaItems.find((item) => item.id === activeMediaId) ?? mediaItems[0];
-  const activeEntryPoint = entryPoints.find((item) => item.id === activeEntryPointId) ?? entryPoints[0];
+  const activeMedia = document.mediaItems.find((item) => item.id === activeMediaId) ?? document.mediaItems[0];
+  const activeEntryPoint = document.entryPoints.find((item) => item.id === activeEntryPointId) ?? document.entryPoints[0];
   const overview = getOverviewText(entry);
+
+  if (!activeMedia || !activeEntryPoint) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen bg-[#050505] text-white">
@@ -230,8 +85,8 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
             </Link>
             {canEdit ? (
               <>
-                <Link href={`/admin/entry/${entry.sourceId}`} className="transition hover:text-white/70">
-                  Edit project
+                <Link href="/admin/project-room/intelligence-party" className="transition hover:text-white/70">
+                  Edit project room
                 </Link>
                 <Link href="/admin" className="transition hover:text-white/70">
                   Backend
@@ -248,7 +103,7 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
           <div className="absolute inset-x-[-10%] top-[-5rem] h-[22rem] bg-[radial-gradient(circle_at_center,rgba(180,143,69,0.18),transparent_58%)] blur-3xl" />
           <div className="relative space-y-10">
             <div className="space-y-6 border-b border-white/10 pb-8">
-              <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/26">Project room</p>
+              <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/26">{document.introKicker}</p>
               <div className="flex flex-wrap gap-2 text-[0.6rem] uppercase tracking-[0.28em] text-white/40">
                 <span className="rounded-full border border-[#ebd58c]/30 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">Campaign fiction</span>
                 <span className="rounded-full border border-white/10 px-3 py-1">2018-2019</span>
@@ -260,20 +115,18 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                     {entry.title}
                   </h1>
                 </div>
-                <p className="max-w-xl text-[1rem] leading-8 text-white/60 xl:justify-self-end">
-                  A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.
-                </p>
+                <p className="max-w-xl text-[1rem] leading-8 text-white/60 xl:justify-self-end">{document.introTagline}</p>
               </div>
               {canEdit ? (
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href={`/admin/entry/${entry.sourceId}`}
+                    href="/admin/project-room/intelligence-party"
                     className="rounded-full border border-[#ebd58c]/35 bg-[#ebd58c]/10 px-4 py-2 text-[0.65rem] uppercase tracking-[0.32em] text-[#f2dfa5] transition hover:border-[#ebd58c]/55 hover:bg-[#ebd58c]/16"
                   >
-                    Edit project content
+                    Edit project room
                   </Link>
                   <p className="self-center text-sm leading-6 text-white/45">
-                    This slug stays the project room. Edit the underlying post in the CMS workspace and keep this room as the canonical public page.
+                    This slug stays the canonical project room. Edit the room content directly here instead of opening the underlying post.
                   </p>
                 </div>
               ) : null}
@@ -281,15 +134,12 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
 
             <div className="grid gap-8 xl:grid-cols-[minmax(300px,0.48fr)_minmax(0,1.52fr)] xl:gap-10">
               <div className="space-y-8">
-
                 <div className="border-l border-[#ebd58c]/30 pl-5">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Current reading</p>
                   <p className="mt-3 text-[1.55rem] font-semibold leading-tight tracking-[-0.05em] text-white">
-                    Satire that keeps leaking into sincerity.
+                    {document.currentReadingTitle}
                   </p>
-                  <p className="mt-4 max-w-sm text-sm leading-7 text-white/55">
-                    The room should keep both readings alive instead of resolving them too quickly: funny, strategic, dangerous, and pedagogical at once.
-                  </p>
+                  <p className="mt-4 max-w-sm text-sm leading-7 text-white/55">{document.currentReadingBody}</p>
                 </div>
 
                 <div className="space-y-4 border-t border-white/10 pt-5">
@@ -298,7 +148,7 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                     <p className="text-[0.58rem] uppercase tracking-[0.28em] text-white/24">Unresolved on purpose</p>
                   </div>
                   <div className="space-y-3">
-                    {ambiguityScale.map((item, index) => (
+                    {document.ambiguityScale.map((item, index) => (
                       <div key={item.label} className="grid grid-cols-[auto_1fr_auto] items-start gap-3 border-b border-white/8 pb-3 last:border-b-0">
                         <p className="text-sm font-medium tracking-[-0.02em] text-white">{item.label}</p>
                         <p className="text-sm leading-6 text-white/52">{item.value}</p>
@@ -350,7 +200,7 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  {mediaItems.map((item) => {
+                  {document.mediaItems.map((item) => {
                     const isActive = activeMediaId === item.id;
 
                     return (
@@ -395,15 +245,13 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                 <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-4">
                   <div>
                     <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Media sequence</p>
-                    <p className="mt-2 text-[2rem] font-semibold tracking-[-0.05em] text-white">A campaign seen from several distances.</p>
+                    <p className="mt-2 text-[2rem] font-semibold tracking-[-0.05em] text-white">{document.sectionHeading}</p>
                   </div>
-                  <p className="max-w-md text-sm leading-6 text-white/54">
-                    The clips should read less like a grid of options and more like a staged drift between official pitch, public friction, and media afterlife.
-                  </p>
+                  <p className="max-w-md text-sm leading-6 text-white/54">{document.sectionDescription}</p>
                 </div>
 
                 <div className="grid auto-rows-[minmax(200px,1fr)] gap-3 md:grid-cols-3">
-                  {mediaItems.map((item) => {
+                  {document.mediaItems.map((item) => {
                     const isActive = activeMediaId === item.id;
 
                     return (
@@ -451,7 +299,7 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                 </div>
 
                 <div className="grid gap-3">
-                  {entryPoints.map((item) => (
+                  {document.entryPoints.map((item) => (
                     <button
                       key={item.id}
                       type="button"
@@ -526,8 +374,8 @@ export function IntelligencePartyRoom({ entry, canEdit = false }: { entry: Works
                   A project that behaves like a lineage and a campaign.
                 </p>
                 <div className="mt-6 border-l border-white/10 pl-6">
-                  {timeline.map((item, index) => (
-                    <div key={`${item.year}-${item.title}`} className={`relative pb-8 ${index === timeline.length - 1 ? "pb-0" : ""}`}>
+                  {document.timeline.map((item, index) => (
+                    <div key={`${item.year}-${item.title}`} className={`relative pb-8 ${index === document.timeline.length - 1 ? "pb-0" : ""}`}>
                       <span className="absolute -left-[2.05rem] top-1 h-3 w-3 rounded-full border border-[#ebd58c]/40 bg-[#050505]" />
                       <div className="grid gap-2 md:grid-cols-[88px_1fr] md:items-start md:gap-5">
                         <p className="text-sm font-medium text-[#ebd58c]">{item.year}</p>

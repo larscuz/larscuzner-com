@@ -8,12 +8,18 @@ import {
   normalizeHomePageDocument,
   type HomePageDocument,
 } from "@/lib/site-page-schema";
+import {
+  createDefaultIntelligencePartyDocument,
+  normalizeIntelligencePartyDocument,
+  type IntelligencePartyDocument,
+} from "@/lib/project-room-schema";
 import { isPostgresProvider, withPostgresClient } from "@/lib/server/postgres";
 
 const documentsPath = path.join(process.cwd(), "src/data/workspace/site-documents.json");
 
 type SiteDocumentsFile = {
   homepage?: unknown;
+  intelligenceParty?: unknown;
 };
 
 async function readDocumentsFile() {
@@ -92,6 +98,69 @@ export async function saveHomepageDocument(payload: { homepage: HomePageDocument
     await writeDocumentsFile({
       ...file,
       homepage,
+    });
+  }
+
+  return {
+    ok: true,
+  };
+}
+
+export async function readIntelligencePartyDocument(): Promise<IntelligencePartyDocument> {
+  if (isPostgresProvider()) {
+    await ensureSiteDocumentsSchema();
+
+    return withPostgresClient(async (client) => {
+      const result = await client.query(`SELECT document FROM cms_site_documents WHERE id = $1 LIMIT 1`, ["intelligence-party"]);
+
+      if (result.rows[0]) {
+        return normalizeIntelligencePartyDocument(result.rows[0].document);
+      }
+
+      const file = await readDocumentsFile().catch(() => ({} as SiteDocumentsFile));
+      const document = normalizeIntelligencePartyDocument(file.intelligenceParty);
+
+      await client.query(
+        `INSERT INTO cms_site_documents (id, document, updated_at)
+         VALUES ($1, $2::jsonb, NOW())
+         ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, updated_at = NOW()`,
+        ["intelligence-party", JSON.stringify(document)],
+      );
+
+      return document;
+    });
+  }
+
+  try {
+    const file = await readDocumentsFile();
+    return normalizeIntelligencePartyDocument(file.intelligenceParty);
+  } catch {
+    return createDefaultIntelligencePartyDocument();
+  }
+}
+
+export async function saveIntelligencePartyDocument(payload: { document: IntelligencePartyDocument }) {
+  if (!(await isAdminAuthenticated())) {
+    throw new Error("Unauthorized");
+  }
+
+  const document = normalizeIntelligencePartyDocument(payload.document);
+
+  if (isPostgresProvider()) {
+    await ensureSiteDocumentsSchema();
+    await withPostgresClient(async (client) => {
+      await client.query(
+        `INSERT INTO cms_site_documents (id, document, updated_at)
+         VALUES ($1, $2::jsonb, NOW())
+         ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, updated_at = NOW()`,
+        ["intelligence-party", JSON.stringify(document)],
+      );
+    });
+  } else {
+    const file = await readDocumentsFile().catch(() => ({} as SiteDocumentsFile));
+    await writeDocumentsFile({
+      ...file,
+      intelligenceParty: document,
     });
   }
 

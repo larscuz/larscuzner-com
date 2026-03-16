@@ -56,6 +56,9 @@ export default async function AdminPage() {
           <Link href="/admin/uploads" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
             Open uploads
           </Link>
+          <Link href="/admin/project-room/intelligence-party" className="rounded-full border border-[color:var(--line)] px-4 py-2 hover:bg-black/[0.03]">
+            Edit project room
+          </Link>
         </div>
       </section>
 
