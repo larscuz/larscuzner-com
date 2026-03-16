@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { IntelligencePartyRoom } from "@/components/site/intelligence-party-room";
 import { PublicEntryShell } from "@/components/site/public-entry-shell";
 import { isAdminAuthenticated } from "@/lib/server/auth";
-import { readIntelligencePartyDocument } from "@/lib/server/site-documents";
+import { readIntelligencePartyDocument, saveIntelligencePartyDocument } from "@/lib/server/site-documents";
 import { getPublicEntry, getPublishedPosts } from "@/lib/server/public-site";
 
 export async function generateStaticParams() {
@@ -29,7 +29,7 @@ export default async function WorkEntryPage({
       /intelligence party|intelligenspartiet/i.test(entry.title))
   ) {
     const document = await readIntelligencePartyDocument();
-    return <IntelligencePartyRoom entry={entry} document={document} canEdit={canEdit} />;
+    return <IntelligencePartyRoom entry={entry} document={document} canEdit={canEdit} saveAction={saveIntelligencePartyDocument} />;
   }
 
   return <PublicEntryShell entry={entry} />;
