@@ -290,7 +290,7 @@ export function IntelligencePartyRoom({
                     </div>
                     <div className="space-y-3">
                       {document.ambiguityScale.map((item, index) => (
-                        <div key={item.label} className="grid grid-cols-[auto_1fr_auto] items-start gap-3 border-b border-white/8 pb-3 last:border-b-0">
+                        <div key={`ambiguity-${index}`} className="grid grid-cols-[auto_1fr_auto] items-start gap-3 border-b border-white/8 pb-3 last:border-b-0">
                           <p className="text-sm font-medium tracking-[-0.02em] text-white">{item.label}</p>
                           <p className="text-sm leading-6 text-white/52">{item.value}</p>
                           <p className="pt-0.5 text-[0.58rem] uppercase tracking-[0.3em] text-white/26">0{index + 1}</p>
@@ -479,8 +479,8 @@ export function IntelligencePartyRoom({
                   </h3>
                   <p className="mt-4 text-sm leading-7 text-white/58">{activeEntryPoint.description}</p>
                   <div className="mt-5 space-y-3">
-                    {activeEntryPoint.bullets.map((bullet) => (
-                      <div key={bullet} className="border-l border-[#ebd58c]/28 pl-4 text-sm leading-6 text-white/58">
+                    {activeEntryPoint.bullets.map((bullet, index) => (
+                      <div key={`${activeEntryPoint.id}-bullet-preview-${index}`} className="border-l border-[#ebd58c]/28 pl-4 text-sm leading-6 text-white/58">
                         {bullet}
                       </div>
                     ))}
@@ -496,8 +496,8 @@ export function IntelligencePartyRoom({
                 <div>
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.archiveExitsLabel}</p>
                   <div className="mt-4 grid gap-3 text-sm leading-6 text-white/58">
-                    {document.archiveLinks.map((link) => (
-                      <a key={`${link.href}-${link.label}`} href={link.href} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                    {document.archiveLinks.map((link, index) => (
+                      <a key={`archive-link-${index}`} href={link.href} target="_blank" rel="noreferrer" className="transition hover:text-white">
                         {link.label}
                       </a>
                     ))}
@@ -518,7 +518,7 @@ export function IntelligencePartyRoom({
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-white/55">{document.timelineDescription}</p>
                 <div className="mt-6 border-l border-white/10 pl-6">
                   {document.timeline.map((item, index) => (
-                    <div key={`${item.year}-${item.title}`} className={`relative pb-8 ${index === document.timeline.length - 1 ? "pb-0" : ""}`}>
+                    <div key={`timeline-preview-${index}`} className={`relative pb-8 ${index === document.timeline.length - 1 ? "pb-0" : ""}`}>
                       <span className="absolute -left-[2.05rem] top-1 h-3 w-3 rounded-full border border-[#ebd58c]/40 bg-[#050505]" />
                       <div className="grid gap-2 md:grid-cols-[88px_1fr] md:items-start md:gap-5">
                         <p className="text-sm font-medium text-[#ebd58c]">{item.year}</p>
