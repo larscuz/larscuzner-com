@@ -86,9 +86,13 @@ function SectionFrame({
   }
 
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(sectionId)}
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect(sectionId);
+      }}
       className={`block w-full rounded-[2rem] border border-dashed p-3 text-left transition ${
         selected ? "border-[#ebd58c]/55 bg-[#ebd58c]/[0.06]" : "border-white/12 hover:border-white/28 hover:bg-white/[0.02]"
       }`}
@@ -97,7 +101,7 @@ function SectionFrame({
         <span>{sectionId}</span>
       </div>
       {children}
-    </button>
+    </div>
   );
 }
 
