@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { IntelligencePartyRoom } from "@/components/site/intelligence-party-room";
 import { PublicEntryShell } from "@/components/site/public-entry-shell";
+import { isAdminAuthenticated } from "@/lib/server/auth";
 import { getPublicEntry, getPublishedPosts } from "@/lib/server/public-site";
 
 export async function generateStaticParams() {
@@ -20,7 +21,13 @@ export default async function WorkEntryPage({
     notFound();
   }
 
-  if (["post-2735", "the-intelligence-party", "intelligenspartiet"].includes(slug) || /intelligence party|intelligenspartiet/i.test(entry.title)) {
+  const canEdit = await isAdminAuthenticated();
+
+  if (
+    !canEdit &&
+    (["post-2735", "the-intelligence-party", "intelligenspartiet"].includes(slug) ||
+      /intelligence party|intelligenspartiet/i.test(entry.title))
+  ) {
     return <IntelligencePartyRoom entry={entry} />;
   }
 

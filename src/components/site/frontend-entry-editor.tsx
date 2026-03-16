@@ -49,6 +49,10 @@ export function FrontendEntryEditor({
   }>;
 }) {
   const router = useRouter();
+  const entryLabel = entry.kind === "post" ? "Project" : "Page";
+  const editLabel = entry.kind === "post" ? "Edit project" : "Edit page";
+  const overviewLabel = entry.kind === "post" ? "This project" : "This page";
+  const backLink = entry.kind === "post" ? "/works" : "/info";
   const [title, setTitle] = useState(entry.title);
   const [document, setDocument] = useState<EditorDocument>(entry.editorDocument);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(entry.editorDocument.blocks[0]?.id ?? null);
@@ -157,10 +161,13 @@ export function FrontendEntryEditor({
             <Link href="/works" className="transition hover:text-white/70">
               Works
             </Link>
+            <Link href="/info" className="transition hover:text-white/70">
+              Info
+            </Link>
             {canEdit ? (
               <>
                 <button type="button" onClick={() => setEditMode((current) => !current)} className="transition hover:text-white/70">
-                  {editMode ? "Close editor" : "Edit front-end"}
+                  {editMode ? "Close editor" : editLabel}
                 </button>
                 <Link href={`/admin/entry/${entry.sourceId}`} className="transition hover:text-white/70">
                   Backend
@@ -174,7 +181,18 @@ export function FrontendEntryEditor({
           <div>
             <section className="grid gap-12 px-0 py-10 md:grid-cols-[minmax(0,1fr)_280px] md:gap-16 md:py-14">
               <div className="space-y-6">
-                <p className="text-[0.72rem] uppercase tracking-[0.42em] text-white/30">Work</p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <p className="text-[0.72rem] uppercase tracking-[0.42em] text-white/30">{entryLabel}</p>
+                  {canEdit ? (
+                    <button
+                      type="button"
+                      onClick={() => setEditMode((current) => !current)}
+                      className="rounded-full border border-white/12 px-3 py-1 text-[0.62rem] uppercase tracking-[0.28em] text-white/45 transition hover:border-white/30 hover:text-white/72"
+                    >
+                      {editMode ? "Close editor" : editLabel}
+                    </button>
+                  ) : null}
+                </div>
                 {editMode && canEdit ? (
                   <input
                     value={title}
@@ -191,9 +209,15 @@ export function FrontendEntryEditor({
               <aside className="max-w-sm space-y-5 pt-2">
                 <p className="text-sm leading-7 text-white/58">
                   {canEdit
-                    ? "When you are logged in, this public page can become the editing surface. Select a block, change it here, and save without leaving the front end."
+                    ? `${overviewLabel} is editable directly on the public front end. Select a section, update it in the side panel, and save without leaving the page.`
                     : "Public view of the composer-backed front end."}
                 </p>
+                <Link
+                  href={backLink}
+                  className="inline-flex text-[0.68rem] uppercase tracking-[0.32em] text-white/35 transition hover:text-white/70"
+                >
+                  Back to {entry.kind === "post" ? "works" : "info"}
+                </Link>
               </aside>
             </section>
 
