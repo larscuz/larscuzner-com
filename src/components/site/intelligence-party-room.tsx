@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { stripHtml, type EditorTextBlock } from "@/lib/editor-schema";
@@ -120,6 +120,7 @@ export function IntelligencePartyRoom({
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [selectedSectionId, setSelectedSectionId] = useState<SectionId>("intro");
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [rawDocument, setRawDocument] = useState(JSON.stringify(initialDocument, null, 2));
 
   const activeMedia = document.mediaItems.find((item) => item.id === activeMediaId) ?? document.mediaItems[0];
   const activeEntryPoint = document.entryPoints.find((item) => item.id === activeEntryPointId) ?? document.entryPoints[0];
@@ -128,6 +129,10 @@ export function IntelligencePartyRoom({
   const overview = getOverviewText(entry);
   const viewportClass =
     viewport === "mobile" ? "max-w-[420px]" : viewport === "tablet" ? "max-w-[900px]" : "max-w-[1650px]";
+
+  useEffect(() => {
+    setRawDocument(JSON.stringify(document, null, 2));
+  }, [document]);
 
   if (!activeMedia || !activeEntryPoint) {
     return null;
@@ -184,7 +189,7 @@ export function IntelligencePartyRoom({
     setSaveState("saving");
     startTransition(async () => {
       try {
-        await saveAction({ document });
+        await saveAction({ document: JSON.parse(rawDocument) as IntelligencePartyDocument });
         setSaveState("saved");
         router.refresh();
       } catch {
@@ -240,7 +245,7 @@ export function IntelligencePartyRoom({
                   <div className="grid gap-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)] xl:items-end">
                     <div>
                       <h1 className="max-w-[10ch] text-[clamp(3.2rem,8vw,6.6rem)] font-semibold leading-[0.9] tracking-[-0.085em] text-white">
-                        {entry.title}
+                        {document.projectTitle}
                       </h1>
                     </div>
                     <p className="max-w-xl text-[1rem] leading-8 text-white/60 xl:justify-self-end">{document.introTagline}</p>
@@ -268,7 +273,7 @@ export function IntelligencePartyRoom({
             <SectionFrame sectionId="current-reading" editable={editMode && canEdit} selected={selectedSectionId === "current-reading"} onSelect={setSelectedSectionId}>
               <div className="space-y-8">
                 <div className="border-l border-[#ebd58c]/30 pl-5">
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Current reading</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.currentReadingLabel}</p>
                   <p className="mt-3 text-[1.55rem] font-semibold leading-tight tracking-[-0.05em] text-white">
                     {document.currentReadingTitle}
                   </p>
@@ -278,8 +283,8 @@ export function IntelligencePartyRoom({
                 <SectionFrame sectionId="ambiguity" editable={editMode && canEdit} selected={selectedSectionId === "ambiguity"} onSelect={setSelectedSectionId}>
                   <div className="space-y-4 border-t border-white/10 pt-5">
                     <div className="flex items-center justify-between gap-4">
-                      <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Ambiguity scale</p>
-                      <p className="text-[0.58rem] uppercase tracking-[0.28em] text-white/24">Unresolved on purpose</p>
+                      <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.ambiguityLabel}</p>
+                      <p className="text-[0.58rem] uppercase tracking-[0.28em] text-white/24">{document.ambiguityMetaLabel}</p>
                     </div>
                     <div className="space-y-3">
                       {document.ambiguityScale.map((item, index) => (
@@ -294,7 +299,7 @@ export function IntelligencePartyRoom({
                 </SectionFrame>
 
                 <div className="border-t border-white/10 pt-5">
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Overview</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.overviewLabel}</p>
                   <p className="mt-4 max-w-md text-sm leading-7 text-white/55">{overview}</p>
                 </div>
               </div>
@@ -305,7 +310,7 @@ export function IntelligencePartyRoom({
                 <div className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4 sm:p-5">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                      <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Main screening</p>
+                      <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.mainScreeningLabel}</p>
                       <p className="mt-2 text-[1.9rem] font-semibold tracking-[-0.05em] text-white">{activeMedia.label}</p>
                     </div>
                     <p className="max-w-sm text-sm leading-6 text-white/52">{activeMedia.note}</p>
@@ -331,7 +336,7 @@ export function IntelligencePartyRoom({
                   <div className="mt-4 grid gap-3 border-t border-white/10 pt-4 md:grid-cols-[1fr_auto] md:items-start">
                     <p className="max-w-3xl text-sm leading-7 text-white/55">{activeMedia.caption}</p>
                     <span className="rounded-full border border-[#ebd58c]/35 bg-[#ebd58c]/10 px-3 py-1 text-[0.58rem] uppercase tracking-[0.28em] text-[#f2dfa5]">
-                      Active clip
+                      {document.activeClipLabel}
                     </span>
                   </div>
                 </div>
@@ -383,7 +388,7 @@ export function IntelligencePartyRoom({
               <div className="space-y-5">
                 <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-4">
                   <div>
-                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Media sequence</p>
+                    <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.mediaSequenceLabel}</p>
                     <p className="mt-2 text-[2rem] font-semibold tracking-[-0.05em] text-white">{document.sectionHeading}</p>
                   </div>
                   <p className="max-w-md text-sm leading-6 text-white/54">{document.sectionDescription}</p>
@@ -413,7 +418,7 @@ export function IntelligencePartyRoom({
                           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,5,5,0.08),rgba(5,5,5,0.82))]" />
                           <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                             <div className="flex items-center justify-between gap-3">
-                              <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/42">Media</p>
+                              <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/42">{document.mediaMetaLabel}</p>
                               <p className="text-[0.58rem] uppercase tracking-[0.3em] text-white/26">{item.size}</p>
                             </div>
                             <p className="mt-2 text-[1.1rem] font-medium tracking-[-0.04em] text-white">{item.label}</p>
@@ -430,7 +435,7 @@ export function IntelligencePartyRoom({
             <SectionFrame sectionId="entry-points" editable={editMode && canEdit} selected={selectedSectionId === "entry-points"} onSelect={setSelectedSectionId}>
               <div className="space-y-8">
                 <div>
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Entry points</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.entryPointsLabel}</p>
                   <h2 className="mt-3 max-w-[12ch] text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[0.95] tracking-[-0.06em] text-white">
                     {document.entryPointsHeading}
                   </h2>
@@ -487,7 +492,7 @@ export function IntelligencePartyRoom({
             <div className="grid gap-8 border-t border-white/10 pt-8 xl:grid-cols-[minmax(280px,0.42fr)_minmax(0,1.58fr)] xl:gap-10">
               <div className="space-y-6">
                 <div>
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Archive exits</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.archiveExitsLabel}</p>
                   <div className="mt-4 grid gap-3 text-sm leading-6 text-white/58">
                     {document.archiveLinks.map((link) => (
                       <a key={`${link.href}-${link.label}`} href={link.href} target="_blank" rel="noreferrer" className="transition hover:text-white">
@@ -498,13 +503,13 @@ export function IntelligencePartyRoom({
                 </div>
 
                 <div className="border-t border-white/10 pt-5">
-                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Room note</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.roomNoteLabel}</p>
                   <p className="mt-4 max-w-sm text-sm leading-7 text-white/55">{document.roomNote}</p>
                 </div>
               </div>
 
               <div>
-                <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Timeline</p>
+                <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">{document.timelineLabel}</p>
                 <p className="mt-2 max-w-xl text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-white">
                   {document.timelineHeading}
                 </p>
@@ -560,6 +565,14 @@ export function IntelligencePartyRoom({
               {selectedSectionId === "intro" ? (
                 <div className="grid gap-4">
                   <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Project title</span>
+                    <input
+                      value={document.projectTitle}
+                      onChange={(event) => setDocument((current) => ({ ...current, projectTitle: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Intro kicker</span>
                     <input
                       value={document.introKicker}
@@ -606,6 +619,14 @@ export function IntelligencePartyRoom({
               {selectedSectionId === "current-reading" ? (
                 <div className="grid gap-4">
                   <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Section label</span>
+                    <input
+                      value={document.currentReadingLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, currentReadingLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Current reading title</span>
                     <input
                       value={document.currentReadingTitle}
@@ -627,6 +648,30 @@ export function IntelligencePartyRoom({
 
               {selectedSectionId === "ambiguity" ? (
                 <div className="grid gap-3">
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Section label</span>
+                    <input
+                      value={document.ambiguityLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, ambiguityLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Meta label</span>
+                    <input
+                      value={document.ambiguityMetaLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, ambiguityMetaLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Overview label</span>
+                    <input
+                      value={document.overviewLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, overviewLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
                   {document.ambiguityScale.map((item, index) => (
                     <div key={`${item.label}-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
                       <input
@@ -662,6 +707,30 @@ export function IntelligencePartyRoom({
               {selectedSectionId === "screening" ? (
                 <div className="grid gap-4">
                   <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Main screening label</span>
+                    <input
+                      value={document.mainScreeningLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, mainScreeningLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Active clip badge</span>
+                    <input
+                      value={document.activeClipLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, activeClipLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Media sequence label</span>
+                    <input
+                      value={document.mediaSequenceLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, mediaSequenceLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Section heading</span>
                     <input
                       value={document.sectionHeading}
@@ -675,6 +744,14 @@ export function IntelligencePartyRoom({
                       value={document.sectionDescription}
                       onChange={(event) => setDocument((current) => ({ ...current, sectionDescription: event.target.value }))}
                       rows={4}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Media meta label</span>
+                    <input
+                      value={document.mediaMetaLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, mediaMetaLabel: event.target.value }))}
                       className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
                     />
                   </label>
@@ -749,6 +826,14 @@ export function IntelligencePartyRoom({
 
               {selectedSectionId === "entry-points" ? (
                 <div className="grid gap-4">
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Section label</span>
+                    <input
+                      value={document.entryPointsLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, entryPointsLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
                   <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Section heading</span>
                     <textarea
@@ -829,6 +914,30 @@ export function IntelligencePartyRoom({
               {selectedSectionId === "timeline" ? (
                 <div className="grid gap-3">
                   <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Archive label</span>
+                    <input
+                      value={document.archiveExitsLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, archiveExitsLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Room note label</span>
+                    <input
+                      value={document.roomNoteLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, roomNoteLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Timeline label</span>
+                    <input
+                      value={document.timelineLabel}
+                      onChange={(event) => setDocument((current) => ({ ...current, timelineLabel: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Timeline heading</span>
                     <textarea
                       value={document.timelineHeading}
@@ -908,6 +1017,22 @@ export function IntelligencePartyRoom({
                       />
                     </div>
                   ))}
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Raw document JSON</span>
+                    <textarea
+                      value={rawDocument}
+                      onChange={(event) => {
+                        setRawDocument(event.target.value);
+                        try {
+                          setDocument(JSON.parse(event.target.value) as IntelligencePartyDocument);
+                        } catch {
+                          // Wait for valid JSON before syncing preview.
+                        }
+                      }}
+                      rows={18}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 font-mono text-xs text-white"
+                    />
+                  </label>
                 </div>
               ) : null}
             </div>

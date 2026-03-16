@@ -36,17 +36,30 @@ export type ProjectRoomArchiveLink = {
 
 export type IntelligencePartyDocument = {
   version: 1;
+  projectTitle: string;
   introKicker: string;
   introTagline: string;
   badgePrimary: string;
   badgeYears: string;
   badgePlaces: string;
+  currentReadingLabel: string;
   currentReadingTitle: string;
   currentReadingBody: string;
+  ambiguityLabel: string;
+  ambiguityMetaLabel: string;
+  overviewLabel: string;
+  mainScreeningLabel: string;
+  activeClipLabel: string;
+  mediaSequenceLabel: string;
   sectionHeading: string;
   sectionDescription: string;
+  mediaMetaLabel: string;
+  entryPointsLabel: string;
   entryPointsHeading: string;
   entryPointsDescription: string;
+  archiveExitsLabel: string;
+  roomNoteLabel: string;
+  timelineLabel: string;
   timelineHeading: string;
   timelineDescription: string;
   roomNote: string;
@@ -60,21 +73,34 @@ export type IntelligencePartyDocument = {
 export function createDefaultIntelligencePartyDocument(): IntelligencePartyDocument {
   return {
     version: 1,
+    projectTitle: "The Intelligence Party",
     introKicker: "Project room",
     introTagline:
       "A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.",
     badgePrimary: "Campaign fiction",
     badgeYears: "2018-2019",
     badgePlaces: "Oslo / Graz / Brussels",
+    currentReadingLabel: "Current reading",
     currentReadingTitle: "Satire that keeps leaking into sincerity.",
     currentReadingBody:
       "The room should keep both readings alive instead of resolving them too quickly: funny, strategic, dangerous, and pedagogical at once.",
+    ambiguityLabel: "Ambiguity scale",
+    ambiguityMetaLabel: "Unresolved on purpose",
+    overviewLabel: "Overview",
+    mainScreeningLabel: "Main screening",
+    activeClipLabel: "Active clip",
+    mediaSequenceLabel: "Media sequence",
     sectionHeading: "A campaign seen from several distances.",
     sectionDescription:
       "The clips should read less like a grid of options and more like a staged drift between official pitch, public friction, and media afterlife.",
+    mediaMetaLabel: "Media",
+    entryPointsLabel: "Entry points",
     entryPointsHeading: "Many ways in, no safe reading out.",
     entryPointsDescription:
       "Use these as guided doors into the project rather than final interpretations. Each one changes the political temperature of the same material.",
+    archiveExitsLabel: "Archive exits",
+    roomNoteLabel: "Room note",
+    timelineLabel: "Timeline",
     timelineHeading: "A project that behaves like a lineage and a campaign.",
     timelineDescription: "This page should behave more like a reading environment than a catalog card: one work, several thresholds, no clean handoff between parody and proposition.",
     roomNote: "This page should behave more like a reading environment than a catalog card: one work, several thresholds, no clean handoff between parody and proposition.",
@@ -231,18 +257,31 @@ export function normalizeIntelligencePartyDocument(value: unknown): Intelligence
 
   return {
     version: 1,
+    projectTitle: typeof item.projectTitle === "string" ? item.projectTitle : fallback.projectTitle,
     introKicker: typeof item.introKicker === "string" ? item.introKicker : fallback.introKicker,
     introTagline: typeof item.introTagline === "string" ? item.introTagline : fallback.introTagline,
     badgePrimary: typeof item.badgePrimary === "string" ? item.badgePrimary : fallback.badgePrimary,
     badgeYears: typeof item.badgeYears === "string" ? item.badgeYears : fallback.badgeYears,
     badgePlaces: typeof item.badgePlaces === "string" ? item.badgePlaces : fallback.badgePlaces,
+    currentReadingLabel: typeof item.currentReadingLabel === "string" ? item.currentReadingLabel : fallback.currentReadingLabel,
     currentReadingTitle: typeof item.currentReadingTitle === "string" ? item.currentReadingTitle : fallback.currentReadingTitle,
     currentReadingBody: typeof item.currentReadingBody === "string" ? item.currentReadingBody : fallback.currentReadingBody,
+    ambiguityLabel: typeof item.ambiguityLabel === "string" ? item.ambiguityLabel : fallback.ambiguityLabel,
+    ambiguityMetaLabel: typeof item.ambiguityMetaLabel === "string" ? item.ambiguityMetaLabel : fallback.ambiguityMetaLabel,
+    overviewLabel: typeof item.overviewLabel === "string" ? item.overviewLabel : fallback.overviewLabel,
+    mainScreeningLabel: typeof item.mainScreeningLabel === "string" ? item.mainScreeningLabel : fallback.mainScreeningLabel,
+    activeClipLabel: typeof item.activeClipLabel === "string" ? item.activeClipLabel : fallback.activeClipLabel,
+    mediaSequenceLabel: typeof item.mediaSequenceLabel === "string" ? item.mediaSequenceLabel : fallback.mediaSequenceLabel,
     sectionHeading: typeof item.sectionHeading === "string" ? item.sectionHeading : fallback.sectionHeading,
     sectionDescription: typeof item.sectionDescription === "string" ? item.sectionDescription : fallback.sectionDescription,
+    mediaMetaLabel: typeof item.mediaMetaLabel === "string" ? item.mediaMetaLabel : fallback.mediaMetaLabel,
+    entryPointsLabel: typeof item.entryPointsLabel === "string" ? item.entryPointsLabel : fallback.entryPointsLabel,
     entryPointsHeading: typeof item.entryPointsHeading === "string" ? item.entryPointsHeading : fallback.entryPointsHeading,
     entryPointsDescription:
       typeof item.entryPointsDescription === "string" ? item.entryPointsDescription : fallback.entryPointsDescription,
+    archiveExitsLabel: typeof item.archiveExitsLabel === "string" ? item.archiveExitsLabel : fallback.archiveExitsLabel,
+    roomNoteLabel: typeof item.roomNoteLabel === "string" ? item.roomNoteLabel : fallback.roomNoteLabel,
+    timelineLabel: typeof item.timelineLabel === "string" ? item.timelineLabel : fallback.timelineLabel,
     timelineHeading: typeof item.timelineHeading === "string" ? item.timelineHeading : fallback.timelineHeading,
     timelineDescription:
       typeof item.timelineDescription === "string" ? item.timelineDescription : fallback.timelineDescription,
