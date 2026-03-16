@@ -675,7 +675,7 @@ export function IntelligencePartyRoom({
                     />
                   </label>
                   {document.ambiguityScale.map((item, index) => (
-                    <div key={`${item.label}-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
+                    <div key={`ambiguity-editor-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
                       <input
                         value={item.label}
                         onChange={(event) =>
@@ -1000,7 +1000,7 @@ export function IntelligencePartyRoom({
                     ))}
                   </div>
                   {document.timeline.map((item, index) => (
-                    <div key={`${item.year}-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
+                    <div key={`timeline-editor-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
                       <input
                         value={item.year}
                         onChange={(event) => updateTimelineItem(index, { year: event.target.value })}
