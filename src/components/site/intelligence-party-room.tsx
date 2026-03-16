@@ -87,8 +87,6 @@ function SectionFrame({
 
   return (
     <div
-      role="button"
-      tabIndex={0}
       onClick={(event) => {
         event.stopPropagation();
         onSelect(sectionId);
