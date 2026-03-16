@@ -29,14 +29,28 @@ export type ProjectRoomAmbiguityItem = {
   value: string;
 };
 
+export type ProjectRoomArchiveLink = {
+  label: string;
+  href: string;
+};
+
 export type IntelligencePartyDocument = {
   version: 1;
   introKicker: string;
   introTagline: string;
+  badgePrimary: string;
+  badgeYears: string;
+  badgePlaces: string;
   currentReadingTitle: string;
   currentReadingBody: string;
   sectionHeading: string;
   sectionDescription: string;
+  entryPointsHeading: string;
+  entryPointsDescription: string;
+  timelineHeading: string;
+  timelineDescription: string;
+  roomNote: string;
+  archiveLinks: ProjectRoomArchiveLink[];
   mediaItems: ProjectRoomMediaItem[];
   entryPoints: ProjectRoomEntryPoint[];
   timeline: ProjectRoomTimelineItem[];
@@ -49,12 +63,26 @@ export function createDefaultIntelligencePartyDocument(): IntelligencePartyDocum
     introKicker: "Project room",
     introTagline:
       "A project interface for navigating the work as campaign artifact, historical echo, public intervention, and unstable proposition.",
+    badgePrimary: "Campaign fiction",
+    badgeYears: "2018-2019",
+    badgePlaces: "Oslo / Graz / Brussels",
     currentReadingTitle: "Satire that keeps leaking into sincerity.",
     currentReadingBody:
       "The room should keep both readings alive instead of resolving them too quickly: funny, strategic, dangerous, and pedagogical at once.",
     sectionHeading: "A campaign seen from several distances.",
     sectionDescription:
       "The clips should read less like a grid of options and more like a staged drift between official pitch, public friction, and media afterlife.",
+    entryPointsHeading: "Many ways in, no safe reading out.",
+    entryPointsDescription:
+      "Use these as guided doors into the project rather than final interpretations. Each one changes the political temperature of the same material.",
+    timelineHeading: "A project that behaves like a lineage and a campaign.",
+    timelineDescription: "This page should behave more like a reading environment than a catalog card: one work, several thresholds, no clean handoff between parody and proposition.",
+    roomNote: "This page should behave more like a reading environment than a catalog card: one work, several thresholds, no clean handoff between parody and proposition.",
+    archiveLinks: [
+      { label: "artmagazine review", href: "http://www.artmagazine.cc/content104549.html" },
+      { label: "Subjekt article", href: "https://subjekt.no/2018/09/18/hvit-mann-proklamerer-i-understand-white-people-i-mangfoldig-strok-kunst-eller-propaganda/" },
+      { label: "The Great Replacement book reference", href: "https://www.hatjecantz.de/volksfronten-popular-fronts-7542-1.html" },
+    ],
     mediaItems: [
       {
         id: "main-film",
@@ -205,10 +233,24 @@ export function normalizeIntelligencePartyDocument(value: unknown): Intelligence
     version: 1,
     introKicker: typeof item.introKicker === "string" ? item.introKicker : fallback.introKicker,
     introTagline: typeof item.introTagline === "string" ? item.introTagline : fallback.introTagline,
+    badgePrimary: typeof item.badgePrimary === "string" ? item.badgePrimary : fallback.badgePrimary,
+    badgeYears: typeof item.badgeYears === "string" ? item.badgeYears : fallback.badgeYears,
+    badgePlaces: typeof item.badgePlaces === "string" ? item.badgePlaces : fallback.badgePlaces,
     currentReadingTitle: typeof item.currentReadingTitle === "string" ? item.currentReadingTitle : fallback.currentReadingTitle,
     currentReadingBody: typeof item.currentReadingBody === "string" ? item.currentReadingBody : fallback.currentReadingBody,
     sectionHeading: typeof item.sectionHeading === "string" ? item.sectionHeading : fallback.sectionHeading,
     sectionDescription: typeof item.sectionDescription === "string" ? item.sectionDescription : fallback.sectionDescription,
+    entryPointsHeading: typeof item.entryPointsHeading === "string" ? item.entryPointsHeading : fallback.entryPointsHeading,
+    entryPointsDescription:
+      typeof item.entryPointsDescription === "string" ? item.entryPointsDescription : fallback.entryPointsDescription,
+    timelineHeading: typeof item.timelineHeading === "string" ? item.timelineHeading : fallback.timelineHeading,
+    timelineDescription:
+      typeof item.timelineDescription === "string" ? item.timelineDescription : fallback.timelineDescription,
+    roomNote: typeof item.roomNote === "string" ? item.roomNote : fallback.roomNote,
+    archiveLinks:
+      Array.isArray(item.archiveLinks) && item.archiveLinks.length > 0
+        ? (item.archiveLinks as ProjectRoomArchiveLink[])
+        : fallback.archiveLinks,
     mediaItems: Array.isArray(item.mediaItems) && item.mediaItems.length > 0 ? (item.mediaItems as ProjectRoomMediaItem[]) : fallback.mediaItems,
     entryPoints: Array.isArray(item.entryPoints) && item.entryPoints.length > 0 ? (item.entryPoints as ProjectRoomEntryPoint[]) : fallback.entryPoints,
     timeline: Array.isArray(item.timeline) && item.timeline.length > 0 ? (item.timeline as ProjectRoomTimelineItem[]) : fallback.timeline,

@@ -233,9 +233,9 @@ export function IntelligencePartyRoom({
                 <div className="space-y-6 border-b border-white/10 pb-8">
                   <p className="text-[0.72rem] uppercase tracking-[0.36em] text-white/26">{document.introKicker}</p>
                   <div className="flex flex-wrap gap-2 text-[0.6rem] uppercase tracking-[0.28em] text-white/40">
-                    <span className="rounded-full border border-[#ebd58c]/30 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">Campaign fiction</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1">2018-2019</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1">Oslo / Graz / Brussels</span>
+                    <span className="rounded-full border border-[#ebd58c]/30 bg-[#ebd58c]/10 px-3 py-1 text-[#f2dfa5]">{document.badgePrimary}</span>
+                    <span className="rounded-full border border-white/10 px-3 py-1">{document.badgeYears}</span>
+                    <span className="rounded-full border border-white/10 px-3 py-1">{document.badgePlaces}</span>
                   </div>
                   <div className="grid gap-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)] xl:items-end">
                     <div>
@@ -432,11 +432,9 @@ export function IntelligencePartyRoom({
                 <div>
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Entry points</p>
                   <h2 className="mt-3 max-w-[12ch] text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[0.95] tracking-[-0.06em] text-white">
-                    Many ways in, no safe reading out.
+                    {document.entryPointsHeading}
                   </h2>
-                  <p className="mt-4 max-w-md text-sm leading-7 text-white/55">
-                    Use these as guided doors into the project rather than final interpretations. Each one changes the political temperature of the same material.
-                  </p>
+                  <p className="mt-4 max-w-md text-sm leading-7 text-white/55">{document.entryPointsDescription}</p>
                 </div>
 
                 <div className="grid gap-3">
@@ -491,31 +489,26 @@ export function IntelligencePartyRoom({
                 <div>
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Archive exits</p>
                   <div className="mt-4 grid gap-3 text-sm leading-6 text-white/58">
-                    <a href="http://www.artmagazine.cc/content104549.html" target="_blank" rel="noreferrer" className="transition hover:text-white">
-                      artmagazine review
-                    </a>
-                    <a href="https://subjekt.no/2018/09/18/hvit-mann-proklamerer-i-understand-white-people-i-mangfoldig-strok-kunst-eller-propaganda/" target="_blank" rel="noreferrer" className="transition hover:text-white">
-                      Subjekt article
-                    </a>
-                    <a href="https://www.hatjecantz.de/volksfronten-popular-fronts-7542-1.html" target="_blank" rel="noreferrer" className="transition hover:text-white">
-                      The Great Replacement book reference
-                    </a>
+                    {document.archiveLinks.map((link) => (
+                      <a key={`${link.href}-${link.label}`} href={link.href} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                        {link.label}
+                      </a>
+                    ))}
                   </div>
                 </div>
 
                 <div className="border-t border-white/10 pt-5">
                   <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Room note</p>
-                  <p className="mt-4 max-w-sm text-sm leading-7 text-white/55">
-                    This page should behave more like a reading environment than a catalog card: one work, several thresholds, no clean handoff between parody and proposition.
-                  </p>
+                  <p className="mt-4 max-w-sm text-sm leading-7 text-white/55">{document.roomNote}</p>
                 </div>
               </div>
 
               <div>
                 <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/34">Timeline</p>
                 <p className="mt-2 max-w-xl text-[2rem] font-semibold leading-tight tracking-[-0.05em] text-white">
-                  A project that behaves like a lineage and a campaign.
+                  {document.timelineHeading}
                 </p>
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/55">{document.timelineDescription}</p>
                 <div className="mt-6 border-l border-white/10 pl-6">
                   {document.timeline.map((item, index) => (
                     <div key={`${item.year}-${item.title}`} className={`relative pb-8 ${index === document.timeline.length - 1 ? "pb-0" : ""}`}>
@@ -536,7 +529,7 @@ export function IntelligencePartyRoom({
         </div>
 
         {editMode && canEdit ? (
-          <aside className="self-start xl:sticky xl:top-6">
+          <aside className="self-start xl:sticky xl:top-6 xl:max-h-[calc(100vh-3rem)] xl:overflow-y-auto xl:pr-1">
             <div className="space-y-5 rounded-[2rem] border border-white/12 bg-white/[0.04] p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -580,6 +573,30 @@ export function IntelligencePartyRoom({
                       value={document.introTagline}
                       onChange={(event) => setDocument((current) => ({ ...current, introTagline: event.target.value }))}
                       rows={5}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Primary badge</span>
+                    <input
+                      value={document.badgePrimary}
+                      onChange={(event) => setDocument((current) => ({ ...current, badgePrimary: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Years badge</span>
+                    <input
+                      value={document.badgeYears}
+                      onChange={(event) => setDocument((current) => ({ ...current, badgeYears: event.target.value }))}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Places badge</span>
+                    <input
+                      value={document.badgePlaces}
+                      onChange={(event) => setDocument((current) => ({ ...current, badgePlaces: event.target.value }))}
                       className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
                     />
                   </label>
@@ -733,6 +750,26 @@ export function IntelligencePartyRoom({
               {selectedSectionId === "entry-points" ? (
                 <div className="grid gap-4">
                   <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Section heading</span>
+                    <textarea
+                      value={document.entryPointsHeading}
+                      onChange={(event) => setDocument((current) => ({ ...current, entryPointsHeading: event.target.value }))}
+                      rows={3}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Section description</span>
+                    <textarea
+                      value={document.entryPointsDescription}
+                      onChange={(event) =>
+                        setDocument((current) => ({ ...current, entryPointsDescription: event.target.value }))
+                      }
+                      rows={4}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
                     <span className="text-sm font-medium text-white">Active entry point</span>
                     <select
                       value={activeEntryPointId}
@@ -791,6 +828,66 @@ export function IntelligencePartyRoom({
 
               {selectedSectionId === "timeline" ? (
                 <div className="grid gap-3">
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Timeline heading</span>
+                    <textarea
+                      value={document.timelineHeading}
+                      onChange={(event) => setDocument((current) => ({ ...current, timelineHeading: event.target.value }))}
+                      rows={3}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Timeline intro</span>
+                    <textarea
+                      value={document.timelineDescription}
+                      onChange={(event) =>
+                        setDocument((current) => ({ ...current, timelineDescription: event.target.value }))
+                      }
+                      rows={4}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <label className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Room note</span>
+                    <textarea
+                      value={document.roomNote}
+                      onChange={(event) => setDocument((current) => ({ ...current, roomNote: event.target.value }))}
+                      rows={4}
+                      className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                    />
+                  </label>
+                  <div className="grid gap-2">
+                    <span className="text-sm font-medium text-white">Archive links</span>
+                    {document.archiveLinks.map((link, index) => (
+                      <div key={`${link.href}-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
+                        <input
+                          value={link.label}
+                          onChange={(event) =>
+                            setDocument((current) => ({
+                              ...current,
+                              archiveLinks: current.archiveLinks.map((item, itemIndex) =>
+                                itemIndex === index ? { ...item, label: event.target.value } : item,
+                              ),
+                            }))
+                          }
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                        <input
+                          value={link.href}
+                          onChange={(event) =>
+                            setDocument((current) => ({
+                              ...current,
+                              archiveLinks: current.archiveLinks.map((item, itemIndex) =>
+                                itemIndex === index ? { ...item, href: event.target.value } : item,
+                              ),
+                            }))
+                          }
+                          className="rounded-xl border border-white/12 bg-black/40 px-4 py-3 text-sm text-white"
+                        />
+                      </div>
+                    ))}
+                  </div>
                   {document.timeline.map((item, index) => (
                     <div key={`${item.year}-${index}`} className="grid gap-2 rounded-[1rem] border border-white/12 bg-black/20 p-3">
                       <input
